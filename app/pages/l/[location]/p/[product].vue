@@ -55,7 +55,7 @@ if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
 }
 
-const user = useUserStore();
+const nuxtApp = useNuxtApp();
 
 const route = useRoute();
 const router = useRouter();
@@ -82,8 +82,10 @@ const { data: product } = await useAsyncData(async (nuxtApp) => {
 });
 
 function onReserve() {
-  if (!user.email) {
-    router.push(`/signup?return=/l/${location.slug}/p/${product.id}`);
+  if (!nuxtApp.$pb.authStore.isValid) {
+    router.push(
+      `/signup?return=/l/${location.value.slug}/p/${product.value.id}`
+    );
     return;
   }
   dialog.value.show();
