@@ -77,6 +77,7 @@ if (process.client) {
 }
 
 const nuxtApp = useNuxtApp();
+const config = useRuntimeConfig();
 
 const route = useRoute();
 const router = useRouter();
