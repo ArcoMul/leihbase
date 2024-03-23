@@ -25,9 +25,10 @@ article {
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .content {
-  padding: 2rem;
+  padding: clamp(1rem, 4vw, 2rem);
 }
 .image {
   aspect-ratio: 4/3;

@@ -74,28 +74,41 @@ function onInput() {
 
 <style lang="scss" scoped>
 header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  @media screen and (min-width: 411px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-  & > * {
-    width: calc(25% - 0.75rem);
+  h2 {
+    margin: 0;
   }
 
   .search-input {
-    margin-bottom: 1.5rem;
     width: 100%;
   }
 }
 .products {
-  display: flex;
+  --columns: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
   gap: 1rem;
-}
-.product {
-  width: calc(25% - 0.75rem);
-  display: flex;
-  color: black;
-  text-decoration: none;
-  flex-grow: 0;
+
+  .product {
+    display: flex;
+    color: black;
+    text-decoration: none;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 524px) {
+    --columns: 3;
+  }
+  @media screen and (min-width: 767px) {
+    --columns: 4;
+  }
 }
 </style>
