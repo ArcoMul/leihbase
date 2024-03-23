@@ -2,7 +2,12 @@
   <header>
     <NuxtLink to="/" class="logo">Leihbar<br />Köln</NuxtLink>
     <nav>
-      <ul>
+      <ul v-if="userStore.isAuthenticated">
+        <li>
+          <NuxtLink to="/profile">Profile</NuxtLink>
+        </li>
+      </ul>
+      <ul v-else>
         <li>
           <NuxtLink to="/signup">Signup</NuxtLink>
         </li>
@@ -17,13 +22,16 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import "@shoelace-style/shoelace/dist/themes/light.css";
 import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path";
+import { useUserStore } from "./stores/user";
 
 setBasePath(
   "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/"
 );
+
+const userStore = useUserStore();
 </script>
 
 <style lang="scss">
@@ -57,5 +65,6 @@ nav ul a {
   text-decoration: none;
   text-transform: uppercase;
   font-weight: bold;
+  color: var(--text-primary);
 }
 </style>

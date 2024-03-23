@@ -47,7 +47,6 @@
 
 <script setup>
 import Button from "~/components/Button.vue";
-import { useUserStore } from "~/stores/user";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/dialog/dialog.js");
@@ -84,7 +83,7 @@ const { data: product } = await useAsyncData(async (nuxtApp) => {
 function onReserve() {
   if (!nuxtApp.$pb.authStore.isValid) {
     router.push(
-      `/signup?return=/l/${location.value.slug}/p/${product.value.id}`
+      `/login?return=/l/${location.value.slug}/p/${product.value.id}`
     );
     return;
   }

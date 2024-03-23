@@ -41,6 +41,7 @@ if (process.client) {
 
 const nuxtApp = useNuxtApp();
 const router = useRouter();
+const route = useRoute();
 
 const name = ref(null);
 const email = ref(null);
@@ -73,7 +74,7 @@ async function onSignup() {
 
   console.log(authData);
 
-  router.push("/profile");
+  router.push(route.query.return ? route.query.return : "/profile");
 }
 </script>
 

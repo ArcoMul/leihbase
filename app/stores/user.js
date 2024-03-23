@@ -1,7 +1,13 @@
 export const useUserStore = defineStore("userStore", {
   state: () => ({
-    name: null,
-    eMail: null,
+    isAuthenticated: false,
   }),
-  actions: {},
+  actions: {
+    login() {
+      this.isAuthenticated = true;
+    },
+    logout() {
+      this.isAuthenticated = false;
+    },
+  },
 });
