@@ -7,7 +7,7 @@
       <div class="media-col">
         <img
           v-if="product?.images && product?.images.length > 0"
-          :src="`http://localhost:8080/api/files/products/${product.id}/${product.images[0]}`"
+          :src="`${config.public.apiBaseUrlClient}/api/files/products/${product.id}/${product.images[0]}`"
           class="image"
         />
         <div v-else class="image"></div>
