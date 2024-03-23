@@ -47,3 +47,12 @@ img {
 .rich-text p:last-child {
   margin-bottom: 0;
 }
+
+hr {
+  width: 4rem;
+  height: 3px;
+  border-radius: 3px;
+  margin: 2rem 0;
+  border: 0;
+  background-color: var(--bg-primary);
+}

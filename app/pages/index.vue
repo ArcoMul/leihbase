@@ -4,33 +4,23 @@
       <h1>{{ location?.name || "No location found" }}</h1>
       <div v-html="location?.description || 'No location found'"></div>
     </section>
+    <hr />
     <section>
-      <h2>Gegenstanden</h2>
-      <div class="products">
-        <NuxtLink
-          v-for="product in products"
-          :to="`/l/${location.slug}/p/${product.id}`"
-          :key="product.id"
-          class="product"
-        >
-          <ProductCard :product="product" />
-        </NuxtLink>
-      </div>
+      <ProductGrid :location="location" />
     </section>
   </Container>
 </template>
 
 <script setup>
-import ProductCard from "~/components/ProductCard.vue";
+import ProductGrid from "~/components/ProductGrid.vue";
+
+const locationId = "1351z318f7ehd9n";
 
 const { data: location } = await useAsyncData(async (nuxtApp) => {
-  const location = await nuxtApp.$pb
-    .collection("location")
-    .getOne("1351z318f7ehd9n", { expand: "products_via_location" });
+  const location = await nuxtApp.$pb.collection("location").getOne(locationId);
 
   return structuredClone(location);
 });
-const products = location?.value?.expand?.products_via_location;
 </script>
 
 <style lang="scss" scoped>
@@ -44,16 +34,5 @@ section {
 h1,
 h2 {
   margin-bottom: 1rem;
-}
-.products {
-  display: flex;
-  gap: 1rem;
-}
-.product {
-  width: 33.33%;
-  display: flex;
-  color: black;
-  text-decoration: none;
-  flex-grow: 0;
 }
 </style>

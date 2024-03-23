@@ -180,13 +180,4 @@ sl-dialog form {
   flex-direction: column;
   gap: 1rem;
 }
-
-hr {
-  width: 4rem;
-  height: 3px;
-  border-radius: 3px;
-  margin: 2rem 0;
-  border: 0;
-  background-color: var(--bg-primary);
-}
 </style>
