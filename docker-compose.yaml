@@ -1,23 +1,27 @@
 version: "3.8"
 
 services:
-
   app:
     build:
-      context: .
-      dockerfile: node.Dockerfile
+      context: app
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - "3000:3000"
+    environment:
+      NUXT_PUBLIC_API_BASE_URL_SERVER: http://pocketbase:8080
+      NUXT_PUBLIC_API_BASE_URL_CLIENT: http://127.0.0.1:8080
     volumes:
-      - ./app/:/app
+      - ./app:/app
       - /app/node_modules
     networks:
       - leihbar
 
   pocketbase:
     build:
-      context: .
-      dockerfile: pocketbase.Dockerfile
+      context: pocketbase
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - "8080:8080"
     volumes:
@@ -25,7 +29,6 @@ services:
       - ./pocketbase/pb_data:/pb/pb_data
     networks:
       - leihbar
-
 
 networks:
   leihbar:

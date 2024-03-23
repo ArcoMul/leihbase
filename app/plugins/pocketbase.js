@@ -2,10 +2,13 @@ import PocketBase from "pocketbase";
 import { useUserStore } from "../stores/user";
 
 export default defineNuxtPlugin(async () => {
+  const config = useRuntimeConfig();
   const userStore = useUserStore();
 
   const pb = new PocketBase(
-    process.client ? "http://127.0.0.1:8080" : "http://pocketbase:8080"
+    process.client
+      ? config.public.apiBaseUrlClient
+      : config.public.apiBaseUrlServer
   );
 
   const cookie = useCookie("pb_auth", {

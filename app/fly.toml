@@ -1,0 +1,22 @@
+app = 'leihapp'
+primary_region = 'ams'
+
+[build]
+  build-target = 'prod'
+
+[env]
+  NUXT_PUBLIC_API_BASE_URL_SERVER = 'https://leihapp-pocketbase.fly.dev'
+  NUXT_PUBLIC_API_BASE_URL_CLIENT = 'https://leihapp-pocketbase.fly.dev'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

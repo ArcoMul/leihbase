@@ -1,0 +1,22 @@
+app = 'leihapp-pocketbase'
+primary_region = 'ams'
+
+[build]
+  build-target = 'prod'
+
+[[mounts]]
+  source = 'pocketbase_data'
+  destination = '/pb/pb_data'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

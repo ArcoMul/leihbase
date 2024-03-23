@@ -24,7 +24,7 @@
 
 <script setup>
 import "@shoelace-style/shoelace/dist/themes/light.css";
-import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path";
+import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path.js";
 import { useUserStore } from "./stores/user";
 
 setBasePath(
