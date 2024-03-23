@@ -1,7 +1,7 @@
 <template>
   <section class="header">
-    <h1>{{ location?.name }}</h1>
-    <div v-html="location?.description"></div>
+    <h1>{{ location?.name || "No location found" }}</h1>
+    <div v-html="location?.description || 'No location found'"></div>
   </section>
   <section>
     <h2>Gegenstanden</h2>
@@ -19,7 +19,6 @@
 </template>
 
 <script setup>
-import PocketBase from "pocketbase";
 import ProductCard from "~/components/ProductCard.vue";
 
 const { data: location } = await useAsyncData(async (nuxtApp) => {
@@ -29,7 +28,7 @@ const { data: location } = await useAsyncData(async (nuxtApp) => {
 
   return structuredClone(location);
 });
-const products = location.value.expand.products_via_location;
+const products = location?.value?.expand?.products_via_location;
 </script>
 
 <style lang="scss" scoped>
