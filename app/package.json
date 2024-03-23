@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconoir/vue": "^7.5.0",
     "@shoelace-style/shoelace": "^2.14.0",
     "luxon": "^3.4.4",
     "nuxt": "^3.10.3",

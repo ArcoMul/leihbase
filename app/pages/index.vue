@@ -1,9 +1,15 @@
 <template>
   <Container max-width centered>
-    <section class="header">
-      <h1>{{ location?.name || "No location found" }}</h1>
-      <div v-html="location?.description || 'No location found'"></div>
-    </section>
+    <header>
+      <AddressBox class="address">{{ location?.address }}</AddressBox>
+      <h1>
+        {{ location?.name || "No location found" }}
+      </h1>
+      <div
+        class="description"
+        v-html="location?.description || 'No location found'"
+      ></div>
+    </header>
     <hr />
     <section>
       <ProductGrid :location="location" />
@@ -31,9 +37,18 @@ useHead({
 section {
   margin-bottom: 2rem;
 }
-.header {
-  max-width: var(--max-text-width);
-  margin-top: 2rem;
+header {
+  .address {
+    margin-bottom: 2rem;
+  }
+  h1 {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+  }
+  .description {
+    max-width: var(--max-text-width);
+  }
 }
 h1,
 h2 {

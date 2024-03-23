@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@iconoir/vue':
+    specifier: ^7.5.0
+    version: 7.5.0(vue@3.4.21)
   '@shoelace-style/shoelace':
     specifier: ^2.14.0
     version: 2.14.0(@types/react@18.2.66)
@@ -801,6 +804,19 @@ packages:
 
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
+    dev: false
+
+  /@iconoir/vue@7.5.0(vue@3.4.21):
+    resolution: {integrity: sha512-g1sJt0Qv0gn2QwX75TPTHMKm/jaasaR9iNmBhrmQ8uU/RAPBZnqAjZ99bSxO87yPKYLxknXbTxQ1e+XrxczzqQ==}
+    peerDependencies:
+      '@vue/composition-api': '>=1.0.0-rc.1'
+      vue: ^2.6.11 || >=3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.4.21
+      vue-demi: 0.14.7(vue@3.4.21)
     dev: false
 
   /@ioredis/commands@1.2.0:
@@ -6085,7 +6101,6 @@ packages:
         optional: true
     dependencies:
       vue: 3.4.21
-    dev: true
 
   /vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
