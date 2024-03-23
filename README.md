@@ -1,6 +1,6 @@
 # Leihapp
 
-Web application to manage a borrow store.
+Web application to manage borrow stores.
 
 - ✅ Manage multiple borrow locations
 - ✅ User signup/login
