@@ -35,22 +35,22 @@ useHead({
 
 <style lang="scss" scoped>
 section {
-  margin-bottom: 2rem;
+  margin-bottom: var(--fluid-spacing-8);
 }
 header {
   .address {
-    margin-bottom: 2rem;
+    margin-bottom: var(--fluid-spacing-8);
   }
   h1 {
-    margin-bottom: 2rem;
+    margin-bottom: var(--fluid-spacing-8);
     display: flex;
     align-items: center;
+    line-height: 1.15;
   }
   .description {
     max-width: var(--max-text-width);
   }
 }
-h1,
 h2 {
   margin-bottom: 1rem;
 }

@@ -11,6 +11,18 @@
   --text-secondary: #0d79f2;
 
   --max-text-width: 40rem;
+
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+
+  --fluid-spacing-4: clamp(0.5rem, 2vw, 1rem);
+  --fluid-spacing-8: clamp(1rem, 4.5vw, 2rem);
 }
 
 body {
@@ -76,7 +88,7 @@ hr {
   width: 4rem;
   height: 3px;
   border-radius: 3px;
-  margin: 2rem 0;
+  margin: var(--spacing-8) 0;
   border: 0;
   background-color: var(--bg-primary);
 }

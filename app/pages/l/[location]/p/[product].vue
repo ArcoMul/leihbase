@@ -139,17 +139,20 @@ function onSubmit() {
 
 <style lang="scss" scoped>
 section {
-  margin-bottom: 2rem;
+  margin-bottom: var(--fluid-spacing-8);
 }
 .header {
   max-width: var(--max-text-width);
-  margin-top: 2rem;
+  h1 {
+    line-height: 1.15;
+  }
 }
 .product {
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: var(--fluid-spacing-8);
   & > * {
-    width: 50%;
+    width: 100%;
   }
   .media-col {
     max-width: 500px;
@@ -159,15 +162,31 @@ section {
     }
   }
   .info-col {
+    flex-grow: 1;
+    h2,
     h3 {
       margin-top: 0;
-      margin-bottom: 1rem;
+      margin-bottom: var(--fluid-spacing-4);
     }
     .description {
       margin-bottom: 2rem;
     }
     .upcoming-reservations {
       margin-bottom: 2rem;
+    }
+  }
+  @media screen and (min-width: 512px) {
+    .media-col {
+      width: calc(40% - (var(--fluid-spacing-8) / 2));
+    }
+    .info-col {
+      width: calc(60% - (var(--fluid-spacing-8) / 2));
+    }
+  }
+  @media screen and (min-width: 767px) {
+    .media-col,
+    .info-col {
+      width: calc(50% - (var(--fluid-spacing-8) / 2));
     }
   }
 }

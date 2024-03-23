@@ -25,7 +25,7 @@ const props = defineProps({
 
 <style scoped>
 section {
-  padding: clamp(1rem, 3.5vw, 3rem);
+  padding: var(--fluid-spacing-8);
 }
 section.max-width {
   max-width: 1200px;
