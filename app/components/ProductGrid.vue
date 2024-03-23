@@ -40,7 +40,6 @@ const props = defineProps({
 const nuxtApp = useNuxtApp();
 
 const searchString = ref("");
-const products = ref(null);
 
 function getFilter() {
   const filter = [];
@@ -56,12 +55,17 @@ function getFilter() {
   return nuxtApp.$pb.filter(filter.join(" && "), args);
 }
 
-const { refresh } = await useAsyncData(async (nuxtApp) => {
-  const page = await nuxtApp.$pb
-    .collection("products")
-    .getList(1, 12, { filter: getFilter() });
-  products.value = page?.items;
-});
+const { data: page, refresh } = await useAsyncData(
+  "products",
+  async (nuxtApp) => {
+    const page = await nuxtApp.$pb
+      .collection("products")
+      .getList(1, 12, { filter: getFilter() });
+    return structuredClone(page);
+  }
+);
+
+const products = computed(() => page.value?.items);
 
 function onInput() {
   refresh();

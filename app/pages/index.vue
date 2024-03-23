@@ -16,7 +16,7 @@ import ProductGrid from "~/components/ProductGrid.vue";
 
 const locationId = "1351z318f7ehd9n";
 
-const { data: location } = await useAsyncData(async (nuxtApp) => {
+const { data: location } = await useAsyncData("location", async (nuxtApp) => {
   const location = await nuxtApp.$pb.collection("location").getOne(locationId);
 
   return structuredClone(location);
