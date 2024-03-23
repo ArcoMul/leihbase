@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import ProductGrid from "~/components/ProductGrid.vue";
+import ProductGrid from "~/components/modules/ProductGrid.vue";
 
 const locationId = "1351z318f7ehd9n";
 
