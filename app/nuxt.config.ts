@@ -6,6 +6,12 @@ export default defineNuxtConfig({
       apiBaseUrlClient: '', // NUXT_PUBLIC_API_BASE_URL_CLIENT
     }
   },
+  app: {
+    head: {
+      title: 'Leihapp'
+    }
+  },
+
   devtools: { enabled: true },
   plugins: ["~/plugins/pocketbase"],
 

@@ -44,6 +44,10 @@ const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 
+useHead({
+  title: `Login | Leihapp`,
+});
+
 const email = ref(null);
 const password = ref(null);
 

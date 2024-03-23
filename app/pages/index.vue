@@ -21,6 +21,10 @@ const { data: location } = await useAsyncData("location", async (nuxtApp) => {
 
   return structuredClone(location);
 });
+
+useHead({
+  title: `${location.value?.name} | Leihapp`,
+});
 </script>
 
 <style lang="scss" scoped>

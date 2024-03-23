@@ -114,9 +114,9 @@ const { data: reservations } = await useAsyncData(async (nuxtApp) => {
   return structuredClone(reservations);
 });
 
-console.log(reservations.value);
-
-// const reservations = product?.value?.expand?.public_reservations_via_product;
+useHead({
+  title: `${product.value?.name} | Leihapp`,
+});
 
 function onReserve() {
   if (!nuxtApp.$pb.authStore.isValid) {

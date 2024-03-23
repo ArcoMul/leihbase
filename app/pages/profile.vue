@@ -15,6 +15,10 @@ const router = useRouter();
 const user = ref(null);
 const userStore = useUserStore();
 
+useHead({
+  title: `Profile | Leihapp`,
+});
+
 if (!nuxtApp.$pb.authStore.isValid) {
   userStore.logout();
   router.push("/login");

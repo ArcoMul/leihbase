@@ -43,6 +43,10 @@ const nuxtApp = useNuxtApp();
 const router = useRouter();
 const route = useRoute();
 
+useHead({
+  title: `Signup | Leihapp`,
+});
+
 const name = ref(null);
 const email = ref(null);
 const password = ref(null);
