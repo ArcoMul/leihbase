@@ -1,5 +1,5 @@
 <template>
-  <Container>
+  <Container max-width centered>
     <h1>Sign up</h1>
     <form @submit.prevent="onSignup">
       <sl-input

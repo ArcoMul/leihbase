@@ -60,6 +60,9 @@ nav ul {
   display: flex;
   list-style: none;
   gap: 1rem;
+  margin: 0;
+  margin-right: 1rem;
+  padding: 0;
 }
 nav ul a {
   text-decoration: none;

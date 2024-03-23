@@ -1,5 +1,5 @@
 <template>
-  <Container>
+  <Container max-width centered>
     <h1>Log in</h1>
     <p>
       No account yet? <NuxtLink :to="signupLink">Sign up</NuxtLink> to create an

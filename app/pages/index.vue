@@ -1,21 +1,23 @@
 <template>
-  <section class="header">
-    <h1>{{ location?.name || "No location found" }}</h1>
-    <div v-html="location?.description || 'No location found'"></div>
-  </section>
-  <section>
-    <h2>Gegenstanden</h2>
-    <div class="products">
-      <NuxtLink
-        v-for="product in products"
-        :to="`/l/${location.slug}/p/${product.id}`"
-        :key="product.id"
-        class="product"
-      >
-        <ProductCard :product="product" />
-      </NuxtLink>
-    </div>
-  </section>
+  <Container max-width centered>
+    <section class="header">
+      <h1>{{ location?.name || "No location found" }}</h1>
+      <div v-html="location?.description || 'No location found'"></div>
+    </section>
+    <section>
+      <h2>Gegenstanden</h2>
+      <div class="products">
+        <NuxtLink
+          v-for="product in products"
+          :to="`/l/${location.slug}/p/${product.id}`"
+          :key="product.id"
+          class="product"
+        >
+          <ProductCard :product="product" />
+        </NuxtLink>
+      </div>
+    </section>
+  </Container>
 </template>
 
 <script setup>
@@ -33,7 +35,6 @@ const products = location?.value?.expand?.products_via_location;
 
 <style lang="scss" scoped>
 section {
-  padding-inline: 2rem;
   margin-bottom: 2rem;
 }
 .header {
@@ -53,5 +54,6 @@ h2 {
   display: flex;
   color: black;
   text-decoration: none;
+  flex-grow: 0;
 }
 </style>

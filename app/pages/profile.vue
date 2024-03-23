@@ -1,5 +1,5 @@
 <template>
-  <Container>
+  <Container max-width centered>
     <h1>Profile</h1>
     <p>
       Name: {{ user?.name }}<br />

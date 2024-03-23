@@ -1,5 +1,11 @@
 <template>
-  <section :class="{ centered: props.centered }">
+  <section
+    :class="{
+      centered: props.centered,
+      'max-width': props.maxWidth,
+      centered: props.centered,
+    }"
+  >
     <slot></slot>
   </section>
 </template>
@@ -8,7 +14,11 @@
 const props = defineProps({
   centered: {
     type: Boolean,
-    deefault: false,
+    default: false,
+  },
+  maxWidth: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>
@@ -17,8 +27,10 @@ const props = defineProps({
 section {
   padding: 2rem;
 }
+section.max-width {
+  max-width: 1200px;
+}
 section.centered {
-  display: flex;
-  justify-content: center;
+  margin: 0 auto;
 }
 </style>

@@ -10,7 +10,6 @@
       <p class="name">
         <strong>{{ product.name }}</strong>
       </p>
-      <div v-html="product.description" class="rich-text"></div>
     </div>
   </article>
 </template>
@@ -23,6 +22,8 @@ const props = defineProps(["product"]);
 article {
   background-color: white;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
 }
 .content {
   padding: 2rem;
@@ -34,6 +35,6 @@ article {
   border-radius: 5px 5px 0 0;
 }
 .name {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 </style>
