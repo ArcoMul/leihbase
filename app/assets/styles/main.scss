@@ -3,12 +3,15 @@
 :root {
   --bg-primary: #0d79f2;
   --bg-secondary: #feddc1;
+  --bg-secondary-light: #fef3ea;
   --bg-body: var(--bg-secondary);
 
   --fg-primary: #feddc1;
 
   --text-primary: #feddc1;
   --text-secondary: #0d79f2;
+
+  --font-size-sm: 0.9rem;
 
   --max-text-width: 40rem;
 
@@ -91,4 +94,10 @@ hr {
   margin: var(--spacing-8) 0;
   border: 0;
   background-color: var(--bg-primary);
+}
+
+// Hide custom element (shoelace elements) until
+// they have been loaded
+:not(:defined) {
+  visibility: hidden;
 }

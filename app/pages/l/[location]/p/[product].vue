@@ -13,23 +13,19 @@
         <div v-else class="image"></div>
       </div>
       <div class="info-col">
-        <h2>{{ product?.name }}</h2>
+        <div class="info-header">
+          <h2>{{ product?.name }}</h2>
+          <AvailabilityBadge :available="available" />
+        </div>
         <div class="description" v-html="product?.description"></div>
 
         <hr />
 
-        <div class="upcoming-reservations">
-          <h3>Reservierungen</h3>
-          <ul v-if="reservations && reservations.length > 0">
-            <li v-for="reservation in reservations" :key="reservation.id">
-              {{ formatDate(reservation.start, DateTime.DATE_MED) }}
-              - {{ formatDate(reservation.end, DateTime.DATE_MED) }}
-            </li>
-          </ul>
-          <p v-else><i>Keine kommenden Reservierungen</i></p>
-        </div>
-
-        <hr />
+        <ReservationsBox
+          title="Reservierungen"
+          :reservations="reservations"
+          class="upcoming-reservations"
+        />
 
         <Button @click="onReserve">Reservieren</Button>
 
@@ -57,6 +53,12 @@
               @input="(event) => (message = event.target.value)"
             />
 
+            <sl-alert variant="danger" :open="showReservationCreationError">
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten,
+              bitte versuche es erneut.
+            </sl-alert>
+
             <Button type="submit">Jetzt reservieren</Button>
           </form>
         </sl-dialog>
@@ -66,14 +68,14 @@
 </template>
 
 <script setup>
-import { DateTime } from "luxon";
-import { formatDate } from "~/lib/date";
 import Button from "~/components/Button.vue";
+import { isToday } from "~/lib/reservation";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/dialog/dialog.js");
   await import("@shoelace-style/shoelace/dist/components/input/input.js");
   await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
+  await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
 }
 
 const nuxtApp = useNuxtApp();
@@ -84,36 +86,47 @@ const router = useRouter();
 const dialog = ref(null);
 const form = ref(null);
 
+const showReservationCreationError = ref(false);
+
+// Fields
 const start = ref(null);
 const end = ref(null);
 const message = ref(null);
 
-const { data: location } = await useAsyncData(async (nuxtApp) => {
+const { data: location } = await useAsyncData("location", async (nuxtApp) => {
   const location = await nuxtApp.$pb
     .collection("location")
     .getOne("1351z318f7ehd9n");
 
   return structuredClone(location);
 });
-const { data: product } = await useAsyncData(async (nuxtApp) => {
+const { data: product } = await useAsyncData("product", async (nuxtApp) => {
   const product = await nuxtApp.$pb
     .collection("products")
     .getOne(route.params.product);
 
   return structuredClone(product);
 });
-const { data: reservations } = await useAsyncData(async (nuxtApp) => {
-  const reservations = await nuxtApp.$pb
-    .collection("public_reservations")
-    .getFullList({
-      filter: nuxtApp.$pb.filter("product = {:product} && end > @now", {
-        product: product.value.id,
-      }),
-      sort: "start",
-    });
-  console.log(reservations);
-  return structuredClone(reservations);
-});
+const { data: reservations, refresh: refreshReservations } = await useAsyncData(
+  "reservations",
+  async (nuxtApp) => {
+    const reservations = await nuxtApp.$pb
+      .collection("public_reservations")
+      .getFullList({
+        filter: nuxtApp.$pb.filter("product = {:product} && end > @now", {
+          product: product.value.id,
+        }),
+        sort: "start",
+      });
+    return structuredClone(reservations);
+  }
+);
+
+const available = computed(() =>
+  reservations.value && reservations.value.length > 0
+    ? reservations.value?.filter((r) => isToday(r)).length === 0
+    : true
+);
 
 useHead({
   title: `${product.value?.name} | Leihapp`,
@@ -129,12 +142,24 @@ function onReserve() {
   dialog.value.show();
 }
 
-function onSubmit() {
-  console.log({
-    start: start.value,
-    end: end.value,
-    message: message.value,
-  });
+async function onSubmit() {
+  try {
+    const reservation = await nuxtApp.$pb.collection("reservations").create({
+      user: nuxtApp.$pb.authStore.model.id,
+      product: product.value.id,
+      start: start.value,
+      end: end.value,
+      note: message.value,
+    });
+  } catch (e) {
+    console.log(e.data);
+    showReservationCreationError.value = true;
+    return;
+  }
+
+  refreshReservations();
+
+  dialog.value.hide();
 }
 </script>
 
@@ -164,10 +189,15 @@ section {
   }
   .info-col {
     flex-grow: 1;
+    .info-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: var(--fluid-spacing-4);
+    }
     h2,
     h3 {
-      margin-top: 0;
-      margin-bottom: var(--fluid-spacing-4);
+      margin: 0;
     }
     .description {
       margin-bottom: 2rem;

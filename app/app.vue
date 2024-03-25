@@ -32,6 +32,10 @@ setBasePath(
 );
 
 const userStore = useUserStore();
+
+if (userStore.isAuthenticated) {
+  userStore.fetchUserReservations();
+}
 </script>
 
 <style lang="scss">
