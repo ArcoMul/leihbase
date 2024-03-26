@@ -2,7 +2,7 @@
   <header>
     <NuxtLink to="/" class="logo">Leihbar<br />Köln</NuxtLink>
     <nav>
-      <ul v-if="userStore.isAuthenticated">
+      <ul v-if="isAuthenticated">
         <li>
           <NuxtLink to="/profile">Profile</NuxtLink>
         </li>
@@ -32,8 +32,9 @@ setBasePath(
 );
 
 const userStore = useUserStore();
+const { isAuthenticated } = storeToRefs(userStore);
 
-if (userStore.isAuthenticated) {
+if (isAuthenticated) {
   userStore.fetchUserReservations();
 }
 </script>

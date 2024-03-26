@@ -32,6 +32,13 @@
       >
         <!-- <sl-icon name="lock" slot="prefix"></sl-icon> -->
       </sl-input>
+
+      <sl-alert variant="danger" :open="showSignupError">
+        <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+        Beim Erstellen deiner Account ist ein Fehler aufgetreten, bitte versuche
+        es erneut.
+      </sl-alert>
+
       <Button type="submit">Sign up</Button>
     </form>
   </Container>
@@ -42,11 +49,16 @@ import Container from "~/components/Container";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/input/input.js");
+  await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
+  await import("@shoelace-style/shoelace/dist/components/icon/icon.js");
 }
 
 const nuxtApp = useNuxtApp();
 const router = useRouter();
 const route = useRoute();
+const userStore = useUserStore();
+
+const showSignupError = ref(false);
 
 useHead({
   title: `Signup | Leihapp`,
@@ -64,26 +76,25 @@ async function onSignup() {
     passwordConfirm: password.value,
   };
 
-  console.log(data);
+  try {
+    await nuxtApp.$pb.collection("users").create(data);
 
-  const user = await nuxtApp.$pb.collection("users").create(data);
+    // Send an email verification request
+    await nuxtApp.$pb.collection("users").requestVerification(data.email);
 
-  console.log(user);
+    // Authenticate
+    await nuxtApp.$pb
+      .collection("users")
+      .authWithPassword(data.email, data.password);
 
-  // (optional) send an email verification request
-  const result = await nuxtApp.$pb
-    .collection("users")
-    .requestVerification(data.email);
+    // Login
+    userStore.login();
 
-  console.log(result);
-
-  const authData = await nuxtApp.$pb
-    .collection("users")
-    .authWithPassword(data.email, data.password);
-
-  console.log(authData);
-
-  router.push(route.query.return ? route.query.return : "/profile");
+    // Routing
+    router.push(route.query.return ? route.query.return : "/profile");
+  } catch (e) {
+    showSignupError.value = true;
+  }
 }
 </script>
 
