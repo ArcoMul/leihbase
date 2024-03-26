@@ -8,6 +8,8 @@
     <form @submit.prevent="onLogin">
       <sl-input
         type="email"
+        id="email"
+        name="email"
         label="E-Mail"
         required
         @input="(event) => (email = event.target.value)"
@@ -16,6 +18,8 @@
       </sl-input>
       <sl-input
         type="password"
+        id="password"
+        name="password"
         label="Kernwort"
         required
         password-toggle

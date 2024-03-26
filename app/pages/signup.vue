@@ -5,22 +5,27 @@
       <sl-input
         type="text"
         label="Name"
+        name="name"
         required
         @input="(event) => (name = event.target.value)"
       >
         <!-- <sl-icon name="person" slot="prefix"></sl-icon> -->
       </sl-input>
       <sl-input
+        id="email"
         type="email"
         label="E-Mail"
+        name="email"
         required
         @input="(event) => (email = event.target.value)"
       >
         <!-- <sl-icon name="envelope" slot="prefix"></sl-icon> -->
       </sl-input>
       <sl-input
+        id="password"
         type="password"
         label="Kernwort"
+        name="password"
         required
         password-toggle
         @input="(event) => (password = event.target.value)"

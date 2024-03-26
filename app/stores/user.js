@@ -5,7 +5,7 @@ export const useUserStore = defineStore("userStore", {
     reservations: [],
   }),
   actions: {
-    login({ name }) {
+    login({ name } = {}) {
       const nuxtApp = useNuxtApp();
       this.isAuthenticated = true;
       this.name = name || nuxtApp.$pb?.authStore.model.name;
