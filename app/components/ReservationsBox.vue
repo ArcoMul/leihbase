@@ -42,7 +42,9 @@ defineProps({
 
 const userStore = useUserStore();
 
-const userReservationIds = userStore.reservations.map((r) => r.id);
+const userReservationIds = computed(() =>
+  userStore.reservations.map((r) => r.id)
+);
 </script>
 
 <style scoped>

@@ -83,6 +83,7 @@ const config = useRuntimeConfig();
 
 const route = useRoute();
 const router = useRouter();
+const userStore = useUserStore();
 const dialog = ref(null);
 const form = ref(null);
 
@@ -157,6 +158,7 @@ async function onSubmit() {
     return;
   }
 
+  await userStore.fetchUserReservations();
   refreshReservations();
 
   dialog.value.hide();

@@ -39,7 +39,7 @@ export default defineNuxtPlugin(async () => {
   }
 
   if (pb.authStore.isValid) {
-    userStore.login();
+    userStore.login({ name: pb.authStore.model.name });
   } else {
     userStore.logout();
   }
