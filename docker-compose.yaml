@@ -11,6 +11,7 @@ services:
     environment:
       NUXT_PUBLIC_API_BASE_URL_SERVER: http://pocketbase:8080
       NUXT_PUBLIC_API_BASE_URL_CLIENT: http://127.0.0.1:8080
+      IS_LEIHBAR: false
     volumes:
       - ./app:/app
       - /app/node_modules

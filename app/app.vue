@@ -1,6 +1,8 @@
 <template>
   <header>
-    <NuxtLink to="/" class="logo">Leihbar<br />Köln</NuxtLink>
+    <NuxtLink to="/" class="logo">
+      <span v-html="appConfig.logoText"></span>
+    </NuxtLink>
     <nav>
       <ul v-if="isAuthenticated">
         <li>
@@ -31,6 +33,8 @@ setBasePath(
   "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/"
 );
 
+const appConfig = useAppConfig();
+console.log("appConfig", appConfig);
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);
 
@@ -52,6 +56,7 @@ header {
   background-color: var(--bg-primary);
   position: sticky;
   top: 0;
+  min-height: 4rem;
 }
 .logo {
   font-family: Arial;

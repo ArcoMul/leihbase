@@ -2,14 +2,14 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      apiBaseUrlServer: '', // NUXT_PUBLIC_API_BASE_URL_SERVER
-      apiBaseUrlClient: '', // NUXT_PUBLIC_API_BASE_URL_CLIENT
-    }
+      apiBaseUrlServer: "", // NUXT_PUBLIC_API_BASE_URL_SERVER
+      apiBaseUrlClient: "", // NUXT_PUBLIC_API_BASE_URL_CLIENT
+    },
   },
   app: {
     head: {
-      title: 'Leihapp'
-    }
+      title: "Leihapp",
+    },
   },
 
   devtools: { enabled: true },
