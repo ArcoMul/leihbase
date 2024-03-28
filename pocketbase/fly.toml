@@ -16,6 +16,11 @@ primary_region = 'ams'
   min_machines_running = 0
   processes = ['app']
 
+[services.concurrency]
+  type = "connections"
+  hard_limit = 60
+  soft_limit = 50
+
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
