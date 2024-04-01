@@ -13,6 +13,9 @@
         <div v-else class="image"></div>
       </div>
       <div class="info-col">
+        <h3>
+          {{ product?.expand?.categories.map((c) => c.name_de).join(", ") }}
+        </h3>
         <div class="info-header">
           <h2>{{ product?.name }}</h2>
           <AvailabilityBadge :available="available" />
@@ -100,7 +103,11 @@ const { data: location } = await useAsyncData("location", async () => {
   return structuredClone(location);
 });
 const { data: product } = await useAsyncData("product", async () => {
-  const product = await pb.collection("products").getOne(route.params.product);
+  const product = await pb.collection("products").getOne(route.params.product, {
+    expand: "categories",
+  });
+
+  console.log(product);
 
   return structuredClone(product);
 });
