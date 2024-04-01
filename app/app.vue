@@ -2,7 +2,7 @@
   <header>
     <NuxtLink to="/" class="logo">Leihbar<br />Köln</NuxtLink>
     <nav>
-      <ul v-if="isAuthenticated">
+      <ul v-if="isValid">
         <li>
           <NuxtLink to="/profile">Profile</NuxtLink>
         </li>
@@ -31,10 +31,11 @@ setBasePath(
   "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/"
 );
 
-const userStore = useUserStore();
-const { isAuthenticated } = storeToRefs(userStore);
+const { isValid } = usePocketbase();
 
-if (isAuthenticated) {
+const userStore = useUserStore();
+
+if (isValid.value) {
   userStore.fetchUserReservations();
 }
 </script>

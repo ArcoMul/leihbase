@@ -5,11 +5,11 @@ export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig();
   const userStore = useUserStore();
 
-  const pb = new PocketBase(
-    process.client
-      ? config.public.apiBaseUrlClient
-      : config.public.apiBaseUrlServer
-  );
+  const url = process.client
+    ? config.public.pocketbase.clientBaseUrl
+    : config.public.pocketbase.serverBaseUrl;
+
+  const pb = new PocketBase(url);
 
   const cookie = useCookie("pb_auth", {
     path: "/",
@@ -45,6 +45,6 @@ export default defineNuxtPlugin(async () => {
   }
 
   return {
-    provide: { pb },
+    provide: { pocketbase: pb },
   };
 });

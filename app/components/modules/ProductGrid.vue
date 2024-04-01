@@ -37,7 +37,7 @@ const props = defineProps({
   },
 });
 
-const nuxtApp = useNuxtApp();
+const { pb } = usePocketbase();
 
 const searchString = ref("");
 
@@ -52,18 +52,15 @@ function getFilter() {
     filter.push("(name ~ {:query} || description ~ {:query})");
     args.query = searchString.value;
   }
-  return nuxtApp.$pb.filter(filter.join(" && "), args);
+  return pb.filter(filter.join(" && "), args);
 }
 
-const { data: page, refresh } = await useAsyncData(
-  "products",
-  async (nuxtApp) => {
-    const page = await nuxtApp.$pb
-      .collection("products")
-      .getList(1, 12, { filter: getFilter() });
-    return structuredClone(page);
-  }
-);
+const { data: page, refresh } = await useAsyncData("products", async () => {
+  const page = await pb
+    .collection("products")
+    .getList(1, 12, { filter: getFilter() });
+  return structuredClone(page);
+});
 
 const products = computed(() => page.value?.items);
 

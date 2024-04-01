@@ -10,27 +10,24 @@
 </template>
 
 <script setup>
-const nuxtApp = useNuxtApp();
+const { pb, isValid, logout } = usePocketbase();
 const router = useRouter();
+
 const user = ref(null);
-const userStore = useUserStore();
 
 useHead({
   title: `Profile | Leihapp`,
 });
 
-if (!nuxtApp.$pb.authStore.isValid) {
-  userStore.logout();
+if (!isValid.value) {
+  logout();
   router.push("/login");
 } else {
-  user.value = await nuxtApp.$pb
-    .collection("users")
-    .getOne(nuxtApp.$pb.authStore.model.id);
+  user.value = await pb.collection("users").getOne(pb.authStore.model.id);
 }
 
 function onLogout() {
-  nuxtApp.$pb.authStore.clear();
-  userStore.logout();
+  logout();
   router.push("/");
 }
 </script>

@@ -7,7 +7,7 @@
       <div class="media-col">
         <img
           v-if="product?.images && product?.images.length > 0"
-          :src="`${config.public.apiBaseUrlClient}/api/files/products/${product.id}/${product.images[0]}`"
+          :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}`"
           class="image"
         />
         <div v-else class="image"></div>
@@ -78,7 +78,7 @@ if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
 }
 
-const nuxtApp = useNuxtApp();
+const { pb } = usePocketbase();
 const config = useRuntimeConfig();
 
 const route = useRoute();
@@ -94,27 +94,23 @@ const start = ref(null);
 const end = ref(null);
 const message = ref(null);
 
-const { data: location } = await useAsyncData("location", async (nuxtApp) => {
-  const location = await nuxtApp.$pb
-    .collection("location")
-    .getOne("1351z318f7ehd9n");
+const { data: location } = await useAsyncData("location", async () => {
+  const location = await pb.collection("location").getOne("1351z318f7ehd9n");
 
   return structuredClone(location);
 });
-const { data: product } = await useAsyncData("product", async (nuxtApp) => {
-  const product = await nuxtApp.$pb
-    .collection("products")
-    .getOne(route.params.product);
+const { data: product } = await useAsyncData("product", async () => {
+  const product = await pb.collection("products").getOne(route.params.product);
 
   return structuredClone(product);
 });
 const { data: reservations, refresh: refreshReservations } = await useAsyncData(
   "reservations",
-  async (nuxtApp) => {
-    const reservations = await nuxtApp.$pb
+  async () => {
+    const reservations = await pb
       .collection("public_reservations")
       .getFullList({
-        filter: nuxtApp.$pb.filter("product = {:product} && end > @now", {
+        filter: pb.filter("product = {:product} && end > @now", {
           product: product.value.id,
         }),
         sort: "start",
@@ -134,7 +130,7 @@ useHead({
 });
 
 function onReserve() {
-  if (!nuxtApp.$pb.authStore.isValid) {
+  if (!pb.authStore.isValid) {
     router.push(
       `/login?return=/l/${location.value.slug}/p/${product.value.id}`
     );
@@ -145,8 +141,8 @@ function onReserve() {
 
 async function onSubmit() {
   try {
-    const reservation = await nuxtApp.$pb.collection("reservations").create({
-      user: nuxtApp.$pb.authStore.model.id,
+    const reservation = await pb.collection("reservations").create({
+      user: pb.authStore.model.id,
       product: product.value.id,
       start: start.value,
       end: end.value,

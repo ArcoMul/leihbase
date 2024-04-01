@@ -2,7 +2,7 @@
   <article>
     <img
       v-if="product.images && product.images.length > 0"
-      :src="`${config.public.apiBaseUrlClient}/api/files/products/${product.id}/${product.images[0]}`"
+      :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}`"
       class="image"
     />
     <div v-else class="image"></div>

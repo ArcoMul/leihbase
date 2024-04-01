@@ -43,10 +43,9 @@ if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/input/input.js");
 }
 
-const nuxtApp = useNuxtApp();
 const router = useRouter();
 const route = useRoute();
-const userStore = useUserStore();
+const { login, isValid } = usePocketbase();
 
 useHead({
   title: `Login | Leihapp`,
@@ -63,16 +62,14 @@ async function onLogin() {
   authenticationError.value = false;
 
   try {
-    await nuxtApp.$pb
-      .collection("users")
-      .authWithPassword(email.value, password.value);
+    await login(email.value, password.value);
   } catch (e) {
     authenticationError.value = true;
     return;
   }
 
-  if (nuxtApp.$pb.authStore.isValid) {
-    userStore.login();
+  if (isValid.value) {
+    // userStore.login();
     router.push(route.query.return ? route.query.return : "/profile");
   }
 }

@@ -20,10 +20,12 @@
 <script setup>
 import ProductGrid from "~/components/modules/ProductGrid.vue";
 
+const { pb } = usePocketbase();
+
 const locationId = "1351z318f7ehd9n";
 
-const { data: location } = await useAsyncData("location", async (nuxtApp) => {
-  const location = await nuxtApp.$pb.collection("location").getOne(locationId);
+const { data: location } = await useAsyncData("location", async () => {
+  const location = await pb.collection("location").getOne(locationId);
 
   return structuredClone(location);
 });
