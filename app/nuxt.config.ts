@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   runtimeConfig: {
-    public: {},
+    public: {
+      pocketbase: {
+        serverBaseUrl: "", // NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL
+        clientBaseUrl: "", // NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL
+      },
+    },
   },
 
   app: {
@@ -11,11 +16,6 @@ export default defineNuxtConfig({
   },
 
   modules: ["@pinia/nuxt", "./modules/pocketbase"],
-
-  pocketbase: {
-    serverBaseUrl: process.env.POCKETBASE_SERVER_BASE_URL,
-    clientBaseUrl: process.env.POCKETBASE_CLIENT_BASE_URL,
-  },
 
   devtools: { enabled: true },
   // plugins: ["~/plugins/pocketbase"],
