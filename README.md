@@ -6,10 +6,13 @@ Web application to manage borrow stores.
 - ✅ User signup/login
 - ✅ User e-mail verification
 - ✅ See product availability
-- ⭕️ Create product reservations
-- ⭕️ Product categories
+- ✅ Create product reservations
+- ✅ Product categories
 - ✅ Textual product search
-- ⭕️ Filter products on categories
+- ✅ Filter products on categories
+- ⭕️ Product pagination
+- ⭕️ Product image gallery
+- ⭕️ Prevent double reservations
 
 ## Tech
 
@@ -31,13 +34,15 @@ deployed to any server where Docker containers can run.
 
 ## E-mail
 
-When starting the service with docker-compose, a [mailhog](https://hub.docker.com/r/mailhog/mailhog)
-container starts as well. In Pocketbase (http://localhost:8080/\_/ > Settings > Mail settings) the
-following SMTP values can be configured:
+When starting the service with docker-compose, a
+[mailhog](https://hub.docker.com/r/mailhog/mailhog) container starts as well. In
+Pocketbase (http://localhost:8080/\_/ > Settings > Mail settings) the following
+SMTP values can be configured:
 
 - SMTP server host: mailhog
 - Port: 1025
 - Username: _\<empty>_
 - Password: _\<empty>_
 
-Any sent e-mail can then be viewed in the mailhog web interface at http://localhost:8025.
+Any sent e-mail can then be viewed in the mailhog web interface at
+http://localhost:8025.
