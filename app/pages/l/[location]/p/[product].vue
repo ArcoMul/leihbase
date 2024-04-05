@@ -1,8 +1,5 @@
 <template>
   <Container max-width centered>
-    <section class="header">
-      <h1>{{ location?.name }}</h1>
-    </section>
     <section class="product">
       <div class="media-col">
         <img
@@ -13,11 +10,24 @@
         <div v-else class="image"></div>
       </div>
       <div class="info-col">
-        <h3>
-          {{ product?.expand?.categories.map((c) => c.name_de).join(", ") }}
-        </h3>
+        <header>
+          <ul class="breadcrumb">
+            <li>
+              <a :href="`/l/${location?.slug}`">{{ location?.name }}</a>
+            </li>
+            <li>
+              <span v-for="category in product?.expand?.categories">
+                <a :href="`/l/${location?.slug}?c=${category.id}`">
+                  {{ category.name_de }}
+                </a>
+              </span>
+            </li>
+          </ul>
+          <h3></h3>
+        </header>
+
         <div class="info-header">
-          <h2>{{ product?.name }}</h2>
+          <h1>{{ product?.name }}</h1>
           <AvailabilityBadge :available="available" />
         </div>
         <div class="description" v-html="product?.description"></div>
@@ -98,7 +108,11 @@ const end = ref(null);
 const message = ref(null);
 
 const { data: location } = await useAsyncData("location", async () => {
-  const location = await pb.collection("location").getOne("1351z318f7ehd9n");
+  const location = await pb
+    .collection("location")
+    .getFirstListItem(
+      pb.filter("slug = {:slug}", { slug: route.params.location })
+    );
 
   return structuredClone(location);
 });
@@ -178,6 +192,26 @@ section {
     line-height: 1.15;
   }
 }
+.breadcrumb {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  margin-bottom: var(--fluid-spacing-4);
+  & > li:not(:last-child)::after {
+    content: ">";
+    margin-left: 0.5rem;
+    color: var(--text-body-light);
+  }
+  li > span:not(:last-child)::after {
+    content: ", ";
+  }
+  a {
+    color: var(--text-body);
+  }
+}
 .product {
   display: flex;
   flex-wrap: wrap;
@@ -199,6 +233,9 @@ section {
       align-items: center;
       gap: 2rem;
       margin-bottom: var(--fluid-spacing-4);
+      h1 {
+        margin: 0;
+      }
     }
     h2,
     h3 {
