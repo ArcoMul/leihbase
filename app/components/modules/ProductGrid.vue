@@ -2,6 +2,22 @@
   <div>
     <header>
       <h2>{{ props.title }}</h2>
+    </header>
+    <div class="filters">
+      <ul class="categories">
+        <li v-for="category in categories">
+          <NuxtLink
+            :href="
+              categoryId === category.id
+                ? `/l/${location.slug}`
+                : `/l/${location.slug}?c=${category.id}`
+            "
+            :class="{ active: categoryId === category.id }"
+          >
+            {{ category.name_de }}
+          </NuxtLink>
+        </li>
+      </ul>
       <div>
         <InputField
           placeholder="Suchen..."
@@ -10,7 +26,7 @@
           class="search-input"
         />
       </div>
-    </header>
+    </div>
     <div class="products">
       <NuxtLink
         v-for="product in products"
@@ -38,6 +54,9 @@ const props = defineProps({
 });
 
 const { pb } = usePocketbase();
+const route = useRoute();
+
+const categoryId = ref(route.query.c);
 
 const searchString = ref("");
 
@@ -48,12 +67,21 @@ function getFilter() {
     filter.push("location = {:location}");
     args.location = props.location.id;
   }
+  if (categoryId.value) {
+    filter.push("categories ~ {:category}");
+    args.category = categoryId.value;
+  }
   if (searchString.value && searchString.value.length > 2) {
     filter.push("(name ~ {:query} || description ~ {:query})");
     args.query = searchString.value;
   }
   return pb.filter(filter.join(" && "), args);
 }
+
+const { data: categories } = await useAsyncData("categories", async () => {
+  const categories = await pb.collection("categories").getFullList();
+  return structuredClone(categories);
+});
 
 const { data: page, refresh } = await useAsyncData("products", async () => {
   const page = await pb
@@ -64,6 +92,14 @@ const { data: page, refresh } = await useAsyncData("products", async () => {
 
 const products = computed(() => page.value?.items);
 
+watch(
+  () => route.query.c,
+  (newId) => {
+    categoryId.value = newId;
+    refresh();
+  }
+);
+
 function onInput() {
   refresh();
 }
@@ -71,6 +107,12 @@ function onInput() {
 
 <style lang="scss" scoped>
 header {
+  margin-bottom: var(--fluid-spacing-4);
+  h2 {
+    margin: 0;
+  }
+}
+.filters {
   display: grid;
   align-items: center;
   gap: 1rem;
@@ -79,13 +121,31 @@ header {
   @media screen and (min-width: 411px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  h2 {
-    margin: 0;
-  }
-
   .search-input {
     width: 100%;
+  }
+}
+.categories {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  gap: 0.5rem;
+  margin: 0;
+  a {
+    display: inline-block;
+    background-color: var(--bg-secondary-light);
+    border: 2px solid transparent;
+    color: var(--text-body);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    &:hover {
+      border: 2px solid var(--bg-primary);
+    }
+    &.active {
+      background-color: var(--bg-primary);
+      color: white;
+    }
   }
 }
 .products {

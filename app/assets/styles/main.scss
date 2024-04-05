@@ -10,6 +10,8 @@
 
   --text-primary: #feddc1;
   --text-secondary: #0d79f2;
+  --text-body: #041a33;
+  --text-body-light: #837e7b;
 
   --font-size-sm: 0.9rem;
 
@@ -34,6 +36,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  color: var(--text-body);
 }
 
 p,
