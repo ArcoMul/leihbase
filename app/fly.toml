@@ -5,8 +5,8 @@ primary_region = 'ams'
   build-target = 'prod'
 
 [env]
-  NUXT_PUBLIC_API_BASE_URL_SERVER = 'https://leihapp-pocketbase.fly.dev'
-  NUXT_PUBLIC_API_BASE_URL_CLIENT = 'https://leihapp-pocketbase.fly.dev'
+  NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL = 'https://leihapp-pocketbase.fly.dev'
+  NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL = 'https://leihapp-pocketbase.fly.dev'
 
 [http_service]
   internal_port = 3000
