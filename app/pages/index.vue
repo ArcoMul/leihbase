@@ -1,4 +1,4 @@
-<template><h1>eh</h1></template>
+<template></template>
 
 <script setup>
 const router = useRouter();
