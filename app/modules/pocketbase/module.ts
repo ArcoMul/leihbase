@@ -17,22 +17,11 @@ export default defineNuxtModule({
     //   nuxt: '^3.0.0'
     // }
   },
-  // Default configuration options for your module, can also be a function returning those
-  defaults: {
-    serverBaseUrl: "http://localhost:8080",
-    clientBaseUrl: "http://localhost:8080",
-  },
   // Shorthand sugar to register Nuxt hooks
   hooks: {},
   // The function holding your module logic, it can be asynchronous
-  setup(moduleOptions, nuxt) {
+  setup() {
     const resolver = createResolver(import.meta.url);
-
-    nuxt.options.runtimeConfig.public.pocketbase = {
-      serverBaseUrl: moduleOptions.serverBaseUrl,
-      clientBaseUrl: moduleOptions.clientBaseUrl,
-      ...(nuxt.options.runtimeConfig?.public?.pocketbase || {}),
-    };
 
     addPlugin(resolver.resolve("plugins/pocketbase"));
 
