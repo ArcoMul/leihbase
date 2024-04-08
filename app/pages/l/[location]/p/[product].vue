@@ -13,13 +13,15 @@
         <header>
           <ul class="breadcrumb">
             <li>
-              <a :href="`/l/${location?.slug}`">{{ location?.name }}</a>
+              <NuxtLink :to="`/l/${location?.slug}`">{{
+                location?.name
+              }}</NuxtLink>
             </li>
             <li>
               <span v-for="category in product?.expand?.categories">
-                <a :href="`/l/${location?.slug}?c=${category.id}`">
+                <NuxtLink :to="`/l/${location?.slug}?c=${category.id}`">
                   {{ category.name_de }}
-                </a>
+                </NuxtLink>
               </span>
             </li>
           </ul>
