@@ -2,11 +2,25 @@
   <Container max-width centered>
     <section class="product">
       <div class="media-col">
-        <img
-          v-if="product?.images && product?.images.length > 0"
-          :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}`"
-          class="image"
-        />
+        <template v-if="product?.images && product?.images.length > 0">
+          <div class="main-image">
+            <img
+              :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[imageIndex]}`"
+            />
+          </div>
+          <div v-if="product.images.length > 1" class="thumbnails">
+            <button
+              v-for="(image, index) in product.images.slice(0, 4)"
+              type="button"
+              :class="index === imageIndex ? 'active' : ''"
+              @click="imageIndex = index"
+            >
+              <img
+                :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${image}`"
+              />
+            </button>
+          </div>
+        </template>
         <div v-else class="image"></div>
       </div>
       <div class="info-col">
@@ -101,6 +115,7 @@ const router = useRouter();
 const userStore = useUserStore();
 const dialog = ref(null);
 const form = ref(null);
+const imageIndex = ref(0);
 
 const showReservationCreationError = ref(false);
 
@@ -223,9 +238,51 @@ section {
   }
   .media-col {
     max-width: 500px;
-    img {
-      border-radius: 5px;
-      overflow: hidden;
+    .main-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: var(--fluid-spacing-4);
+      img {
+        border-radius: 5px;
+        overflow: hidden;
+        max-width: 100%;
+        object-fit: contain;
+      }
+    }
+    .thumbnails {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--fluid-spacing-4);
+      button {
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.15);
+        border: 0;
+        cursor: pointer;
+        padding: 0;
+        aspect-ratio: 1/1;
+        display: flex;
+        img {
+          object-fit: cover;
+          object-position: center;
+          width: 100%;
+        }
+        &.active {
+          box-shadow: 0 0 0 2px white;
+          opacity: 0.8;
+        }
+        &:focus,
+        &:active,
+        &:hover {
+          box-shadow: 0 0 0 2px var(--bg-primary);
+          outline: 0;
+          border: 0;
+        }
+      }
     }
   }
   .info-col {
