@@ -18,6 +18,7 @@
     </nav>
   </header>
   <main>
+    <NuxtLoadingIndicator color="#fff" />
     <NuxtPage />
   </main>
 </template>
