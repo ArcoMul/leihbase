@@ -28,14 +28,13 @@
       </div>
     </div>
     <div class="products">
-      <NuxtLink
+      <ProductCard
         v-for="product in products"
+        :product="product"
         :to="`/l/${props.location.slug}/p/${product.id}`"
         :key="product.id"
         class="product"
-      >
-        <ProductCard :product="product" />
-      </NuxtLink>
+      />
     </div>
   </div>
 </template>

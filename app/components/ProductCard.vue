@@ -1,5 +1,11 @@
 <template>
-  <article>
+  <component
+    :is="component"
+    :href="href"
+    :to="to"
+    :class="{ root: true, clicked }"
+    @click="clicked = true"
+  >
     <img
       v-if="product.images && product.images.length > 0"
       :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}`"
@@ -11,21 +17,46 @@
         <strong>{{ product.name }}</strong>
       </p>
     </div>
-  </article>
+  </component>
 </template>
 
 <script setup>
 const config = useRuntimeConfig();
-const props = defineProps(["product"]);
+const props = defineProps({
+  product: {
+    type: Object,
+  },
+  to: {
+    type: String,
+  },
+  href: {
+    type: String,
+  },
+});
+const clicked = ref(false);
+const component = computed(() => {
+  if (props.to || props.href) return resolveComponent("NuxtLink");
+  return "button";
+});
 </script>
 
 <style lang="scss" scoped>
-article {
+.root {
   background-color: white;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+a.root:hover,
+a.root:active,
+a.root:focus {
+  box-shadow: 0 0 0 2px var(--bg-primary);
+  outline: 0;
+  border: 0;
+}
+a.root.clicked {
+  opacity: 0.8;
 }
 .content {
   padding: clamp(1rem, 4vw, 2rem);
