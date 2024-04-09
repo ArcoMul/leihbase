@@ -11,19 +11,14 @@ ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/po
 RUN unzip /tmp/pb.zip -d /pb/
 
 FROM base AS prod
-
-# uncomment to copy the local pb_migrations dir into the image
+# copy migrations
 COPY ./pb_migrations /pb/pb_migrations
-
-# uncomment to copy the local pb_hooks dir into the image
-# COPY ./pb_hooks /pb/pb_hooks
-
-# start PocketBase
+# copy hooks
+COPY ./pb_hooks /pb/pb_hooks
+# start pocketbase
 CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
 
 FROM base AS dev
-
 EXPOSE 8080
-
-# start PocketBase
+# start pocketbase
 CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
