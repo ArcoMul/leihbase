@@ -82,10 +82,9 @@
               @input="(event) => (message = event.target.value)"
             />
 
-            <sl-alert variant="danger" :open="showReservationCreationError">
+            <sl-alert variant="danger" :open="reservationCreationError">
               <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
-              Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten,
-              bitte versuche es erneut.
+              {{ reservationCreationError }}
             </sl-alert>
 
             <Button type="submit">Jetzt reservieren</Button>
@@ -117,7 +116,7 @@ const dialog = ref(null);
 const form = ref(null);
 const imageIndex = ref(0);
 
-const showReservationCreationError = ref(false);
+const reservationCreationError = ref(null);
 
 // Fields
 const start = ref(null);
@@ -178,6 +177,7 @@ function onReserve() {
 }
 
 async function onSubmit() {
+  reservationCreationError.value = null;
   try {
     const reservation = await pb.collection("reservations").create({
       user: pb.authStore.model.id,
@@ -188,7 +188,13 @@ async function onSubmit() {
     });
   } catch (e) {
     console.log(e.data);
-    showReservationCreationError.value = true;
+    if (e.data.code === 400 && e.data.message === "Overlapping_reservation.") {
+      reservationCreationError.value =
+        "Das Produkt ist für diese Termine bereits reserviert.";
+    } else {
+      reservationCreationError.value =
+        "Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten, bitte versuche es erneut.";
+    }
     return;
   }
 

@@ -10,9 +10,9 @@ Web application to manage borrow stores.
 - ✅ Product categories
 - ✅ Textual product search
 - ✅ Filter products on categories
-- ⭕️ Product pagination
-- ⭕️ Product image gallery
-- ⭕️ Prevent double reservations
+- ⭕️ Product overview pagination
+- ✅ Product image gallery
+- ✅ Prevent double reservations
 
 ## Tech
 
