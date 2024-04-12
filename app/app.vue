@@ -9,7 +9,7 @@
       </ul>
       <ul v-else>
         <li>
-          <NuxtLink to="/signup">Signup</NuxtLink>
+          <NuxtLink to="/signup">Anmelden</NuxtLink>
         </li>
         <li>
           <NuxtLink to="/login">Login</NuxtLink>

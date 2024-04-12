@@ -1,32 +1,28 @@
 <template>
-  <Container max-width centered>
+  <Container width="sm" centered>
     <h1>Log in</h1>
     <p>
-      No account yet? <NuxtLink :to="signupLink">Sign up</NuxtLink> to create an
-      account.
+      Noch kein Konto? <NuxtLink :to="signupLink">Meldest du dich an</NuxtLink>,
+      um ein Konto zu erstellen.
     </p>
     <form @submit.prevent="onLogin">
-      <sl-input
+      <Input
+        label="E-mail"
         type="email"
         id="email"
         name="email"
-        label="E-Mail"
         required
-        @input="(event) => (email = event.target.value)"
-      >
-        <!-- <sl-icon name="envelope" slot="prefix"></sl-icon> -->
-      </sl-input>
-      <sl-input
+        v-model="email"
+      />
+      <Input
+        label="Kernwort"
         type="password"
         id="password"
         name="password"
-        label="Kernwort"
         required
         password-toggle
-        @input="(event) => (password = event.target.value)"
-      >
-        <!-- <sl-icon name="lock" slot="prefix"></sl-icon> -->
-      </sl-input>
+        v-model="password"
+      />
       <p v-if="authenticationError">
         Log in not successful, please review your account details, or
         <NuxtLink to="/signup">sign up</NuxtLink> to create an account
@@ -38,10 +34,7 @@
 
 <script setup>
 import Container from "~/components/Container";
-
-if (process.client) {
-  await import("@shoelace-style/shoelace/dist/components/input/input.js");
-}
+import Input from "~/components/Input";
 
 const router = useRouter();
 const route = useRoute();
@@ -77,7 +70,6 @@ async function onLogin() {
 
 <style lang="scss" scoped>
 form {
-  max-width: var(--max-text-width);
   display: flex;
   flex-direction: column;
   align-items: flex-start;

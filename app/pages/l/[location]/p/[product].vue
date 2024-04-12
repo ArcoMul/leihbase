@@ -1,5 +1,5 @@
 <template>
-  <Container max-width centered>
+  <Container width="lg" centered>
     <section class="product">
       <div class="media-col">
         <template v-if="product?.images && product?.images.length > 0">

@@ -1,5 +1,5 @@
 <template>
-  <Container max-width centered>
+  <Container width="lg" centered>
     <header>
       <AddressBox class="address">{{ location?.address }}</AddressBox>
       <h1>
