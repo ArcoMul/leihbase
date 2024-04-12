@@ -28,6 +28,9 @@
 
   --fluid-spacing-4: clamp(0.5rem, 2vw, 1rem);
   --fluid-spacing-8: clamp(1rem, 4.5vw, 2rem);
+  --fluid-spacing-12: clamp(1.5rem, 6vw, 4rem);
+
+  --container-sm: 600px;
 }
 
 body {

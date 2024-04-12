@@ -1,43 +1,46 @@
 <template>
-  <Container width="sm" centered>
-    <h1>Sign up</h1>
-    <form @submit.prevent="onSignup">
-      <Input
-        label="Name"
-        name="name"
-        id="name"
-        type="text"
-        required
-        v-model="name"
-      />
-      <Input
-        id="email"
-        type="email"
-        label="E-Mail"
-        name="email"
-        required
-        v-model="email"
-      />
-      <Input
-        id="password"
-        type="password"
-        label="Kernwort"
-        name="password"
-        required
-        password-toggle
-        v-model="password"
-      />
-      <sl-alert variant="danger" :open="!!signupError">
-        <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
-        {{ signupError }}
-      </sl-alert>
-      <Button type="submit">Sign up</Button>
-    </form>
+  <Container width="sm" centered no-padding>
+    <Card class="card">
+      <h1>Sign up</h1>
+      <form @submit.prevent="onSignup">
+        <Input
+          label="Name"
+          name="name"
+          id="name"
+          type="text"
+          required
+          v-model="name"
+        />
+        <Input
+          id="email"
+          type="email"
+          label="E-Mail"
+          name="email"
+          required
+          v-model="email"
+        />
+        <Input
+          id="password"
+          type="password"
+          label="Kernwort"
+          name="password"
+          required
+          password-toggle
+          v-model="password"
+        />
+        <sl-alert variant="danger" :open="!!signupError">
+          <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+          {{ signupError }}
+        </sl-alert>
+        <Button type="submit">Sign up</Button>
+      </form>
+    </Card>
   </Container>
 </template>
 
 <script setup>
 import Container from "~/components/Container";
+import Card from "~/components/Card";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
@@ -100,6 +103,15 @@ async function onSignup() {
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 600px) {
+  .card {
+    margin-top: 3rem;
+  }
+  h1 {
+    margin-top: -1rem;
+  }
+}
+
 form {
   max-width: var(--max-text-width);
   display: flex;
