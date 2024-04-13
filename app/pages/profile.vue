@@ -1,11 +1,14 @@
 <template>
-  <Container width="sm" centered>
-    <h1>Profile</h1>
-    <p>
-      Name: {{ user?.name }}<br />
-      E-mail: {{ user?.email }}
-    </p>
-    <Button @click="onLogout">Logout</Button>
+  <Container width="sm" centered no-padding>
+    <Card class="card">
+      <h1>Profile</h1>
+      <p>
+        Name: {{ user?.name }}<br />
+        E-mail: {{ user?.email }} {{ user?.verified ? "" : "(unbestätigt)" }}
+      </p>
+      <hr />
+      <Button @click="onLogout">Logout</Button>
+    </Card>
   </Container>
 </template>
 
@@ -31,3 +34,14 @@ function onLogout() {
   router.push("/");
 }
 </script>
+
+<style lang="scss" scoped>
+@media (min-width: 600px) {
+  .card {
+    margin-top: 3rem;
+  }
+  h1 {
+    margin-top: -1rem;
+  }
+}
+</style>
