@@ -9,8 +9,8 @@
           <NuxtLink
             :href="
               categoryId === category.id
-                ? `/l/${location.slug}`
-                : `/l/${location.slug}?c=${category.id}`
+                ? getUrl({ c: null })
+                : getUrl({ c: category.id })
             "
             :class="{ active: categoryId === category.id }"
           >
@@ -36,10 +36,28 @@
         class="product"
       />
     </div>
+    <section v-if="totalPages > 1" class="page-navigation">
+      <NuxtLink
+        :to="currentPage > 1 ? getUrl({ p: currentPage - 1 }) : null"
+        class="page-button previous-page"
+      >
+        <ArrowLeft class="icon" />
+        Vorherige Seite
+      </NuxtLink>
+      <NuxtLink
+        :to="currentPage < totalPages ? getUrl({ p: currentPage + 1 }) : null"
+        class="page-button next-page"
+      >
+        Nächste Seite
+        <ArrowRight class="icon" />
+      </NuxtLink>
+    </section>
   </div>
 </template>
 
 <script setup>
+import { ArrowRight } from "@iconoir/vue";
+import { ArrowLeft } from "@iconoir/vue";
 import ProductCard from "~/components/ProductCard.vue";
 
 const props = defineProps({
@@ -56,6 +74,7 @@ const { pb } = usePocketbase();
 const route = useRoute();
 
 const categoryId = ref(route.query.c);
+const page = ref(route.query.p);
 
 const searchString = ref("");
 
@@ -82,14 +101,16 @@ const { data: categories } = await useAsyncData("categories", async () => {
   return structuredClone(categories);
 });
 
-const { data: page, refresh } = await useAsyncData("products", async () => {
-  const page = await pb
+const { data, refresh } = await useAsyncData("products", async () => {
+  const data = await pb
     .collection("products")
-    .getList(1, 12, { filter: getFilter() });
-  return structuredClone(page);
+    .getList(page.value, 24, { filter: getFilter() });
+  return structuredClone(data);
 });
 
-const products = computed(() => page.value?.items);
+const products = computed(() => data.value?.items);
+const currentPage = computed(() => data.value?.page);
+const totalPages = computed(() => data.value?.totalPages);
 
 watch(
   () => route.query.c,
@@ -99,8 +120,34 @@ watch(
   }
 );
 
+watch(
+  () => route.query.p,
+  (newPage) => {
+    page.value = newPage;
+    refresh();
+  }
+);
+
 function onInput() {
   refresh();
+}
+
+function getUrl(overwrites) {
+  const url = new URL(`https://example.com/l/${props.location.slug}`);
+  if (categoryId.value) {
+    url.searchParams.set("c", categoryId.value);
+  }
+  if (page.value && page.value > 1) {
+    url.searchParams.set("p", page.value);
+  }
+  Object.keys(overwrites).forEach((key) => {
+    if (overwrites[key] !== null) {
+      url.searchParams.set(key, overwrites[key]);
+    } else {
+      url.searchParams.delete(key);
+    }
+  });
+  return url.pathname + url.search;
 }
 </script>
 
@@ -152,7 +199,7 @@ header {
   display: grid;
   grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
   gap: 1rem;
-
+  margin-bottom: var(--fluid-spacing-8);
   .product {
     display: flex;
     color: black;
@@ -166,5 +213,27 @@ header {
   @media screen and (min-width: 767px) {
     --columns: 4;
   }
+}
+.page-navigation {
+  display: flex;
+  justify-content: space-between;
+  .page-button {
+    background-color: var(--bg-primary);
+    color: var(--fg-primary);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .page-button:not([href]) {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+.icon {
+  display: inline;
+  width: 1em;
+  height: 1em;
 }
 </style>
