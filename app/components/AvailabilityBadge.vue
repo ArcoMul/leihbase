@@ -1,12 +1,6 @@
 <template>
   <span class="availability-badge">
-    <span
-      :class="{
-        circle: true,
-        available: props.available,
-        'not-available': !props.available,
-      }"
-    ></span>
+    <AvailabilityCircle :available="available" />
     <span v-if="props.available">Gerade verfügbar</span>
     <span v-else>Gerade nicht verfügbar</span>
   </span>
@@ -30,17 +24,5 @@ const props = defineProps({
   align-items: center;
   gap: 0.666rem;
   font-size: var(--font-size-sm);
-}
-.circle {
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: grey;
-  border-radius: 0.5rem;
-}
-.circle.available {
-  background-color: #2fb10a;
-}
-.circle.not-available {
-  background-color: red;
 }
 </style>

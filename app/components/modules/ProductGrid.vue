@@ -103,7 +103,7 @@ const { data: categories } = await useAsyncData("categories", async () => {
 
 const { data, refresh } = await useAsyncData("products", async () => {
   const data = await pb
-    .collection("products")
+    .collection("public_products")
     .getList(page.value, 24, { filter: getFilter() });
   return structuredClone(data);
 });

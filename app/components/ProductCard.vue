@@ -14,6 +14,14 @@
     <div v-else class="image"></div>
     <div class="content">
       <p class="name">
+        <sl-tooltip content="Gerade nicht verfügbar" distance="0">
+          <span class="availability-circle">
+            <AvailabilityCircle
+              v-if="!!product.ongoingReservation"
+              :available="!product.ongoingReservation"
+            />
+          </span>
+        </sl-tooltip>
         <strong>{{ product.name }}</strong>
       </p>
     </div>
@@ -21,6 +29,10 @@
 </template>
 
 <script setup>
+if (process.client) {
+  await import("@shoelace-style/shoelace/dist/components/tooltip/tooltip.js");
+}
+
 const config = useRuntimeConfig();
 const props = defineProps({
   product: {
@@ -69,5 +81,11 @@ a.root.clicked {
 }
 .name {
   margin-bottom: 0;
+}
+.availability-circle {
+  display: inline-block;
+  margin-left: -0.25rem;
+  margin-right: 0.25rem;
+  padding: 0 0.25rem;
 }
 </style>

@@ -133,9 +133,11 @@ const { data: location } = await useAsyncData("location", async () => {
   return structuredClone(location);
 });
 const { data: product } = await useAsyncData("product", async () => {
-  const product = await pb.collection("products").getOne(route.params.product, {
-    expand: "categories",
-  });
+  const product = await pb
+    .collection("public_products")
+    .getOne(route.params.product, {
+      expand: "categories",
+    });
 
   console.log(product);
 
