@@ -1,18 +1,19 @@
 # Leihapp
 
-Web application to manage borrow stores.
+Web application to manage Leihladen, also known as Borrow Stores.
+
+Features:
 
 - ✅ Manage multiple borrow locations
 - ✅ User signup/login
 - ✅ User e-mail verification
 - ✅ See product availability
 - ✅ Create product reservations
+- ✅ Prevents double product reservations
 - ✅ Product categories
-- ✅ Textual product search
 - ✅ Filter products on categories
-- ⭕️ Product overview pagination
-- ✅ Product image gallery
-- ✅ Prevent double reservations
+- ✅ Textual product search
+- ✅ Multiple images per product
 
 ## Tech
 
