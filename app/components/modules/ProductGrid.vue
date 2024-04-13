@@ -45,7 +45,7 @@ import ProductCard from "~/components/ProductCard.vue";
 const props = defineProps({
   title: {
     type: String,
-    default: "Gegenstanden",
+    default: "Gegenständen",
   },
   location: {
     type: Object,
