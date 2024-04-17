@@ -5,7 +5,7 @@
         <template v-if="product?.images && product?.images.length > 0">
           <div class="main-image">
             <img
-              :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[imageIndex]}`"
+              :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[imageIndex]}${thumbs.lg}`"
             />
           </div>
           <div v-if="product.images.length > 1" class="thumbnails">
@@ -16,7 +16,7 @@
               @click="imageIndex = index"
             >
               <img
-                :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${image}`"
+                :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${image}${thumbs.sm}`"
               />
             </button>
           </div>
@@ -108,6 +108,9 @@ if (process.client) {
 
 const { pb } = usePocketbase();
 const config = useRuntimeConfig();
+const {
+  product: { thumbs },
+} = useAppConfig();
 
 const route = useRoute();
 const router = useRouter();
