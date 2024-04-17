@@ -17,3 +17,35 @@ onRecordBeforeCreateRequest((e) => {
     throw new BadRequestError("Overlapping_reservation.");
   }
 }, "reservations");
+
+onRecordAfterCreateRequest((e) => {
+  const { record } = e;
+  const to = $os.getenv("NOTIFY_EMAIL");
+  if (!to) return;
+  $app.dao().expandRecord(record, ["product", "user"], null);
+  const productName = record.expandedOne("product").get("name");
+  const productId = record.expandedOne("product").get("id");
+  const userName = record.expandedOne("user").get("name");
+  const userEmail = record.expandedOne("user").get("email");
+  const message = new MailerMessage({
+    from: {
+      address: $app.settings().meta.senderAddress,
+      name: $app.settings().meta.senderName,
+    },
+    to: [{ address: to }],
+    subject: `Neue reservierung von ${userName}: ${productName}`,
+    html: `Hi,<br>
+    <br>
+    Neue Reservierung:<br>
+    <br>
+    Gegenstand:<br>
+    <a href="${
+      $app.settings().meta.appUrl
+    }/link/product/${productId}">${productName}</a><br>
+    <br>
+    Person:<br>
+    ${userName} (${userEmail})<br>
+    `,
+  });
+  $app.newMailClient().send(message);
+}, "reservations");

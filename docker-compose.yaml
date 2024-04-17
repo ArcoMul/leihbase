@@ -24,6 +24,8 @@ services:
       target: dev
     ports:
       - "8080:8080"
+    environment:
+      NOTIFY_EMAIL: example@example.com
     volumes:
       - ./pocketbase/pb_migrations:/pb/pb_migrations
       - ./pocketbase/pb_hooks:/pb/pb_hooks
