@@ -8,7 +8,7 @@
   >
     <img
       v-if="product.images && product.images.length > 0"
-      :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}`"
+      :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}${thumbs.sm}`"
       class="image"
     />
     <div v-else class="image"></div>
@@ -33,7 +33,6 @@ if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/tooltip/tooltip.js");
 }
 
-const config = useRuntimeConfig();
 const props = defineProps({
   product: {
     type: Object,
@@ -45,7 +44,17 @@ const props = defineProps({
     type: String,
   },
 });
+
+const {
+  product: { thumbs },
+} = useAppConfig();
+
+const config = useRuntimeConfig();
+
+// Has been clicked (for active state)
 const clicked = ref(false);
+
+// Pick component type based on to/href property
 const component = computed(() => {
   if (props.to || props.href) return resolveComponent("NuxtLink");
   return "button";
