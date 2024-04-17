@@ -251,10 +251,10 @@ section {
     max-width: 500px;
     .main-image {
       width: 100%;
-      aspect-ratio: 4/3;
       display: flex;
       justify-content: center;
       align-items: center;
+      background-size: 9.9px 9.9px;
       margin-bottom: var(--fluid-spacing-4);
       img {
         border-radius: 5px;
