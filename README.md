@@ -1,6 +1,8 @@
-# Leihapp
+# Leihbase
 
 Web application to manage Leihladen, also known as Borrow Stores.
+
+## Features
 
 Features:
 
@@ -10,15 +12,13 @@ Features:
 - ✅ See product availability
 - ✅ Create product reservations
 - ✅ Prevents double product reservations
-- ✅ Product categories
 - ✅ Filter products on categories
 - ✅ Textual product search
-- ✅ Multiple images per product
 
 ## Tech
 
 - Back-end and API using [PocketBase](https://pocketbase.io/)
-- Front-end with server-side rendering based on [NuxtJS](https://nuxt.com/)
+- Front-end with server-side rendering using [NuxtJS](https://nuxt.com/)
 
 ## Setup
 
