@@ -27,7 +27,7 @@
         />
       </div>
     </div>
-    <div class="products">
+    <div v-if="products && products.length > 0" class="products">
       <ProductCard
         v-for="product in products"
         :product="product"
@@ -36,6 +36,7 @@
         class="product"
       />
     </div>
+    <div v-else><p>Keine Produkte gefunden 🙃</p></div>
     <section v-if="totalPages > 1" class="page-navigation">
       <NuxtLink
         :to="currentPage > 1 ? getUrl({ p: currentPage - 1 }) : null"
