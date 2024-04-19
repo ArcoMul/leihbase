@@ -17,8 +17,7 @@ Features:
 
 ## Screenshots
 
-<img src="./screenshots/screenshot-index-page.png" width="49%" />
-<img src="./screenshots/screenshot-product-page.png" width="49%" />
+<img src="./screenshots/screenshot-index-page.png" width="49%" /><img src="./screenshots/screenshot-product-page.png" width="49%" />
 
 ## Tech
 
