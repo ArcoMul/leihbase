@@ -6,8 +6,9 @@
         {{ location?.name || "No location found" }}
       </h1>
       <div
+        v-if="location?.description"
         class="description"
-        v-html="location?.description || 'No location found'"
+        v-html="location.description"
       ></div>
     </header>
     <hr />
