@@ -15,6 +15,11 @@ Features:
 - ✅ Filter products on categories
 - ✅ Textual product search
 
+## Screenshots
+
+<img src="./screenshots/screenshot-index-page.png" width="49%" />
+<img src="./screenshots/screenshot-product-page.png" width="49%" />
+
 ## Tech
 
 - Back-end and API using [PocketBase](https://pocketbase.io/)
