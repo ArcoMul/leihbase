@@ -1,12 +1,12 @@
-app = 'leihapp'
+app = 'leihbar-leihbase'
 primary_region = 'ams'
 
 [build]
   build-target = 'prod'
 
 [env]
-  NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL = 'http://leihapp-pocketbase.flycast'
-  NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL = 'https://leihapp-pocketbase.fly.dev'
+  NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL = 'https://leihbar-pocketbase.fly.dev'
+  NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL = 'http://leihbar-pocketbase.flycast'
 
 [http_service]
   internal_port = 3000

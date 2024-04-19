@@ -1,4 +1,4 @@
-app = 'leihapp-pocketbase'
+app = 'leihbar-pocketbase'
 primary_region = 'ams'
 
 [build]
@@ -10,16 +10,20 @@ primary_region = 'ams'
 
 [http_service]
   internal_port = 8080
-  force_https = false
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
 
-[services.concurrency]
-  type = "connections"
-  hard_limit = 60
-  soft_limit = 50
+[[services]]
+  protocol = ''
+  internal_port = 0
+  ports = []
+
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 60
+    soft_limit = 50
 
 [[vm]]
   memory = '1gb'
