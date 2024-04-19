@@ -1,4 +1,15 @@
 onRecordBeforeCreateRequest((e) => {
+  var startOfDay = new Date();
+  startOfDay.setUTCHours(0, 0, 0, 0);
+  const start = new Date(e.record.get("start").string().split(" ")[0]);
+  const end = new Date(e.record.get("end").string().split(" ")[0]);
+  if (start < startOfDay) {
+    throw new BadRequestError("Start_before_today.");
+  }
+  if (end < startOfDay) {
+    throw new BadRequestError("End_before_today.");
+  }
+
   const records = $app
     .dao()
     .findRecordsByFilter(

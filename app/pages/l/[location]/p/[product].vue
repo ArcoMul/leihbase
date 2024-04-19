@@ -196,6 +196,15 @@ async function onSubmit() {
     if (e.data.code === 400 && e.data.message === "Overlapping_reservation.") {
       reservationCreationError.value =
         "Das Produkt ist für diese Termine bereits reserviert.";
+    } else if (
+      e.data.code === 400 &&
+      e.data.message === "Start_before_today."
+    ) {
+      reservationCreationError.value =
+        "Der Beginn der Reservierung liegt vor dem heutigen Tag.";
+    } else if (e.data.code === 400 && e.data.message === "End_before_today.") {
+      reservationCreationError.value =
+        "Das Enddatum der Reservierung liegt vor dem heutigen Tag";
     } else {
       reservationCreationError.value =
         "Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten, bitte versuche es erneut.";
