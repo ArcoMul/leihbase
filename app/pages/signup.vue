@@ -58,7 +58,7 @@ const { pb, login } = usePocketbase();
 const signupError = ref(null);
 
 useHead({
-  title: `${t("pageTitle")} | Leihbase`,
+  title: `${t("page_title")} | Leihbase`,
 });
 
 const name = ref(null);
@@ -92,9 +92,9 @@ async function onSignup() {
   } catch (e) {
     console.log(e);
     if (e.data?.data?.password?.code === "validation_length_out_of_range") {
-      signupError.value = t("errors.passwordLength");
+      signupError.value = t("errors.password_length");
     } else if (e.data?.data?.email?.code === "validation_invalid_email") {
-      signupError.value = t("errors.invalidEmail");
+      signupError.value = t("errors.invalid_email");
     } else {
       signupError.value = t("errors.general");
     }
@@ -130,28 +130,28 @@ sl-alert::part(base) {
 <i18n lang="json">
 {
   "en": {
-    "pageTitle": "Sign up",
+    "page_title": "Sign up",
     "title": "Sign up",
     "name": "Name",
     "email": "E-Mail",
     "password": "Password",
     "submit": "Sign up",
     "errors": {
-      "passwordLength": "Password should be at least 8 characters long.",
-      "invalidEmail": "E-mail address is invalid or already in use.",
+      "password_ength": "Password should be at least 8 characters long.",
+      "invalid_mail": "E-mail address is invalid or already in use.",
       "general": "An error occured during sign up, please try again."
     }
   },
   "de": {
-    "pageTitle": "Registrieren",
+    "page_title": "Registrieren",
     "title": "Registrieren",
     "name": "Name",
     "email": "E-Mail",
     "password": "Kennwort",
     "submit": "Registrieren",
     "errors": {
-      "passwordLength": "Dein Passwort sollte mindestens 8 Zeichen lang sein.",
-      "invalidEmail": "Die E-Mail ist ungültig oder wird bereits verwendet.",
+      "password_length": "Dein Passwort sollte mindestens 8 Zeichen lang sein.",
+      "invalid_email": "Die E-Mail ist ungültig oder wird bereits verwendet.",
       "general": "Beim Erstellen deiner Account ist ein Fehler aufgetreten, bitte versuche es erneut."
     }
   }

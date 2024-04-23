@@ -2,8 +2,8 @@
   <Container width="sm" centered no-padding>
     <Card class="card">
       <h1>{{ t("title") }}</h1>
-      <i18n-t keypath="text" tag="p" for="signup-text">
-        <NuxtLink :to="signupLink">{{ t("signup-text") }}</NuxtLink>
+      <i18n-t keypath="text" tag="p" for="signup_text">
+        <NuxtLink :to="signupLink">{{ t("signup_text") }}</NuxtLink>
       </i18n-t>
       <form @submit.prevent="onLogin">
         <Input
@@ -26,8 +26,8 @@
 
         <sl-alert variant="danger" :open="!!authenticationError">
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
-          <i18n-t keypath="error" tag="span" for="error-signup">
-            <NuxtLink :to="signupLink">{{ t("error-signup") }}</NuxtLink>
+          <i18n-t keypath="error" tag="span" for="error_signup">
+            <NuxtLink :to="signupLink">{{ t("error_signup") }}</NuxtLink>
           </i18n-t>
         </sl-alert>
         <Button type="submit">{{ t("submit") }}</Button>
@@ -109,19 +109,19 @@ form sl-input {
   "en": {
     "title": "Log in",
     "text": "No account yet? {0}, to create an account.",
-    "signup-text": "Sign up",
+    "signup_text": "Sign up",
     "password": "Password",
     "error": "Log in not successful, please review your account details, or {0} to create an account",
-    "error-signup": "sign up",
+    "error_signup": "sign up",
     "submit": "Log in"
   },
   "de": {
     "title": "Einloggen",
     "text": "Noch kein Konto? {0}, um ein Konto zu erstellen.",
-    "signup-text": "Registriere dich",
+    "signup_text": "Registriere dich",
     "password": "Kennwort",
     "error": "Einloggen nicht erfolgreich, bitte überprüfe deine Kontodaten, oder {0} um ein Konto zu erstellen",
-    "error-signup": "melde dich an",
+    "error_signup": "melde dich an",
     "submit": "Einloggen"
   }
 }
