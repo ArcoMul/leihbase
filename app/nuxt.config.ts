@@ -15,10 +15,9 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@pinia/nuxt", "./modules/pocketbase"],
+  modules: ["@pinia/nuxt", "./modules/pocketbase", "@nuxtjs/i18n"],
 
   devtools: { enabled: true },
-  // plugins: ["~/plugins/pocketbase"],
 
   vue: {
     compilerOptions: {
