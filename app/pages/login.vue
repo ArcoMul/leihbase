@@ -118,7 +118,7 @@ form sl-input {
   "de": {
     "title": "Einloggen",
     "text": "Noch kein Konto? {0}, um ein Konto zu erstellen.",
-    "signup-text": "Meldest du dich an",
+    "signup-text": "Registriere dich",
     "password": "Kennwort",
     "error": "Einloggen nicht erfolgreich, bitte überprüfe deine Kontodaten, oder {0} um ein Konto zu erstellen",
     "error-signup": "melde dich an",
