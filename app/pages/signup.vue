@@ -1,11 +1,11 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1>{{ $t("signup.title") }}</h1>
+      <h1>{{ t("title") }}</h1>
       <form @submit.prevent="onSignup">
         <Input
           name="name"
-          :label="$t('signup.name')"
+          :label="t('name')"
           id="name"
           type="text"
           required
@@ -14,7 +14,7 @@
         <Input
           id="email"
           type="email"
-          :label="$t('signup.email')"
+          :label="t('email')"
           name="email"
           required
           v-model="email"
@@ -22,7 +22,7 @@
         <Input
           id="password"
           type="password"
-          :label="$t('signup.password')"
+          :label="t('password')"
           name="password"
           required
           password-toggle
@@ -32,7 +32,7 @@
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button type="submit">{{ $t("signup.submit") }}</Button>
+        <Button type="submit">{{ t("submit") }}</Button>
       </form>
     </Card>
   </Container>
@@ -47,7 +47,9 @@ if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/icon/icon.js");
 }
 
-const { t } = useI18n();
+const { t } = useI18n({
+  useScope: "local",
+});
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
@@ -56,7 +58,7 @@ const { pb, login } = usePocketbase();
 const signupError = ref(null);
 
 useHead({
-  title: `${t("signup.pageTitle")} | Leihbase`,
+  title: `${t("pageTitle")} | Leihbase`,
 });
 
 const name = ref(null);
@@ -90,11 +92,11 @@ async function onSignup() {
   } catch (e) {
     console.log(e);
     if (e.data?.data?.password?.code === "validation_length_out_of_range") {
-      signupError.value = t("signup.errors.passwordLength");
+      signupError.value = t("errors.passwordLength");
     } else if (e.data?.data?.email?.code === "validation_invalid_email") {
-      signupError.value = t("signup.errors.invalidEmail");
+      signupError.value = t("errors.invalidEmail");
     } else {
-      signupError.value = t("signup.errors.general");
+      signupError.value = t("errors.general");
     }
   }
 }
@@ -124,3 +126,34 @@ sl-alert::part(base) {
   width: 100%;
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "pageTitle": "Sign up",
+    "title": "Sign up",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Password",
+    "submit": "Sign up",
+    "errors": {
+      "passwordLength": "Password should be at least 8 characters long.",
+      "invalidEmail": "E-mail address is invalid or already in use.",
+      "general": "An error occured during sign up, please try again."
+    }
+  },
+  "de": {
+    "pageTitle": "Registrieren",
+    "title": "Registrieren",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Kennwort",
+    "submit": "Registrieren",
+    "errors": {
+      "passwordLength": "Dein Passwort sollte mindestens 8 Zeichen lang sein.",
+      "invalidEmail": "Die E-Mail ist ungültig oder wird bereits verwendet.",
+      "general": "Beim Erstellen deiner Account ist ein Fehler aufgetreten, bitte versuche es erneut."
+    }
+  }
+}
+</i18n>
