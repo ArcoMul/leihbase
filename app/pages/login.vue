@@ -1,12 +1,10 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1>Log in</h1>
-      <p>
-        Noch kein Konto?
-        <NuxtLink :to="signupLink">Meldest du dich an</NuxtLink>, um ein Konto
-        zu erstellen.
-      </p>
+      <h1>{{ t("title") }}</h1>
+      <i18n-t keypath="text" tag="p" for="signup-text">
+        <NuxtLink :to="signupLink">{{ t("signup-text") }}</NuxtLink>
+      </i18n-t>
       <form @submit.prevent="onLogin">
         <Input
           label="E-mail"
@@ -17,7 +15,7 @@
           v-model="email"
         />
         <Input
-          label="Kernwort"
+          :label="t('password')"
           type="password"
           id="password"
           name="password"
@@ -25,11 +23,14 @@
           password-toggle
           v-model="password"
         />
-        <p v-if="authenticationError">
-          Log in not successful, please review your account details, or
-          <NuxtLink to="/signup">sign up</NuxtLink> to create an account
-        </p>
-        <Button type="submit">Log in</Button>
+
+        <sl-alert variant="danger" :open="!!authenticationError">
+          <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+          <i18n-t keypath="error" tag="span" for="error-signup">
+            <NuxtLink :to="signupLink">{{ t("error-signup") }}</NuxtLink>
+          </i18n-t>
+        </sl-alert>
+        <Button type="submit">{{ t("submit") }}</Button>
       </form>
     </Card>
   </Container>
@@ -39,6 +40,15 @@
 import Container from "~/components/Container";
 import Input from "~/components/Input";
 import Card from "~/components/Card";
+
+if (process.client) {
+  await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
+  await import("@shoelace-style/shoelace/dist/components/icon/icon.js");
+}
+
+const { t } = useI18n({
+  useScope: "local",
+});
 
 const router = useRouter();
 const route = useRoute();
@@ -53,7 +63,9 @@ const password = ref(null);
 
 const authenticationError = ref(false);
 
-const signupLink = `/signup?return=${route.query.return}`;
+const signupLink = route.query.return
+  ? `/signup?return=${route.query.return}`
+  : "/signup";
 
 async function onLogin() {
   authenticationError.value = false;
@@ -91,3 +103,26 @@ form sl-input {
   width: 100%;
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "title": "Log in",
+    "text": "No account yet? {0}, to create an account.",
+    "signup-text": "Sign up",
+    "password": "Password",
+    "error": "Log in not successful, please review your account details, or {0} to create an account",
+    "error-signup": "sign up",
+    "submit": "Log in"
+  },
+  "de": {
+    "title": "Einloggen",
+    "text": "Noch kein Konto? {0}, um ein Konto zu erstellen.",
+    "signup-text": "Meldest du dich an",
+    "password": "Kennwort",
+    "error": "Einloggen nicht erfolgreich, bitte überprüfe deine Kontodaten, oder {0} um ein Konto zu erstellen",
+    "error-signup": "melde dich an",
+    "submit": "Einloggen"
+  }
+}
+</i18n>
