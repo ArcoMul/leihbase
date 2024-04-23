@@ -8,8 +8,8 @@
         :class="{ active: isToday(reservation) }"
       >
         <span class="timespan">
-          {{ formatDate(reservation.start, DateTime.DATE_MED) }}
-          - {{ formatDate(reservation.end, DateTime.DATE_MED) }}
+          {{ formatDate(reservation.start, DateTime.DATE_MED, locale) }}
+          - {{ formatDate(reservation.end, DateTime.DATE_MED, locale) }}
         </span>
         <span
           v-if="userReservationIds.includes(reservation.id)"
@@ -28,6 +28,8 @@ import { DateTime } from "luxon";
 import { formatDate } from "~/lib/date";
 import { User as UserIcon } from "@iconoir/vue";
 import { isToday } from "~/lib/reservation";
+
+const { locale } = useI18n();
 
 defineProps({
   title: {
