@@ -27,9 +27,9 @@
         <header>
           <ul class="breadcrumb">
             <li>
-              <NuxtLink :to="`/l/${location?.slug}`">{{
-                location?.name
-              }}</NuxtLink>
+              <NuxtLink :to="`/l/${location?.slug}`">
+                {{ location?.name }}
+              </NuxtLink>
             </li>
             <li>
               <span v-for="category in product?.expand?.categories">
@@ -46,7 +46,16 @@
           <h1>{{ product?.name }}</h1>
           <AvailabilityBadge :available="available" />
         </div>
-        <div class="description" v-html="product?.description"></div>
+
+        <div class="info-body">
+          <!-- Description -->
+          <div v-html="product?.description"></div>
+          <!-- Deposit -->
+          <p v-if="product?.deposit">
+            <strong>Pfand</strong><br />
+            {{ formatCurrency(product.deposit, locale) }}
+          </p>
+        </div>
 
         <hr />
 
@@ -98,6 +107,7 @@
 <script setup>
 import Button from "~/components/Button.vue";
 import { isToday } from "~/lib/reservation";
+import { formatCurrency } from "~/lib/currency";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/dialog/dialog.js");
@@ -115,6 +125,8 @@ const {
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
+const { locale } = useI18n();
+
 const dialog = ref(null);
 const form = ref(null);
 const imageIndex = ref(0);
@@ -320,7 +332,7 @@ section {
     h3 {
       margin: 0;
     }
-    .description {
+    .info-body {
       margin-bottom: 2rem;
     }
     .upcoming-reservations {
