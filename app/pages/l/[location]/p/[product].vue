@@ -52,7 +52,8 @@
           <div v-html="product?.description"></div>
           <!-- Deposit -->
           <p v-if="product?.deposit">
-            <strong>Pfand</strong><br />
+            <strong>{{ t("deposit") }}</strong>
+            <br />
             {{ formatCurrency(product.deposit, locale) }}
           </p>
         </div>
@@ -60,34 +61,39 @@
         <hr />
 
         <ReservationsBox
-          title="Reservierungen"
+          :title="t('reservations')"
           :reservations="reservations"
           class="upcoming-reservations"
         />
 
-        <Button @click="onReserve">Reservieren</Button>
+        <Button @click="onReserve">{{ t("reserve_button") }}</Button>
 
         <sl-dialog ref="dialog" label="Reservieren" class="dialog-overview">
+          <!-- Opening hours -->
+          <p v-if="location?.opening_hours" class="opening-hours">
+            <span>{{ t("opening_hours_of") }} {{ location?.name }}:</span><br />
+            <span v-html="openingHoursToString(location?.opening_hours)"></span>
+          </p>
           <form ref="form" @submit.prevent="onSubmit">
             <sl-input
               type="text"
-              label="Gegenstand"
+              :label="t('product')"
               :value="product.name"
               disabled
               readonly
             />
             <sl-input
               type="date"
-              label="Start"
+              :label="t('start')"
               @input="(event) => (start = event.target.value)"
             />
             <sl-input
               type="date"
-              label="End"
+              :label="t('end')"
               @input="(event) => (end = event.target.value)"
             />
             <sl-textarea
-              label="Nachricht"
+              :label="t('message')"
               @input="(event) => (message = event.target.value)"
             />
 
@@ -96,7 +102,7 @@
               {{ reservationCreationError }}
             </sl-alert>
 
-            <Button type="submit">Jetzt reservieren</Button>
+            <Button type="submit">{{ t("reserve_now_button") }}</Button>
           </form>
         </sl-dialog>
       </div>
@@ -108,6 +114,7 @@
 import Button from "~/components/Button.vue";
 import { isToday } from "~/lib/reservation";
 import { formatCurrency } from "~/lib/currency";
+import { openingHoursToString } from "~/lib/openingHours";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/dialog/dialog.js");
@@ -116,6 +123,9 @@ if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
 }
 
+const { t } = useI18n({
+  useScope: "local",
+});
 const { pb } = usePocketbase();
 const config = useRuntimeConfig();
 const {
@@ -206,20 +216,16 @@ async function onSubmit() {
   } catch (e) {
     console.log(e.data);
     if (e.data.code === 400 && e.data.message === "Overlapping_reservation.") {
-      reservationCreationError.value =
-        "Das Produkt ist für diese Termine bereits reserviert.";
+      reservationCreationError.value = t("errors.overlapping_reservation");
     } else if (
       e.data.code === 400 &&
       e.data.message === "Start_before_today."
     ) {
-      reservationCreationError.value =
-        "Der Beginn der Reservierung liegt vor dem heutigen Tag.";
+      reservationCreationError.value = t("errors.start_before_today");
     } else if (e.data.code === 400 && e.data.message === "End_before_today.") {
-      reservationCreationError.value =
-        "Das Enddatum der Reservierung liegt vor dem heutigen Tag";
+      reservationCreationError.value = t("errors.end_before_today");
     } else {
-      reservationCreationError.value =
-        "Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten, bitte versuche es erneut.";
+      reservationCreationError.value = t("errors.general");
     }
     return;
   }
@@ -363,4 +369,47 @@ sl-dialog form {
   flex-direction: column;
   gap: 1rem;
 }
+.opening-hours {
+  padding: 1rem;
+  background-color: #ecf4fe;
+}
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "deposit": "Deposit",
+    "reservations": "Reservations",
+    "reserve_button": "Reserve",
+    "opening_hours_of": "Opening hours of",
+    "product": "Product",
+    "start": "Start",
+    "end": "End",
+    "message": "Message",
+    "reserve_now_button": "Reserve now",
+    "errors": {
+      "overlapping_reservation": "The product is already reserved for this period.",
+      "start_before_today": "The start of the reservation is before today.",
+      "end_before_today": "The end of the reservation is before today.",
+      "general": "Something went wrong while creating the reservation, please try again."
+    }
+  },
+  "de": {
+    "deposit": "Pfand",
+    "reservations": "Reservierungen",
+    "reserve_button": "Reservieren",
+    "opening_hours_of": "Öffnungszeiten von",
+    "product": "Gegenstand",
+    "start": "Start",
+    "end": "Ende",
+    "message": "Nachricht",
+    "reserve_now_button": "Jetzt reservieren",
+    "errors": {
+      "overlapping_reservation": "Das Produkt ist für diese Termine bereits reserviert.",
+      "start_before_today": "Der Beginn der Reservierung liegt vor dem heutigen Tag.",
+      "end_before_today": "Das Enddatum der Reservierung liegt vor dem heutigen Tag",
+      "general": "Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten, bitte versuche es erneut."
+    }
+  }
+}
+</i18n>
