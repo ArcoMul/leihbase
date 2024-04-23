@@ -1,11 +1,11 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1>Sign up</h1>
+      <h1>{{ $t("signup.title") }}</h1>
       <form @submit.prevent="onSignup">
         <Input
-          label="Name"
           name="name"
+          :label="$t('signup.name')"
           id="name"
           type="text"
           required
@@ -14,7 +14,7 @@
         <Input
           id="email"
           type="email"
-          label="E-Mail"
+          :label="$t('signup.email')"
           name="email"
           required
           v-model="email"
@@ -22,7 +22,7 @@
         <Input
           id="password"
           type="password"
-          label="Kernwort"
+          :label="$t('signup.password')"
           name="password"
           required
           password-toggle
@@ -32,7 +32,7 @@
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button type="submit">Sign up</Button>
+        <Button type="submit">{{ $t("signup.submit") }}</Button>
       </form>
     </Card>
   </Container>
@@ -41,6 +41,8 @@
 <script setup>
 import Container from "~/components/Container";
 import Card from "~/components/Card";
+
+const { t } = useI18n();
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
@@ -55,7 +57,7 @@ const { pb, login } = usePocketbase();
 const signupError = ref(null);
 
 useHead({
-  title: `Signup | Leihapp`,
+  title: `${t("signup.pageTitle")} | Leihbase`,
 });
 
 const name = ref(null);
@@ -89,14 +91,11 @@ async function onSignup() {
   } catch (e) {
     console.log(e);
     if (e.data?.data?.password?.code === "validation_length_out_of_range") {
-      signupError.value =
-        "Dein Passwort sollte mindestens 8 Zeichen lang sein.";
+      signupError.value = t("signup.errors.passwordLength");
     } else if (e.data?.data?.email?.code === "validation_invalid_email") {
-      signupError.value =
-        "Die E-Mail ist ungültig oder wird bereits verwendet.";
+      signupError.value = t("signup.errors.invalidEmail");
     } else {
-      signupError.value =
-        "Beim Erstellen deiner Account ist ein Fehler aufgetreten, bitte versuche es erneut.";
+      signupError.value = t("signup.errors.general");
     }
   }
 }
