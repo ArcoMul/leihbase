@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <h2>{{ props.title }}</h2>
+      <h2>{{ props.title || t("products") }}</h2>
     </header>
     <div class="filters">
       <ul class="categories">
@@ -20,7 +20,7 @@
       </ul>
       <div>
         <InputField
-          placeholder="Suchen..."
+          :placeholder="`${t('search')}...`"
           @input="onInput"
           v-model="searchString"
           class="search-input"
@@ -36,20 +36,22 @@
         class="product"
       />
     </div>
-    <div v-else><p>Keine Produkte gefunden 🙃</p></div>
+    <div v-else>
+      <p>{{ t("no_products_found") }} 🙃</p>
+    </div>
     <section v-if="totalPages > 1" class="page-navigation">
       <NuxtLink
         :to="currentPage > 1 ? getUrl({ p: currentPage - 1 }) : null"
         class="page-button previous-page"
       >
         <ArrowLeft class="icon" />
-        Vorherige Seite
+        {{ t("previous_page") }}
       </NuxtLink>
       <NuxtLink
         :to="currentPage < totalPages ? getUrl({ p: currentPage + 1 }) : null"
         class="page-button next-page"
       >
-        Nächste Seite
+        {{ t("next_page") }}
         <ArrowRight class="icon" />
       </NuxtLink>
     </section>
@@ -61,10 +63,13 @@ import { ArrowRight } from "@iconoir/vue";
 import { ArrowLeft } from "@iconoir/vue";
 import ProductCard from "~/components/ProductCard.vue";
 
+const { t } = useI18n({
+  useScope: "local",
+});
+
 const props = defineProps({
   title: {
     type: String,
-    default: "Gegenständen",
   },
   location: {
     type: Object,
@@ -238,3 +243,22 @@ header {
   height: 1em;
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "products": "Products",
+    "search": "Search",
+    "previous_page": "Previous page",
+    "next_page": "Next page",
+    "no_products_found": "No products found"
+  },
+  "de": {
+    "products": "Gegenstände",
+    "search": "Suchen",
+    "previous_page": "Vorherige Seite",
+    "next_page": "Nächste Seite",
+    "no_products_found": "Keine Produkte gefunden"
+  }
+}
+</i18n>
