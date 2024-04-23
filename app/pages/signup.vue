@@ -42,13 +42,12 @@
 import Container from "~/components/Container";
 import Card from "~/components/Card";
 
-const { t } = useI18n();
-
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
   await import("@shoelace-style/shoelace/dist/components/icon/icon.js");
 }
 
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
