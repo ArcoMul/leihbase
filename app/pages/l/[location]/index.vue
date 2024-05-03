@@ -1,7 +1,29 @@
 <template>
   <Container width="lg" centered>
     <header>
-      <AddressBox class="address">{{ location?.address }}</AddressBox>
+      <section class="links">
+        <Button
+          variant="secondary"
+          :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            location?.address
+          )}`"
+          target="_blank"
+          rounded
+        >
+          <template #prefix><MapPin /></template>
+          {{ location?.address }}
+        </Button>
+        <Button
+          v-for="link in location?.links"
+          variant="secondary"
+          :href="link.link"
+          target="_blank"
+          rounded
+        >
+          <template #prefix><Internet /></template>
+          {{ link.text }}
+        </Button>
+      </section>
       <h1>
         {{ location?.name || t("no_location_found") }}
       </h1>
@@ -27,6 +49,7 @@
 <script setup>
 import ProductGrid from "~/components/modules/ProductGrid.vue";
 import { openingHoursToString } from "~/lib/openingHours";
+import { MapPin, Internet } from "@iconoir/vue";
 
 const { t } = useI18n({
   useScope: "local",
@@ -54,8 +77,11 @@ section {
   margin-bottom: var(--fluid-spacing-8);
 }
 header {
-  .address {
+  .links {
+    display: flex;
+    gap: var(--fluid-spacing-4);
     margin-bottom: var(--fluid-spacing-8);
+    flex-wrap: wrap;
   }
   h1 {
     margin-bottom: var(--fluid-spacing-8);
