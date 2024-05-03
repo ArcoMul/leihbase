@@ -351,16 +351,16 @@ section {
   }
   @media screen and (min-width: $breakpoint-sm) {
     .media-col {
-      width: calc(40% - (var(--fluid-spacing-8) / 2));
+      width: calc(40% - (var(--fluid-spacing-8) / 2) - 1px);
     }
     .info-col {
-      width: calc(60% - (var(--fluid-spacing-8) / 2));
+      width: calc(60% - (var(--fluid-spacing-8) / 2) - 1px);
     }
   }
   @media screen and (min-width: $breakpoint-md) {
     .media-col,
     .info-col {
-      width: calc(50% - (var(--fluid-spacing-8) / 2));
+      width: calc(50% - (var(--fluid-spacing-8) / 2) - 1px);
     }
   }
 }
