@@ -13,12 +13,12 @@
       {{ t("privacy_policy") }}
     </NuxtLink>
     <span>—</span>
-    <NuxtLink v-if="leihbase?.contact_link" :to="leihbase?.contact_link">
-      {{ t("contact") }}
-    </NuxtLink>
-    <span v-if="leihbase?.contact_link">—</span>
     <NuxtLink target="_blank" href="https://github.com/ArcoMul/leihbase">
       Open-Source
+    </NuxtLink>
+    <span v-if="leihbase?.contact_link">—</span>
+    <NuxtLink v-if="leihbase?.contact_link" :to="leihbase?.contact_link">
+      {{ t("contact") }}
     </NuxtLink>
   </footer>
 </template>
