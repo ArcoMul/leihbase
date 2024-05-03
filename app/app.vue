@@ -23,9 +23,11 @@
   </main>
   <footer>
     <NuxtLink to="/imprint">{{ t("imprint") }}</NuxtLink>
-    —
-    <NuxtLink to="mailto:hallo@leihbar-koeln.de">{{ t("contact") }}</NuxtLink>
-    —
+    <span>—</span>
+    <NuxtLink v-if="leihbase?.contact_link" :to="leihbase?.contact_link">
+      {{ t("contact") }}
+    </NuxtLink>
+    <span v-if="leihbase?.contact_link">—</span>
     <NuxtLink target="_blank" href="https://github.com/ArcoMul/leihbase">
       Open-Source
     </NuxtLink>
@@ -44,12 +46,16 @@ setBasePath(
 const { t } = useI18n({
   useScope: "local",
 });
-const { isValid } = usePocketbase();
+const { pb, isValid } = usePocketbase();
 const userStore = useUserStore();
 
 if (isValid.value) {
   userStore.fetchUserReservations();
 }
+
+const [leihbase] = await pb
+  .collection("leihbase")
+  .getFullList({ fields: ["contact_link"] });
 </script>
 
 <style lang="scss">
