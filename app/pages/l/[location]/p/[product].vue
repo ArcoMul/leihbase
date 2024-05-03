@@ -405,7 +405,7 @@ sl-dialog form {
     "message": "Nachricht",
     "reserve_now_button": "Jetzt reservieren",
     "errors": {
-      "overlapping_reservation": "Das Produkt ist für diese Termine bereits reserviert.",
+      "overlapping_reservation": "Das Produkt ist für diesen Termin bereits reserviert.",
       "start_before_today": "Der Beginn der Reservierung liegt vor dem heutigen Tag.",
       "end_before_today": "Das Enddatum der Reservierung liegt vor dem heutigen Tag",
       "general": "Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten, bitte versuche es erneut."

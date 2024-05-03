@@ -4,15 +4,15 @@
     <nav>
       <ul v-if="isValid">
         <li>
-          <NuxtLink to="/profile">Profile</NuxtLink>
+          <NuxtLink to="/profile">{{ t("profile") }}</NuxtLink>
         </li>
       </ul>
       <ul v-else>
         <li>
-          <NuxtLink to="/signup">Anmelden</NuxtLink>
+          <NuxtLink to="/signup">{{ t("sign_up") }}</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/login">Login</NuxtLink>
+          <NuxtLink to="/login">{{ t("login") }}</NuxtLink>
         </li>
       </ul>
     </nav>
@@ -32,8 +32,10 @@ setBasePath(
   "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/"
 );
 
+const { t } = useI18n({
+  useScope: "local",
+});
 const { isValid } = usePocketbase();
-
 const userStore = useUserStore();
 
 if (isValid.value) {
@@ -78,3 +80,18 @@ nav ul a {
   color: var(--text-primary);
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "sign_up": "Sign up",
+    "login": "Login",
+    "profile": "Profile"
+  },
+  "de": {
+    "sign_up": "Registrieren",
+    "login": "Einloggen",
+    "profiel": "Profil"
+  }
+}
+</i18n>
