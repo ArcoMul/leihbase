@@ -1,5 +1,5 @@
 <template>
-  <section v-if="leihbase.imprint" v-html="leihbase.imprint"></section>
+  <section v-if="leihbase?.imprint" v-html="leihbase?.imprint"></section>
   <section v-else>{{ t("no_imprint_defined") }}</section>
 </template>
 

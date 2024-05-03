@@ -28,6 +28,27 @@
           password-toggle
           v-model="password"
         />
+        <fieldset class="checkbox">
+          <input
+            id="terms-and-conditions"
+            type="checkbox"
+            name="terms_and_conditions"
+            value="yes"
+            required
+          />
+          <label for="terms-and-conditions">
+            <i18n-t
+              keypath="terms_and_conditions"
+              tag="span"
+              for="terms_and_conditions_link"
+            >
+              <NuxtLink target="_blank" to="/privacy-policy">{{
+                t("terms_and_conditions_link")
+              }}</NuxtLink>
+            </i18n-t>
+          </label>
+        </fieldset>
+
         <sl-alert variant="danger" :open="!!signupError">
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
@@ -127,6 +148,15 @@ form sl-input {
 sl-alert::part(base) {
   width: 100%;
 }
+
+fieldset.checkbox {
+  border: 0;
+  padding: 0.5rem 0;
+  width: 100%;
+  input {
+    margin-right: 0.5rem;
+  }
+}
 </style>
 
 <i18n lang="json">
@@ -138,6 +168,9 @@ sl-alert::part(base) {
     "email": "E-Mail",
     "password": "Password",
     "submit": "Sign up",
+    "terms_and_conditions": "I have read and agree to the {0}, for the use of my personal data.",
+    "terms_and_conditions_link": "data protection information",
+
     "errors": {
       "password_ength": "Password should be at least 8 characters long.",
       "invalid_mail": "E-mail address is invalid or already in use.",
@@ -150,6 +183,8 @@ sl-alert::part(base) {
     "name": "Name",
     "email": "E-Mail",
     "password": "Kennwort",
+    "terms_and_conditions": "Ich habe die {0}, zur Nutzung meiner personenbezogenen Daten gelesen und bin damit einverstanden.",
+    "terms_and_conditions_link": "Datenschutzhinweisen",
     "submit": "Registrieren",
     "errors": {
       "password_length": "Dein Passwort sollte mindestens 8 Zeichen lang sein.",

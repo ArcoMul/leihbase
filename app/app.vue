@@ -5,7 +5,13 @@
     <NuxtPage />
   </main>
   <footer>
-    <NuxtLink to="/imprint">{{ t("imprint") }}</NuxtLink>
+    <NuxtLink to="/imprint">
+      {{ t("imprint") }}
+    </NuxtLink>
+    <span>—</span>
+    <NuxtLink to="/privacy-policy">
+      {{ t("privacy_policy") }}
+    </NuxtLink>
     <span>—</span>
     <NuxtLink v-if="leihbase?.contact_link" :to="leihbase?.contact_link">
       {{ t("contact") }}
@@ -75,12 +81,14 @@ footer {
 <i18n lang="json">
 {
   "en": {
-    "contact": "Contact",
-    "imprint": "Imprint"
+    "imprint": "Imprint",
+    "privacy_policy": "Privacy Policy",
+    "contact": "Contact"
   },
   "de": {
-    "contact": "Kontakt",
-    "imprint": "Impressum"
+    "imprint": "Impressum",
+    "privacy_policy": "Datenschutz",
+    "contact": "Kontakt"
   }
 }
 </i18n>
