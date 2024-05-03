@@ -53,13 +53,13 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  background-color: var(--bg-primary);
+  background-color: var(--header-bg-color);
   position: sticky;
   top: 0;
 }
 .logo {
   font-family: Arial;
-  color: #ffdbc4;
+  color: var(--header-text-color);
   font-size: 1.5rem;
   font-weight: bold;
   line-height: 1;
@@ -77,7 +77,12 @@ nav ul a {
   text-decoration: none;
   text-transform: uppercase;
   font-weight: bold;
-  color: var(--text-primary);
+  color: var(--header-text-color);
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 2px;
+  }
 }
 </style>
 

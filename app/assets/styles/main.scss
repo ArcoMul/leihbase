@@ -1,6 +1,8 @@
 @import "reset.scss";
 
 :root {
+  --color-blue: #0d79f2;
+
   --bg-primary: #0d79f2;
   --bg-secondary: #feddc1;
   --bg-secondary-light: #fef3ea;
@@ -14,6 +16,8 @@
   --text-body-light: #837e7b;
 
   --font-size-sm: 0.9rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
 
   --max-text-width: 40rem;
 
@@ -31,10 +35,25 @@
   --fluid-spacing-12: clamp(1.5rem, 6vw, 4rem);
 
   --container-sm: 600px;
+
+  /**
+   * Theme
+   */
+
+  --body-bg-color: #feddc1;
+  --body-text-color: #041a33;
+
+  --header-bg-color: #0d79f2;
+  --header-text-color: #fee8d5;
+
+  --button-primary-bg-color: #0d79f2;
+  --button-primary-text-color: #fee8d5;
+  --button-secondary-bg-color: #fef3ea;
+  --button-secondary-text-color: var(--body-text-color);
 }
 
 body {
-  background-color: var(--bg-secondary);
+  background-color: var(--body-bg-color);
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;

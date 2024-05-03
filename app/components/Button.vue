@@ -34,19 +34,20 @@ const component = computed(() => {
 a,
 button {
   display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 0;
   cursor: pointer;
-  align-items: center;
   text-decoration: none;
 
   &.variant-primary {
-    background-color: var(--bg-primary);
+    background-color: var(--button-primary-bg-color);
     border: 0;
-    color: var(--fg-primary);
+    color: var(--button-primary-text-color);
   }
   &.variant-secondary {
-    background-color: var(--bg-secondary-light);
-    color: var(--text-body);
+    background-color: var(--button-secondary-bg-color);
+    color: var(--button-secondary-text-color);
     border: 2px solid transparent;
     &:hover {
       border: 2px solid var(--bg-primary);
@@ -63,7 +64,7 @@ button {
   }
   &.size-lg {
     padding: 0.666rem 1.5rem;
-    font-size: 1.125rem;
+    font-size: var(--font-size-lg);
   }
 
   &.rounded {
