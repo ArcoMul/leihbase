@@ -103,7 +103,9 @@ async function onSignup() {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 600px) {
+@import "~/assets/styles/_breakpoints.scss";
+
+@media (min-width: $breakpoint-sm) {
   .card {
     margin-top: 3rem;
   }

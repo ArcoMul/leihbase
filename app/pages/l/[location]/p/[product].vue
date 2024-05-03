@@ -240,6 +240,8 @@ async function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/_breakpoints.scss";
+
 section {
   margin-bottom: var(--fluid-spacing-8);
 }
@@ -347,7 +349,7 @@ section {
       margin-bottom: 2rem;
     }
   }
-  @media screen and (min-width: 512px) {
+  @media screen and (min-width: $breakpoint-sm) {
     .media-col {
       width: calc(40% - (var(--fluid-spacing-8) / 2));
     }
@@ -355,7 +357,7 @@ section {
       width: calc(60% - (var(--fluid-spacing-8) / 2));
     }
   }
-  @media screen and (min-width: 767px) {
+  @media screen and (min-width: $breakpoint-md) {
     .media-col,
     .info-col {
       width: calc(50% - (var(--fluid-spacing-8) / 2));

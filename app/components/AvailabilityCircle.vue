@@ -21,6 +21,7 @@ defineProps({
   height: 0.5rem;
   background-color: grey;
   border-radius: 0.5rem;
+  flex-shrink: 0;
 }
 .circle.available {
   background-color: #2fb10a;

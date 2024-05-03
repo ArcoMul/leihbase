@@ -158,6 +158,8 @@ function getUrl(overwrites) {
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/_breakpoints.scss";
+
 header {
   margin-bottom: var(--fluid-spacing-4);
   h2 {
@@ -170,7 +172,7 @@ header {
   gap: 1rem;
   margin-bottom: 1.5rem;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  @media screen and (min-width: 411px) {
+  @media screen and (min-width: $breakpoint-sm) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .search-input {
@@ -213,10 +215,10 @@ header {
     width: 100%;
   }
 
-  @media screen and (min-width: 524px) {
+  @media screen and (min-width: $breakpoint-sm) {
     --columns: 3;
   }
-  @media screen and (min-width: 767px) {
+  @media screen and (min-width: $breakpoint-md) {
     --columns: 4;
   }
 }

@@ -1,22 +1,5 @@
 <template>
-  <header>
-    <NuxtLink to="/" class="logo">Leihbar<br />Köln</NuxtLink>
-    <nav>
-      <ul v-if="isValid">
-        <li>
-          <NuxtLink to="/profile">{{ t("profile") }}</NuxtLink>
-        </li>
-      </ul>
-      <ul v-else>
-        <li>
-          <NuxtLink to="/signup">{{ t("sign_up") }}</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/login">{{ t("login") }}</NuxtLink>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <NavBar></NavBar>
   <main>
     <NuxtLoadingIndicator color="#fff" />
     <NuxtPage />
@@ -38,6 +21,7 @@
 import "@shoelace-style/shoelace/dist/themes/light.css";
 import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path.js";
 import { useUserStore } from "./stores/user";
+import NavBar from "./components/modules/NavBar.vue";
 
 setBasePath(
   "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/"
@@ -63,43 +47,6 @@ const [leihbase] = await pb
 </style>
 
 <style lang="scss" scoped>
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0rem 1rem;
-  height: 4rem;
-  background-color: var(--header-bg-color);
-  position: sticky;
-  top: 0;
-  .logo {
-    font-family: Arial;
-    color: var(--header-text-color);
-    font-size: 1.5rem;
-    font-weight: bold;
-    line-height: 1;
-    text-decoration: none;
-  }
-  nav ul {
-    display: flex;
-    list-style: none;
-    gap: 1rem;
-    margin: 0;
-    margin-right: 1rem;
-    padding: 0;
-  }
-  nav ul a {
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: var(--header-text-color);
-    &:hover {
-      text-decoration: underline;
-      text-underline-offset: 5px;
-      text-decoration-thickness: 2px;
-    }
-  }
-}
 main {
   min-height: calc(100vh - 8rem);
 }
@@ -128,16 +75,10 @@ footer {
 <i18n lang="json">
 {
   "en": {
-    "sign_up": "Sign up",
-    "login": "Login",
-    "profile": "Profile",
     "contact": "Contact",
     "imprint": "Imprint"
   },
   "de": {
-    "sign_up": "Registrieren",
-    "login": "Einloggen",
-    "profiel": "Profil",
     "contact": "Kontakt",
     "imprint": "Impressum"
   }

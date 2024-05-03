@@ -54,7 +54,7 @@ section.width-md {
   max-width: 900px;
 }
 section.width-sm {
-  max-width: var(--container-sm);
+  max-width: var(--fluid-container-sm);
 }
 section.centered {
   margin: 0 auto;

@@ -1,4 +1,5 @@
-@import "reset.scss";
+@import "_reset.scss";
+@import "_breakpoints.scss";
 
 :root {
   --color-blue: #0d79f2;
@@ -34,7 +35,14 @@
   --fluid-spacing-8: clamp(1rem, 4.5vw, 2rem);
   --fluid-spacing-12: clamp(1.5rem, 6vw, 4rem);
 
-  --container-sm: 600px;
+  --container-sm: #{$breakpoint-sm};
+  --container-md: #{$breakpoint-md};
+
+  --fluid-container-sm: clamp(
+    #{$breakpoint-sm},
+    calc(#{$breakpoint-sm * 0.93} + 7vw),
+    #{$breakpoint-sm * 2}
+  );
 
   /**
    * Theme
@@ -128,4 +136,25 @@ hr {
 // they have been loaded
 :not(:defined) {
   visibility: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (min-width: $breakpoint-sm) {
+  .sm\:hidden {
+    display: none;
+  }
+  .sm\:block {
+    display: block;
+  }
+}
+@media screen and (min-width: $breakpoint-md) {
+  .md\:hidden {
+    display: none;
+  }
+  .md\:block {
+    display: block;
+  }
 }

@@ -85,7 +85,9 @@ async function onLogin() {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 600px) {
+@import "~/assets/styles/_breakpoints.scss";
+
+@media (min-width: $breakpoint-md) {
   .card {
     margin-top: 3rem;
   }
