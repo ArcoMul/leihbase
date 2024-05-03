@@ -30,7 +30,7 @@
             <NuxtLink :to="signupLink">{{ t("error_signup") }}</NuxtLink>
           </i18n-t>
         </sl-alert>
-        <Button type="submit">{{ t("submit") }}</Button>
+        <Button size="lg" type="submit">{{ t("submit") }}</Button>
       </form>
     </Card>
   </Container>

@@ -66,7 +66,7 @@
           class="upcoming-reservations"
         />
 
-        <Button @click="onReserve">{{ t("reserve_button") }}</Button>
+        <Button size="lg" @click="onReserve">{{ t("reserve_button") }}</Button>
 
         <sl-dialog ref="dialog" label="Reservieren" class="dialog-overview">
           <!-- Opening hours -->
@@ -102,7 +102,9 @@
               {{ reservationCreationError }}
             </sl-alert>
 
-            <Button type="submit">{{ t("reserve_now_button") }}</Button>
+            <Button size="lg" type="submit">
+              {{ t("reserve_now_button") }}
+            </Button>
           </form>
         </sl-dialog>
       </div>

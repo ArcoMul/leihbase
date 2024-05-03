@@ -32,7 +32,7 @@
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button type="submit">{{ t("submit") }}</Button>
+        <Button size="lg" type="submit">{{ t("submit") }}</Button>
       </form>
     </Card>
   </Container>
