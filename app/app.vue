@@ -21,6 +21,15 @@
     <NuxtLoadingIndicator color="#fff" />
     <NuxtPage />
   </main>
+  <footer>
+    <NuxtLink to="/imprint">{{ t("imprint") }}</NuxtLink>
+    —
+    <NuxtLink to="mailto:hallo@leihbar-koeln.de">{{ t("contact") }}</NuxtLink>
+    —
+    <NuxtLink target="_blank" href="https://github.com/ArcoMul/leihbase">
+      Open-Source
+    </NuxtLink>
+  </footer>
 </template>
 
 <script setup>
@@ -52,36 +61,60 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0rem 1rem;
+  height: 4rem;
   background-color: var(--header-bg-color);
   position: sticky;
   top: 0;
+  .logo {
+    font-family: Arial;
+    color: var(--header-text-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+    text-decoration: none;
+  }
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    margin: 0;
+    margin-right: 1rem;
+    padding: 0;
+  }
+  nav ul a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--header-text-color);
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      text-decoration-thickness: 2px;
+    }
+  }
 }
-.logo {
-  font-family: Arial;
-  color: var(--header-text-color);
-  font-size: 1.5rem;
-  font-weight: bold;
-  line-height: 1;
-  text-decoration: none;
+main {
+  min-height: calc(100vh - 8rem);
 }
-nav ul {
+footer {
   display: flex;
-  list-style: none;
-  gap: 1rem;
-  margin: 0;
-  margin-right: 1rem;
-  padding: 0;
-}
-nav ul a {
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: var(--header-text-color);
-  &:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 2px;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem 1rem;
+  height: 4rem;
+  background-color: var(--footer-bg-color);
+  color: var(--footer-text-color);
+  text-align: center;
+  a {
+    color: var(--footer-text-color);
+    padding: 0 1rem;
+    line-height: 1;
+    text-underline-offset: 0.25rem;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>
@@ -91,12 +124,16 @@ nav ul a {
   "en": {
     "sign_up": "Sign up",
     "login": "Login",
-    "profile": "Profile"
+    "profile": "Profile",
+    "contact": "Contact",
+    "imprint": "Imprint"
   },
   "de": {
     "sign_up": "Registrieren",
     "login": "Einloggen",
-    "profiel": "Profil"
+    "profiel": "Profil",
+    "contact": "Kontakt",
+    "imprint": "Impressum"
   }
 }
 </i18n>
