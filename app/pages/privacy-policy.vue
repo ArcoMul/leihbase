@@ -12,9 +12,10 @@ const { t } = useI18n({
 });
 const { pb } = usePocketbase();
 
+// TODO: remove/fix $autoCancel
 const [leihbase] = await pb
   .collection("leihbase")
-  .getFullList({ fields: ["privacy_policy"] });
+  .getFullList({ fields: ["privacy_policy"], $autoCancel: false });
 </script>
 
 <style scoped>

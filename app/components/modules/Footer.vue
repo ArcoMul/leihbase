@@ -24,9 +24,10 @@ const { t } = useI18n({
 });
 const { pb } = usePocketbase();
 
+// TODO: remove/fix $autoCancel
 const [leihbase] = await pb
   .collection("leihbase")
-  .getFullList({ fields: ["contact_link"] });
+  .getFullList({ fields: ["contact_link"], $autoCancel: false });
 </script>
 
 <style lang="scss" scoped>
