@@ -241,6 +241,9 @@ header {
     opacity: 0.5;
     pointer-events: none;
   }
+  .next-page {
+    margin-left: auto;
+  }
 }
 .icon {
   display: inline;
