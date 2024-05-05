@@ -80,6 +80,7 @@ a.root:focus {
 }
 a.root.clicked {
   opacity: 0.8;
+  z-index: -1;
 }
 .image {
   aspect-ratio: 4/3;
