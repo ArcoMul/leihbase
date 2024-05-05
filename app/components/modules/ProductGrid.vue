@@ -104,7 +104,9 @@ function getFilter() {
 }
 
 const { data: categories } = await useAsyncData("categories", async () => {
-  const categories = await pb.collection("categories").getFullList();
+  const categories = await pb
+    .collection("categories")
+    .getFullList({ sort: "name_de" });
   return structuredClone(categories);
 });
 
