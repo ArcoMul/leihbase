@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "Leihapp",
+      link: [{ rel: "stylesheet", href: "/fonts/inter/inter.css" }],
     },
   },
 

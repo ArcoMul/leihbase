@@ -42,10 +42,9 @@ header {
   position: sticky;
   top: 0;
   .logo {
-    font-family: Arial;
     color: var(--header-text-color);
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: var(--font-weight-black);
     line-height: 1;
     text-decoration: none;
   }
@@ -98,7 +97,7 @@ header {
   "de": {
     "sign_up": "Registrieren",
     "login": "Einloggen",
-    "profiel": "Profil"
+    "profile": "Profil"
   }
 }
 </i18n>

@@ -2,6 +2,17 @@
 @import "_breakpoints.scss";
 
 :root {
+  font-family: "Inter", sans-serif;
+  font-weight: var(--font-weight-normal);
+}
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: "InterVariable", sans-serif;
+    font-optical-sizing: auto;
+  }
+}
+
+:root {
   --color-blue: #0d79f2;
 
   --bg-primary: #0d79f2;
@@ -45,6 +56,10 @@
   /**
    * Theme
    */
+  --font-weight-normal: 300;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
 
   --body-bg-color: #feddc1;
   --body-text-color: #082342; // #041a33;
@@ -65,7 +80,6 @@
 body {
   background-color: var(--body-bg-color);
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   color: var(--body-text-color);
@@ -91,8 +105,16 @@ p,
 ul {
   margin-bottom: 1rem;
 }
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-bold);
+}
 h1 {
   font-size: 2rem;
+  font-weight: var(--font-weight-black);
 }
 h2 {
   font-size: 1.5rem;
@@ -100,6 +122,10 @@ h2 {
 
 a {
   color: var(--text-secondary);
+}
+
+strong {
+  font-weight: var(--font-weight-bold);
 }
 
 img,

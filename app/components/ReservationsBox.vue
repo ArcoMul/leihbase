@@ -66,7 +66,7 @@ li {
   align-items: center;
 }
 li.active {
-  font-weight: bold;
+  font-weight: var(--font-weight-semibold);
 }
 li.active::before {
   content: "";

@@ -102,7 +102,7 @@ a.root.clicked {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 }
 .availability-circle {
   margin-right: 0.5rem;

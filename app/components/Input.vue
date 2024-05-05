@@ -30,7 +30,7 @@ fieldset {
 }
 label {
   display: block;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   margin-bottom: var(--spacing-2);
 }
 input {

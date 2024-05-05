@@ -44,6 +44,7 @@ button {
     background-color: var(--button-primary-bg-color);
     border: 0;
     color: var(--button-primary-text-color);
+    font-weight: var(--font-weight-semibold);
   }
   &.variant-secondary {
     background-color: var(--button-secondary-bg-color);
