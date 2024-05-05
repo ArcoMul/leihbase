@@ -41,6 +41,7 @@
     </div>
     <section v-if="totalPages > 1" class="page-navigation">
       <NuxtLink
+        v-if="currentPage > 1"
         :to="currentPage > 1 ? getUrl({ p: currentPage - 1 }) : null"
         class="page-button previous-page"
       >
@@ -110,7 +111,7 @@ const { data: categories } = await useAsyncData("categories", async () => {
 const { data, refresh } = await useAsyncData("products", async () => {
   const data = await pb
     .collection("public_products")
-    .getList(page.value, 24, { filter: getFilter() });
+    .getList(page.value, 24, { filter: getFilter(), sort: "name" });
   return structuredClone(data);
 });
 
