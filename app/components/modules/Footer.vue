@@ -35,8 +35,9 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0rem 1rem;
-  height: 4rem;
+  flex-wrap: wrap;
+  padding: 1rem 1rem;
+  min-height: 4rem;
   background-color: var(--footer-bg-color);
   color: var(--footer-text-color);
   text-align: center;
