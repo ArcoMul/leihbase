@@ -262,13 +262,13 @@ section {
   & > li:not(:last-child)::after {
     content: ">";
     margin-left: 0.5rem;
-    color: var(--text-body-light);
+    color: var(--body-text-color-light);
   }
   li > span:not(:last-child)::after {
     content: ", ";
   }
   a {
-    color: var(--text-body);
+    color: var(--body-text-color);
   }
 }
 .product {

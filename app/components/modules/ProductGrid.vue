@@ -190,7 +190,7 @@ header {
     display: inline-block;
     background-color: var(--bg-secondary-light);
     border: 2px solid transparent;
-    color: var(--text-body);
+    color: var(--body-text-color);
     text-decoration: none;
     padding: 0.5rem 1rem;
     &:hover {
@@ -210,7 +210,7 @@ header {
   margin-bottom: var(--fluid-spacing-8);
   .product {
     display: flex;
-    color: black;
+    color: var(--body-text-color);
     text-decoration: none;
     width: 100%;
   }

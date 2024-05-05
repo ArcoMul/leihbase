@@ -13,8 +13,6 @@
 
   --text-primary: #feddc1;
   --text-secondary: #0d79f2;
-  --text-body: #041a33;
-  --text-body-light: #837e7b;
 
   --font-size-sm: 0.9rem;
   --font-size-md: 1rem;
@@ -49,7 +47,8 @@
    */
 
   --body-bg-color: #feddc1;
-  --body-text-color: #041a33;
+  --body-text-color: #082342; // #041a33;
+  --body-text-color-light: #837e7b;
 
   --header-bg-color: #0d79f2;
   --header-text-color: #fee8d5;
@@ -69,7 +68,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  color: var(--text-body);
+  color: var(--body-text-color);
 }
 
 p,

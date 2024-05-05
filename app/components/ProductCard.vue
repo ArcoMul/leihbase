@@ -13,16 +13,18 @@
     />
     <div v-else class="image"></div>
     <div class="content">
+      <sl-tooltip
+        v-if="!!product.ongoingReservation"
+        content="Gerade nicht verfügbar"
+        distance="0"
+      >
+        <AvailabilityCircle
+          class="availability-circle"
+          :available="!product.ongoingReservation"
+        />
+      </sl-tooltip>
       <p class="name">
-        <sl-tooltip content="Gerade nicht verfügbar" distance="0">
-          <span class="availability-circle">
-            <AvailabilityCircle
-              v-if="!!product.ongoingReservation"
-              :available="!product.ongoingReservation"
-            />
-          </span>
-        </sl-tooltip>
-        <strong>{{ product.name }}</strong>
+        {{ product.name }}
       </p>
     </div>
   </component>
@@ -79,22 +81,30 @@ a.root:focus {
 a.root.clicked {
   opacity: 0.8;
 }
-.content {
-  padding: clamp(1rem, 4vw, 2rem);
-}
 .image {
   aspect-ratio: 4/3;
   object-fit: cover;
   background-color: #eee;
   border-radius: 5px 5px 0 0;
 }
+.content {
+  padding: clamp(1rem, 4vw, 2rem);
+  display: flex;
+  width: 100%;
+  align-items: center;
+  max-height: 1rem;
+  line-height: 1;
+}
 .name {
+  max-height: 1rem;
   margin-bottom: 0;
+  line-height: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: bold;
 }
 .availability-circle {
-  display: inline-block;
-  margin-left: -0.25rem;
-  margin-right: 0.25rem;
-  padding: 0 0.25rem;
+  margin-right: 0.5rem;
 }
 </style>
