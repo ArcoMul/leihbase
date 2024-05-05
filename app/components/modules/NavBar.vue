@@ -32,6 +32,8 @@ const { isValid } = usePocketbase();
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/breakpoints.scss";
+
 header {
   display: flex;
   justify-content: space-between;
@@ -41,6 +43,10 @@ header {
   background-color: var(--header-bg-color);
   position: sticky;
   top: 0;
+  @media screen and (min-width: $breakpoint-sm) {
+    padding: 0 2rem 0 1rem;
+  }
+
   .logo {
     color: var(--header-text-color);
     font-size: 1.5rem;
@@ -48,16 +54,13 @@ header {
     line-height: 1;
     text-decoration: none;
   }
-  .login-icon {
-    display: none;
-  }
+
   nav {
     ul {
       display: flex;
       list-style: none;
       gap: 1rem;
       margin: 0;
-      margin-right: 1rem;
       padding: 0;
     }
     a {
@@ -72,6 +75,7 @@ header {
       }
     }
   }
+
   .account {
     font-size: 2rem;
     a {
