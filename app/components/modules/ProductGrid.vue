@@ -4,20 +4,16 @@
       <h2>{{ props.title || t("products") }}</h2>
     </header>
     <div class="filters">
-      <ul class="categories">
-        <li v-for="category in categories">
-          <NuxtLink
-            :href="
-              categoryId === category.id
-                ? getUrl({ c: null })
-                : getUrl({ c: category.id })
-            "
-            :class="{ active: categoryId === category.id }"
-          >
-            {{ category.name_de }}
-          </NuxtLink>
-        </li>
-      </ul>
+      <div class="categories">
+        <FilterSelect
+          :label="
+            activeCategory ? activeCategory.name_de : t('choose_categories')
+          "
+          :items="categoryFilterOptions"
+          :value="categoryId"
+          @input="onSelectCategory"
+        />
+      </div>
       <div>
         <InputField
           :placeholder="`${t('search')}...`"
@@ -62,6 +58,7 @@
 <script setup>
 import { ArrowRight } from "@iconoir/vue";
 import { ArrowLeft } from "@iconoir/vue";
+import { routerKey } from "vue-router";
 import ProductCard from "~/components/ProductCard.vue";
 
 const { t } = useI18n({
@@ -78,6 +75,7 @@ const props = defineProps({
 });
 
 const { pb } = usePocketbase();
+const router = useRouter();
 const route = useRoute();
 
 const categoryId = ref(route.query.c);
@@ -109,6 +107,19 @@ const { data: categories } = await useAsyncData("categories", async () => {
     .getFullList({ sort: "name_de" });
   return structuredClone(categories);
 });
+const categoryFilterOptions = computed(() =>
+  categories.value
+    ? categories.value.map((category) => ({
+        key: category.id,
+        value: category.name_de,
+      }))
+    : []
+);
+const activeCategory = computed(() =>
+  categoryId.value
+    ? categories.value.find((c) => c.id === categoryId.value)
+    : null
+);
 
 const { data, refresh } = await useAsyncData("products", async () => {
   const data = await pb
@@ -158,6 +169,10 @@ function getUrl(overwrites) {
   });
   return url.pathname + url.search;
 }
+
+function onSelectCategory(category) {
+  router.push(getUrl({ c: category }));
+}
 </script>
 
 <style lang="scss" scoped>
@@ -177,6 +192,13 @@ header {
   grid-template-columns: repeat(1, minmax(0, 1fr));
   @media screen and (min-width: $breakpoint-sm) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .categories {
+    width: 100%;
+    @media screen and (min-width: $breakpoint-md) {
+      width: calc(50% - 0.5rem);
+    }
   }
   .search-input {
     width: 100%;
@@ -259,14 +281,16 @@ header {
     "search": "Search",
     "previous_page": "Previous page",
     "next_page": "Next page",
-    "no_products_found": "No products found"
+    "no_products_found": "No products found",
+    "choose_categories": "Choose a category..."
   },
   "de": {
     "products": "Gegenstände",
     "search": "Suchen",
     "previous_page": "Vorherige Seite",
     "next_page": "Nächste Seite",
-    "no_products_found": "Keine Produkte gefunden"
+    "no_products_found": "Keine Produkte gefunden",
+    "choose_categories": "Wähle eine Kategorie..."
   }
 }
 </i18n>
