@@ -9,6 +9,7 @@
     <img
       v-if="product.images && product.images.length > 0"
       :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}${thumbs.sm}`"
+      loading="lazy"
       class="image"
     />
     <div v-else class="image"></div>
@@ -83,7 +84,7 @@ a.root.clicked {
   z-index: -1;
 }
 .image {
-  aspect-ratio: 4/3;
+  aspect-ratio: 1/1;
   object-fit: cover;
   background-color: #eee;
   border-radius: 5px 5px 0 0;
