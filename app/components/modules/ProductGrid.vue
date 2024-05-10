@@ -9,8 +9,8 @@
           <NuxtLink
             :href="
               categoryId === category.id
-                ? getUrl({ c: null })
-                : getUrl({ c: category.id })
+                ? getUrl({ c: null, p: null })
+                : getUrl({ c: category.id, p: null })
             "
             :class="{ active: categoryId === category.id }"
           >
