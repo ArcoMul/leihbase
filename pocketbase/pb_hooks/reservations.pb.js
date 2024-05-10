@@ -34,8 +34,19 @@ onRecordBeforeCreateRequest((e) => {
 }, "reservations");
 
 onRecordAfterCreateRequest((e) => {
+  const isAdmin = e.httpContext.get("admin");
+  if (isAdmin) {
+    // Don't send notification when an admin created the reservation
+    return;
+  }
+
+  // TODO: only send notification when the user creating the reservation, is
+  // also the user involved in the reservation
+  // https://pocketbase.io/docs/js-routing/#retrieving-the-current-auth-state
+
   const { record } = e;
   const to = $os.getenv("NOTIFY_EMAIL");
+
   if (!to) return;
   $app.dao().expandRecord(record, ["product", "user"], null);
   const productName = record.expandedOne("product").get("name");
