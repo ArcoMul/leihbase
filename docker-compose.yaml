@@ -25,7 +25,10 @@ services:
     ports:
       - "8080:8080"
     environment:
+      # E-mail address which gets notifications about new reservations
       NOTIFY_EMAIL: example@example.com
+      # If a reservation needs to have a user, or not
+      CONFIG_RESERVATION_REQUIRE_USER: "false"
     volumes:
       - ./pocketbase/pb_migrations:/pb/pb_migrations
       - ./pocketbase/pb_hooks:/pb/pb_hooks

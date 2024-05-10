@@ -6,12 +6,16 @@ onRecordBeforeCreateRequest((e) => {
   const start = new Date(e.record.get("start").string().split(" ")[0]);
   const end = new Date(e.record.get("end").string().split(" ")[0]);
   const isAdmin = e.httpContext.get("admin");
+  const requireUser = $os.getenv("CONFIG_RESERVATION_REQUIRE_USER") !== "false";
 
   if (start < startOfDay && !isAdmin) {
     throw new BadRequestError("Start_before_today.");
   }
   if (end < startOfDay && !isAdmin) {
     throw new BadRequestError("End_before_today.");
+  }
+  if (requireUser && !e.record.get("user") && !isAdmin) {
+    throw new BadRequestError("User_not_defined.");
   }
 
   const records = $app

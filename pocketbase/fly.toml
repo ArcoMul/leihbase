@@ -4,6 +4,9 @@ primary_region = 'ams'
 [build]
   build-target = 'prod'
 
+[env]
+  CONFIG_RESERVATION_REQUIRE_USER = 'false'
+
 [[mounts]]
   source = 'pocketbase_data'
   destination = '/pb/pb_data'
