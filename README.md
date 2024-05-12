@@ -2,6 +2,8 @@
 
 Web application to manage Leihladen, also known as Borrow Stores.
 
+## Features
+
 - 🏪 A webshop front-end showing borrowable products
 - 🏙️ Manage multiple borrow locations
 - 🏷️ Product category filtering
