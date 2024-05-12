@@ -75,22 +75,22 @@
             <span v-html="openingHoursToString(location?.opening_hours)"></span>
           </p>
           <form ref="form" @submit.prevent="onSubmit">
-            <sl-input
+            <Input
               type="text"
               :label="t('product')"
-              :value="product.name"
+              v-model="product.name"
               disabled
               readonly
             />
-            <sl-input
-              type="date"
+            <DateInput
               :label="t('start')"
-              @input="(event) => (start = event.target.value)"
+              v-model="start"
+              :disable-day-fn="disableDayFn"
             />
-            <sl-input
-              type="date"
+            <DateInput
               :label="t('end')"
-              @input="(event) => (end = event.target.value)"
+              v-model="end"
+              :disable-day-fn="disableDayFn"
             />
             <sl-textarea
               :label="t('message')"
@@ -117,10 +117,10 @@ import Button from "~/components/Button.vue";
 import { isToday } from "~/lib/reservation";
 import { formatCurrency } from "~/lib/currency";
 import { openingHoursToString } from "~/lib/openingHours";
+import { isDateOnDay, getStartOfDay } from "~/lib/date";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/dialog/dialog.js");
-  await import("@shoelace-style/shoelace/dist/components/input/input.js");
   await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
 }
@@ -194,6 +194,14 @@ const available = computed(() =>
 useHead({
   title: `${product.value?.name} | Leihapp`,
 });
+
+function disableDayFn(date) {
+  // Get the days the location is open
+  const openDays = Object.keys(location.value?.opening_hours);
+  // Disable dates which are not on days where the location is open,
+  // or dates which are in the past
+  return !isDateOnDay(date, openDays) || date < getStartOfDay();
+}
 
 function onReserve() {
   if (!pb.authStore.isValid) {

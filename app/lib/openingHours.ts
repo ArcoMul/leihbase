@@ -12,8 +12,8 @@ export function openingHoursToString(openingHours: OpeningHours) {
   return Object.keys(openingHours)
     .map(
       (day) =>
-        `${t(`opening_hours.${day}`)}, ${openingHours[day]
-          .map((range) => `${range.from} - ${range.to} Uhr`)
+        `${t(`week_days.${day}`)}, ${openingHours[day]
+          .map((range) => `${range.from} - ${range.to} ${t("hour")}`)
           .join(" & ")}`
     )
     .join("<br />");

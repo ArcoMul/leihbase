@@ -20,6 +20,9 @@ dependencies:
   nuxt:
     specifier: ^3.10.3
     version: 3.10.3(rollup@4.13.0)(sass@1.72.0)(vite@5.1.6)
+  pikaday:
+    specifier: ^1.8.2
+    version: 1.8.2
   pocketbase:
     specifier: ^0.21.1
     version: 0.21.1
@@ -4901,6 +4904,10 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+
+  /pikaday@1.8.2:
+    resolution: {integrity: sha512-TNtsE+34BIax3WtkB/qqu5uepV1McKYEgvL3kWzU7aqPCpMEN6rBF3AOwu4WCwAealWlBGobXny/9kJb49C1ew==}
+    dev: false
 
   /pinia@2.1.7(vue@3.4.21):
     resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}

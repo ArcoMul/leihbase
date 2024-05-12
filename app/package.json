@@ -15,6 +15,7 @@
     "@shoelace-style/shoelace": "^2.14.0",
     "luxon": "^3.4.4",
     "nuxt": "^3.10.3",
+    "pikaday": "^1.8.2",
     "pocketbase": "^0.21.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"

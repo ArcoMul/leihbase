@@ -13,7 +13,7 @@
 }
 
 :root {
-  --color-blue: #0d79f2;
+  --color-blue: 13, 121, 242;
 
   --bg-primary: #0d79f2;
   --bg-secondary: #feddc1;
@@ -75,6 +75,14 @@
   --button-primary-text-color: #fee8d5;
   --button-secondary-bg-color: #fef3ea;
   --button-secondary-text-color: var(--body-text-color);
+
+  --input-border-radius: 5px;
+  --input-border-color: #ccc;
+  --input-background-color: rgba(255, 255, 255, 0.5);
+  --input-focus-outline-width: 4px;
+  --input-focus-outline-color: rgba(var(--color-blue), 0.15);
+  --input-focus-border-color: rgb(var(--color-blue));
+  --input-disabled-background-color: #f8f8f8;
 }
 
 body {
@@ -182,4 +190,23 @@ hr {
   .md\:block {
     display: block;
   }
+}
+
+.lb-input {
+  display: block;
+  width: 100%;
+  line-height: 2;
+  padding: 0 var(--spacing-2);
+  border: 1px solid var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  padding: var(--spacing-1) var(--spacing-3);
+  background-color: var(--input-background-color);
+}
+.lb-input:focus {
+  outline: var(--input-focus-outline-width) solid
+    var(--input-focus-outline-color);
+  border: 1px solid var(--input-focus-border-color);
+}
+.lb-input[disabled] {
+  background-color: var(--input-disabled-background-color);
 }

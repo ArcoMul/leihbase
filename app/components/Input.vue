@@ -1,14 +1,16 @@
 <template>
-  <fieldset>
-    <label :for="id">{{ label }}</label>
+  <FormRow :for="id" :label="label" :required="required">
     <input
       :type="type"
       :id="id"
       :name="name"
       :required="required"
+      :disabled="disabled"
+      :readonly="readonly"
       v-model="model"
+      class="lb-input"
     />
-  </fieldset>
+  </FormRow>
 </template>
 
 <script setup>
@@ -18,25 +20,8 @@ const props = defineProps({
   label: String,
   name: String,
   required: Boolean,
+  disabled: Boolean,
+  readonly: Boolean,
   type: String,
 });
 </script>
-
-<style scoped>
-fieldset {
-  border: 0;
-  padding: 0;
-  width: 100%;
-}
-label {
-  display: block;
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-2);
-}
-input {
-  display: block;
-  width: 100%;
-  line-height: 2;
-  padding: 0 var(--spacing-2);
-}
-</style>
