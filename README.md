@@ -2,18 +2,11 @@
 
 Web application to manage Leihladen, also known as Borrow Stores.
 
-## Features
-
-Features:
-
-- ✅ Manage multiple borrow locations
-- ✅ User signup/login
-- ✅ User e-mail verification
-- ✅ See product availability
-- ✅ Create product reservations
-- ✅ Prevents double product reservations
-- ✅ Filter products on categories
-- ✅ Textual product search
+- 🏪 A webshop front-end showing borrowable products
+- 🏙️ Manage multiple borrow locations
+- 🏷️ Product category filtering
+- 🧑‍🤝‍🧑 User sign-up/login
+- 🎫 Product reservations
 
 ## Screenshots
 
