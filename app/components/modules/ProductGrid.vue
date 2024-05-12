@@ -5,7 +5,7 @@
     </header>
     <div class="filters">
       <ul class="categories">
-        <li v-for="category in categories">
+        <li v-for="category in categories" :key="category.id">
           <NuxtLink
             :href="
               categoryId === category.id
@@ -28,13 +28,13 @@
       </div>
     </div>
     <div v-if="products && products.length > 0" class="products">
-      <ProductCard
-        v-for="product in products"
-        :product="product"
-        :to="`/l/${props.location.slug}/p/${product.id}`"
-        :key="product.id"
-        class="product"
-      />
+      <div v-for="product in products" :key="product.id">
+        <ProductCard
+          :product="product"
+          :to="`/l/${props.location.slug}/p/${product.id}`"
+          class="product"
+        />
+      </div>
     </div>
     <div v-else>
       <p>{{ t("no_products_found") }} 🙃</p>
@@ -117,7 +117,10 @@ const { data, refresh } = await useAsyncData("products", async () => {
   return structuredClone(data);
 });
 
-const products = computed(() => data.value?.items);
+const products = computed(() => {
+  console.log(JSON.stringify(data.value?.items, null, 2));
+  return data.value?.items;
+});
 const currentPage = computed(() => data.value?.page);
 const totalPages = computed(() => data.value?.totalPages);
 
