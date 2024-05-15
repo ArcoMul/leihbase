@@ -37,6 +37,16 @@ Requirements: [Docker](https://www.docker.com/)
 - `$ docker compose build`
 - `$ docker compose up`
 
+### Initial content
+
+After starting the service using the setup steps above. Enter some initial data to be able to use the application:
+
+1. Browse to http://localhost:8080/_/ to visit the Pocketbase admin interface
+1. Create an admin account
+1. Create a location in the locations collection (make sure to set the location to as 'active')
+1. Create a product in the products collection (make sure to set the product to as 'active')
+1. Now you should be able to visit http://localhost:3000 to visit the front-end
+   
 ### E-mail
 
 When starting the service with docker-compose, a
