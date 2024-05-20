@@ -221,7 +221,7 @@ async function onSubmit() {
       product: product.value.id,
       start: start.value,
       end: end.value,
-      note: message.value,
+      message: message.value,
     });
   } catch (e) {
     console.log(e.data);
