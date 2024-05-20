@@ -62,7 +62,7 @@ const slug = route.params.location;
 
 const { data: location } = await useAsyncData("location", async () => {
   const location = await pb
-    .collection("location")
+    .collection("public_locations")
     .getFirstListItem(pb.filter("slug = {:slug}", { slug }));
   return structuredClone(location);
 });

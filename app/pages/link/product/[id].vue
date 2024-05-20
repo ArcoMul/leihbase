@@ -4,11 +4,13 @@
 const route = useRoute();
 const { pb } = usePocketbase();
 
-const product = await pb
-  .collection("public_products")
-  .getOne(route.params.id, { expand: "location" });
+const product = await pb.collection("public_products").getOne(route.params.id);
+
+const location = await pb
+  .collection("public_locations")
+  .getOne(product.location);
 
 await navigateTo({
-  path: `/l/${product.expand.location.slug}/p/${route.params.id}`,
+  path: `/l/${location.slug}/p/${route.params.id}`,
 });
 </script>

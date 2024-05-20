@@ -2,7 +2,7 @@
 
 <script setup>
 const { pb } = usePocketbase();
-const locations = await pb.collection("location").getFullList({
+const locations = await pb.collection("public_locations").getFullList({
   filter: "active = true",
 });
 if (locations.length > 0) {
