@@ -9,8 +9,8 @@
           <NuxtLink
             :href="
               categoryId === category.id
-                ? getUrl({ c: null, p: null })
-                : getUrl({ c: category.id, p: null })
+                ? getUrl({ category: null, page: null, query: null })
+                : getUrl({ category: category.id, page: null, query: null })
             "
             :class="{ active: categoryId === category.id }"
           >
@@ -21,8 +21,9 @@
       <div>
         <InputField
           :placeholder="`${t('search')}...`"
-          @input="onInput"
-          v-model="searchString"
+          @input="onSearchInput"
+          @blur="onSearchBlur"
+          v-model="query"
           class="search-input"
         />
       </div>
@@ -42,14 +43,16 @@
     <section v-if="totalPages > 1" class="page-navigation">
       <NuxtLink
         v-if="currentPage > 1"
-        :to="currentPage > 1 ? getUrl({ p: currentPage - 1 }) : null"
+        :to="currentPage > 1 ? getUrl({ page: currentPage - 1 }) : null"
         class="page-button previous-page"
       >
         <ArrowLeft class="icon" />
         {{ t("previous_page") }}
       </NuxtLink>
       <NuxtLink
-        :to="currentPage < totalPages ? getUrl({ p: currentPage + 1 }) : null"
+        :to="
+          currentPage < totalPages ? getUrl({ page: currentPage + 1 }) : null
+        "
         class="page-button next-page"
       >
         {{ t("next_page") }}
@@ -78,12 +81,67 @@ const props = defineProps({
 });
 
 const { pb } = usePocketbase();
+const router = useRouter();
 const route = useRoute();
 
-const categoryId = ref(route.query.c);
-const page = ref(route.query.p);
+const categoryId = ref(route.query.category);
+const page = ref(route.query.page);
+const query = ref(route.query.query);
 
-const searchString = ref("");
+watch(
+  () => route.query.category,
+  (newId) => {
+    categoryId.value = newId;
+    refreshProducts();
+  }
+);
+
+watch(
+  () => route.query.page,
+  (newPage) => {
+    page.value = newPage;
+    refreshProducts();
+  }
+);
+
+watch(
+  () => route.query.query,
+  (newQuery) => {
+    query.value = newQuery;
+    refreshProducts();
+  }
+);
+
+const { data: categories } = await useAsyncData("categories", async () => {
+  const categories = await pb
+    .collection("categories")
+    .getFullList({ sort: "name_de" });
+  return structuredClone(categories);
+});
+
+const { data: productsData, refresh: refreshProducts } = await useAsyncData(
+  "products",
+  async () => {
+    const data = await pb
+      .collection("public_products")
+      .getList(page.value, 24, { filter: getFilter(), sort: "name" });
+    return structuredClone(data);
+  }
+);
+
+const products = computed(() => {
+  return productsData.value?.items;
+});
+const currentPage = computed(() => productsData.value?.page);
+const totalPages = computed(() => productsData.value?.totalPages);
+
+function onSearchInput() {
+  refreshProducts();
+}
+
+function onSearchBlur() {
+  router.push(getUrl({ query: query.value || null }));
+}
 
 function getFilter() {
   const filter = [];
@@ -96,61 +154,23 @@ function getFilter() {
     filter.push("categories ~ {:category}");
     args.category = categoryId.value;
   }
-  if (searchString.value && searchString.value.length > 2) {
+  if (query.value && query.value.length > 2) {
     filter.push("(name ~ {:query} || description ~ {:query})");
-    args.query = searchString.value;
+    args.query = query.value;
   }
   return pb.filter(filter.join(" && "), args);
-}
-
-const { data: categories } = await useAsyncData("categories", async () => {
-  const categories = await pb
-    .collection("categories")
-    .getFullList({ sort: "name_de" });
-  return structuredClone(categories);
-});
-
-const { data, refresh } = await useAsyncData("products", async () => {
-  const data = await pb
-    .collection("public_products")
-    .getList(page.value, 24, { filter: getFilter(), sort: "name" });
-  return structuredClone(data);
-});
-
-const products = computed(() => {
-  console.log(JSON.stringify(data.value?.items, null, 2));
-  return data.value?.items;
-});
-const currentPage = computed(() => data.value?.page);
-const totalPages = computed(() => data.value?.totalPages);
-
-watch(
-  () => route.query.c,
-  (newId) => {
-    categoryId.value = newId;
-    refresh();
-  }
-);
-
-watch(
-  () => route.query.p,
-  (newPage) => {
-    page.value = newPage;
-    refresh();
-  }
-);
-
-function onInput() {
-  refresh();
 }
 
 function getUrl(overwrites) {
   const url = new URL(`https://example.com/l/${props.location.slug}`);
   if (categoryId.value) {
-    url.searchParams.set("c", categoryId.value);
+    url.searchParams.set("category", categoryId.value);
   }
   if (page.value && page.value > 1) {
-    url.searchParams.set("p", page.value);
+    url.searchParams.set("page", page.value);
+  }
+  if (query.value) {
+    url.searchParams.set("query", query.value);
   }
   Object.keys(overwrites).forEach((key) => {
     if (overwrites[key] !== null) {
