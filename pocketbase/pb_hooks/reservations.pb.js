@@ -33,7 +33,7 @@ onRecordBeforeCreateRequest((e) => {
     .dao()
     .findRecordsByFilter(
       "reservations",
-      "product = {:product} && start <= {:end} && end >= {:start}",
+      "product = {:product} && start < {:end} && end > {:start}",
       null,
       1,
       0,
