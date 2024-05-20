@@ -5,7 +5,7 @@ Web application to manage Leihladen, also known as Borrow Stores.
 > [!IMPORTANT]  
 > This software is still in active development. It is being used in production
 > for the [Leihbar in Cologne](https://leihbar-koeln.de/), but might be lacking
-> some (for your) critical features.
+> some (for you) critical features.
 
 ## Features
 
