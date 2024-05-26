@@ -2,33 +2,31 @@
   <Container width="lg" centered>
     <section class="product">
       <div class="media-col">
-        <template v-if="product?.images && product?.images.length > 0">
-          <div class="main-image">
+        <ProductImage
+          :src="
+            product?.images && product?.images.length > 0
+              ? `${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[imageIndex]}${thumbs.lg}`
+              : null
+          "
+          fallback="/images/fallback-product-image-1200x1200.png"
+          class="main-image"
+          object-fit="contain"
+          loading="lazy"
+        />
+        <div
+          v-if="product?.images && product.images.length > 1"
+          class="thumbnails"
+        >
+          <button
+            v-for="(image, index) in product.images.slice(0, 4)"
+            type="button"
+            :class="index === imageIndex ? 'active' : ''"
+            @click="imageIndex = index"
+          >
             <img
-              :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[imageIndex]}${thumbs.lg}`"
+              :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${image}${thumbs.sm}`"
             />
-          </div>
-          <div v-if="product.images.length > 1" class="thumbnails">
-            <button
-              v-for="(image, index) in product.images.slice(0, 4)"
-              type="button"
-              :class="index === imageIndex ? 'active' : ''"
-              @click="imageIndex = index"
-            >
-              <img
-                :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${image}${thumbs.sm}`"
-              />
-            </button>
-          </div>
-        </template>
-        <div v-else class="main-image">
-          <p class="no-image-message">
-            {{ t("no_image_message") }}
-          </p>
-          <img
-            src="/images/fallback-product-image-1200x1200.png"
-            loading="lazy"
-          />
+          </button>
         </div>
       </div>
       <div class="info-col">
@@ -297,31 +295,7 @@ section {
   .media-col {
     max-width: 500px;
     .main-image {
-      position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-size: 9.9px 9.9px;
       margin-bottom: var(--fluid-spacing-4);
-      container: image;
-      container-type: inline-size;
-      img {
-        border-radius: 5px;
-        overflow: hidden;
-        max-width: 100%;
-        object-fit: contain;
-      }
-      .no-image-message {
-        position: absolute;
-        left: clamp(1rem, 5cqi, 1.5rem);
-        top: clamp(1rem, 5cqi, 1.5rem);
-        font-size: clamp(1rem, 7cqi, 1.7rem);
-        max-width: min(20rem, calc(100% - 2rem));
-        font-weight: bold;
-        color: white;
-        line-height: 1.15;
-      }
     }
     .thumbnails {
       width: 100%;

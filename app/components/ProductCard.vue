@@ -6,18 +6,16 @@
     :class="{ root: true, clicked }"
     @click="clicked = true"
   >
-    <div v-if="product.images && product.images.length > 0" class="image">
-      <img
-        :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}${thumbs.sm}`"
-        loading="lazy"
-      />
-    </div>
-    <div v-else class="image">
-      <p class="no-image-message">
-        {{ t("no_image_message") }}
-      </p>
-      <img src="/images/fallback-product-image-600x600.png" loading="lazy" />
-    </div>
+    <ProductImage
+      :src="
+        product.images && product.images.length > 0
+          ? `${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}${thumbs.sm}`
+          : null
+      "
+      fallback="/images/fallback-product-image-600x600.png"
+      aspect-ratio="1:1"
+      loading="lazy"
+    />
     <div class="content">
       <sl-tooltip
         v-if="!!product.ongoingReservation"
@@ -89,31 +87,6 @@ a.root:focus {
 a.root.clicked {
   opacity: 0.8;
   z-index: -1;
-}
-.image {
-  background-color: #eee;
-  position: relative;
-  container: image;
-  container-type: inline-size;
-  display: flex;
-
-  img {
-    object-fit: cover;
-    aspect-ratio: 1/1;
-    border-radius: 5px 5px 0 0;
-  }
-
-  .no-image-message {
-    position: absolute;
-    left: 1rem;
-    top: 1rem;
-    font-size: 1rem;
-    font-size: clamp(0.9rem, 7cqi, 1.1rem);
-    font-weight: bold;
-    color: white;
-    line-height: 1.15;
-    max-width: min(12rem, calc(100% - 2rem));
-  }
 }
 .content {
   padding: clamp(1rem, 4vw, 2rem);
