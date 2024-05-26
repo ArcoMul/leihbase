@@ -6,13 +6,18 @@
     :class="{ root: true, clicked }"
     @click="clicked = true"
   >
-    <img
-      v-if="product.images && product.images.length > 0"
-      :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}${thumbs.sm}`"
-      loading="lazy"
-      class="image"
-    />
-    <div v-else class="image"></div>
+    <div v-if="product.images && product.images.length > 0" class="image">
+      <img
+        :src="`${config.public.pocketbase.clientBaseUrl}/api/files/products/${product.id}/${product.images[0]}${thumbs.sm}`"
+        loading="lazy"
+      />
+    </div>
+    <div v-else class="image">
+      <p class="no-image-message">
+        {{ t("no_image_message") }}
+      </p>
+      <img src="/images/fallback-product-image-600x600.png" loading="lazy" />
+    </div>
     <div class="content">
       <sl-tooltip
         v-if="!!product.ongoingReservation"
@@ -35,6 +40,8 @@
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/tooltip/tooltip.js");
 }
+
+const { t } = useI18n();
 
 const props = defineProps({
   product: {
@@ -84,10 +91,29 @@ a.root.clicked {
   z-index: -1;
 }
 .image {
-  aspect-ratio: 1/1;
-  object-fit: cover;
   background-color: #eee;
-  border-radius: 5px 5px 0 0;
+  position: relative;
+  container: image;
+  container-type: inline-size;
+  display: flex;
+
+  img {
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .no-image-message {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    font-size: 1rem;
+    font-size: clamp(0.9rem, 7cqi, 1.1rem);
+    font-weight: bold;
+    color: white;
+    line-height: 1.15;
+    max-width: min(12rem, calc(100% - 2rem));
+  }
 }
 .content {
   padding: clamp(1rem, 4vw, 2rem);

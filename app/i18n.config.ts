@@ -38,6 +38,7 @@ export default defineI18nConfig(() => ({
       hour: "h",
       previous_month: "Previous Month",
       next_month: "Next Month",
+      no_image_message: "This item has no photo yet.",
     },
     de: {
       week_days: {
@@ -75,6 +76,7 @@ export default defineI18nConfig(() => ({
       hour: "Uhr",
       previous_month: "Vorheriger Monat",
       next_month: "Nächster Monat",
+      no_image_message: "Diesen Gegenstand haben wir noch nicht fotografiert.",
     },
   },
 }));

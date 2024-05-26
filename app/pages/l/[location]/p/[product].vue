@@ -21,7 +21,15 @@
             </button>
           </div>
         </template>
-        <div v-else class="image"></div>
+        <div v-else class="main-image">
+          <p class="no-image-message">
+            {{ t("no_image_message") }}
+          </p>
+          <img
+            src="/images/fallback-product-image-1200x1200.png"
+            loading="lazy"
+          />
+        </div>
       </div>
       <div class="info-col">
         <header>
@@ -289,17 +297,30 @@ section {
   .media-col {
     max-width: 500px;
     .main-image {
+      position: relative;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       background-size: 9.9px 9.9px;
       margin-bottom: var(--fluid-spacing-4);
+      container: image;
+      container-type: inline-size;
       img {
         border-radius: 5px;
         overflow: hidden;
         max-width: 100%;
         object-fit: contain;
+      }
+      .no-image-message {
+        position: absolute;
+        left: clamp(1rem, 5cqi, 1.5rem);
+        top: clamp(1rem, 5cqi, 1.5rem);
+        font-size: clamp(1rem, 7cqi, 1.7rem);
+        max-width: min(20rem, calc(100% - 2rem));
+        font-weight: bold;
+        color: white;
+        line-height: 1.15;
       }
     }
     .thumbnails {
