@@ -43,6 +43,7 @@ header {
   background-color: var(--header-bg-color);
   position: sticky;
   top: 0;
+  z-index: 10;
   @media screen and (min-width: $breakpoint-sm) {
     padding: 0 2rem 0 1rem;
   }
