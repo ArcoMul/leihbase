@@ -85,13 +85,14 @@ onRecordAfterCreateRequest((e) => {
   const product = record.expandedOne("product");
   const productName = product.get("name");
   const productId = product.get("id");
+  const message = record.get("message");
 
   const user = record.expandedOne("user");
   const userName = user.get("name");
   const userEmail = user.get("email");
 
   notificationEmailAddresses.forEach((to) => {
-    const message = new MailerMessage({
+    const email = new MailerMessage({
       from: {
         address: $app.settings().meta.senderAddress,
         name: $app.settings().meta.senderName,
@@ -111,10 +112,14 @@ onRecordAfterCreateRequest((e) => {
     ${userName} (${userEmail})<br>
     <br>
     Nachricht:<br>
-    <blockquote>
-    ${record.get("message").replace(/\n/g, "<br>")}<br>
-    </blockquote>`,
+    ${
+      message
+        ? `<blockquote>
+            ${message.replace(/\n/g, "<br>")}<br>
+          </blockquote>`
+        : `<i>Keine</i>`
+    }`,
     });
-    $app.newMailClient().send(message);
+    $app.newMailClient().send(email);
   });
 }, "reservations");
