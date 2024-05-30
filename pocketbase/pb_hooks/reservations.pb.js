@@ -56,6 +56,10 @@ onRecordBeforeCreateRequest((e) => {
 }, "reservations");
 
 onRecordAfterCreateRequest((e) => {
+  const {
+    getNotificationEmailAddresses,
+  } = require(`${__hooks}/lib/location.js`);
+
   const isAdmin = e.httpContext.get("admin");
   if (isAdmin) {
     // Don't send notification when an admin created the reservation
@@ -73,12 +77,8 @@ onRecordAfterCreateRequest((e) => {
   // Retrieve e-mail addresses to send reservation notifications on from
   // location collection
   const location = record.expandedOne("location");
-  const notifications = JSON.parse(location.get("notifications"));
-  if (
-    !notifications ||
-    !Array.isArray(notifications) ||
-    notifications.length < 1
-  ) {
+  const notificationEmailAddresses = getNotificationEmailAddresses(location);
+  if (notificationEmailAddresses.length < 1) {
     return;
   }
 
@@ -90,7 +90,7 @@ onRecordAfterCreateRequest((e) => {
   const userName = user.get("name");
   const userEmail = user.get("email");
 
-  notifications.forEach((to) => {
+  notificationEmailAddresses.forEach((to) => {
     const message = new MailerMessage({
       from: {
         address: $app.settings().meta.senderAddress,
