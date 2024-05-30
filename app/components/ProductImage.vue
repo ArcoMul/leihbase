@@ -25,10 +25,10 @@ const { t } = useI18n({
 
 withDefaults(
   defineProps<{
-    src: string;
+    src: string | null;
     fallback: string;
     loading: string;
-    objectFit: "cover" | "contain";
+    objectFit?: "cover" | "contain";
     aspectRatio?: "1:1" | null;
     borderRadius?: "all" | "top";
   }>(),
