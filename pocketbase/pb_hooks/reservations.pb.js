@@ -109,7 +109,7 @@ onRecordAfterCreateRequest((e) => {
     }/link/product/${productId}">${productName}</a><br>
     <br>
     Person:<br>
-    ${userName} (${userEmail})<br>
+    ${userName} (<a href="mailto:${userEmail}">${userEmail}</a>)<br>
     <br>
     Nachricht:<br>
     ${
