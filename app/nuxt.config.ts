@@ -16,6 +16,15 @@ export default defineNuxtConfig({
         { rel: "favicon", type: "image/png", href: "/favicon-192x192.png" },
         { rel: "stylesheet", href: "/fonts/inter/inter.css" },
       ],
+      script: [
+        process.env.PLAUSIBLE_TRACKING_DOMAIN
+          ? {
+              defer: true,
+              "data-domain": process.env.PLAUSIBLE_TRACKING_DOMAIN,
+              src: "https://plausible.io/js/script.js",
+            }
+          : {},
+      ],
     },
   },
 
