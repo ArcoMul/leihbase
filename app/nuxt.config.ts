@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   runtimeConfig: {
+    plausibleTrackingDomain: "", // NUXT_PLAUSIBLE_TRACKING_DOMAIN
     public: {
       pocketbase: {
         serverBaseUrl: "", // NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL
@@ -17,10 +18,10 @@ export default defineNuxtConfig({
         { rel: "stylesheet", href: "/fonts/inter/inter.css" },
       ],
       script: [
-        process.env.PLAUSIBLE_TRACKING_DOMAIN
+        process.env.NUXT_PLAUSIBLE_TRACKING_DOMAIN
           ? {
               defer: true,
-              "data-domain": process.env.PLAUSIBLE_TRACKING_DOMAIN,
+              "data-domain": process.env.NUXT_PLAUSIBLE_TRACKING_DOMAIN,
               src: "https://plausible.io/js/script.js",
             }
           : {},
