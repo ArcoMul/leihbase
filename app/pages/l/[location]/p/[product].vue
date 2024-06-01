@@ -162,7 +162,6 @@ const { data: location } = await useAsyncData("location", async () => {
     .getFirstListItem(
       pb.filter("slug = {:slug}", { slug: route.params.location })
     );
-
   return structuredClone(location);
 });
 const { data: product } = await useAsyncData("product", async () => {
@@ -171,9 +170,6 @@ const { data: product } = await useAsyncData("product", async () => {
     .getOne(route.params.product, {
       expand: "categories",
     });
-
-  console.log(product);
-
   return structuredClone(product);
 });
 const { data: reservations, refresh: refreshReservations } = await useAsyncData(
@@ -201,12 +197,15 @@ useHead({
   title: `${product.value?.name} | Leihapp`,
 });
 
+const startOfToday = getStartOfDay();
 function disableDayFn(date) {
   // Get the days the location is open
   const openDays = Object.keys(location.value?.opening_hours);
   // Disable dates which are not on days where the location is open,
-  // or dates which are in the past
-  return !isDateOnDay(date, openDays) || date < getStartOfDay();
+  // or dates which are before today
+  const startOfDate = new Date(date.getTime());
+  startOfDate.setHours(0, 0, 0, 0);
+  return !isDateOnDay(date, openDays) || startOfDate < startOfToday;
 }
 
 function onReserve() {
