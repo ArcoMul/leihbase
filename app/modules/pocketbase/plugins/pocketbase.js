@@ -1,5 +1,5 @@
 import PocketBase from "pocketbase";
-import { useUserStore } from "../stores/user";
+import { useUserStore } from "~/stores/user";
 
 export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig();

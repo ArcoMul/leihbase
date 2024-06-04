@@ -1,4 +1,16 @@
-export const useUserStore = defineStore("userStore", {
+import type { RecordModel } from "pocketbase";
+
+interface State {
+  name: string | null;
+  reservations: RecordModel[] | [];
+  reservationIntent: {
+    locationSlug: string | null;
+    productId: string | null;
+  };
+  banner: string | null;
+}
+
+export const useUserStore = defineStore<"user", State>("user", {
   state: () => ({
     name: null,
     reservations: [],
@@ -9,9 +21,9 @@ export const useUserStore = defineStore("userStore", {
     banner: null,
   }),
   actions: {
-    login({ name } = {}) {
+    login({ name }: { name?: string } = {}) {
       const { pb } = usePocketbase();
-      this.name = name || pb.authStore.model.name;
+      this.name = name || pb.authStore?.model?.name;
     },
     logout() {
       this.name = null;
@@ -21,7 +33,7 @@ export const useUserStore = defineStore("userStore", {
       const reservations = await pb.collection("reservations").getFullList();
       this.reservations = reservations;
     },
-    setReservationIntent(locationSlug, productId) {
+    setReservationIntent(locationSlug: string, productId: string) {
       this.reservationIntent.locationSlug = locationSlug;
       this.reservationIntent.productId = productId;
     },
@@ -29,7 +41,7 @@ export const useUserStore = defineStore("userStore", {
       this.reservationIntent.locationSlug = null;
       this.reservationIntent.productId = null;
     },
-    showBanner(banner) {
+    showBanner(banner: string) {
       this.banner = banner;
     },
     resetBanner() {
