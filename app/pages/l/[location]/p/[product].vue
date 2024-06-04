@@ -39,7 +39,7 @@
             </li>
             <li>
               <span v-for="category in product?.expand?.categories">
-                <NuxtLink :to="`/l/${location?.slug}?c=${category.id}`">
+                <NuxtLink :to="`/l/${location?.slug}?category=${category.id}`">
                   {{ category.name_de }}
                 </NuxtLink>
               </span>
