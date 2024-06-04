@@ -1,5 +1,6 @@
 <template>
   <Container width="lg" centered>
+    <Banner />
     <section class="product">
       <div class="media-col">
         <ProductImage
@@ -156,6 +157,8 @@ const start = ref(null);
 const end = ref(null);
 const message = ref(null);
 
+userStore.clearReservationIntent();
+
 const { data: location } = await useAsyncData("location", async () => {
   const location = await pb
     .collection("public_locations")
@@ -210,9 +213,8 @@ function disableDayFn(date) {
 
 function onReserve() {
   if (!pb.authStore.isValid) {
-    router.push(
-      `/login?return=/l/${location.value.slug}/p/${product.value.id}`
-    );
+    userStore.setReservationIntent(location.value.slug, product.value.id);
+    router.push("/signup");
     return;
   }
   dialog.value.show();
