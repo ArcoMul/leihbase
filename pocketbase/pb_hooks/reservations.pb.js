@@ -59,6 +59,9 @@ onRecordAfterCreateRequest((e) => {
   const {
     getNotificationEmailAddresses,
   } = require(`${__hooks}/lib/location.js`);
+  const {
+    reservationConfirmationLocationEmail,
+  } = require(`${__hooks}/emails/reservation_confirmation_location`);
 
   const isAdmin = e.httpContext.get("admin");
   if (isAdmin) {
@@ -84,12 +87,12 @@ onRecordAfterCreateRequest((e) => {
 
   const product = record.expandedOne("product");
   const productName = product.get("name");
-  const productId = product.get("id");
-  const message = record.get("message");
 
   const user = record.expandedOne("user");
   const userName = user.get("name");
-  const userEmail = user.get("email");
+
+  const start = new Date(record.get("start").string().split(" ")[0]);
+  const end = new Date(record.get("end").string().split(" ")[0]);
 
   notificationEmailAddresses.forEach((to) => {
     const email = new MailerMessage({
@@ -98,27 +101,18 @@ onRecordAfterCreateRequest((e) => {
         name: $app.settings().meta.senderName,
       },
       to: [{ address: to }],
-      subject: `Neue reservierung von ${userName}: ${productName}`,
-      html: `Hi,<br>
-    <br>
-    Neue Reservierung:<br>
-    <br>
-    Gegenstand:<br>
-    <a href="${
-      $app.settings().meta.appUrl
-    }/link/product/${productId}">${productName}</a><br>
-    <br>
-    Person:<br>
-    ${userName} (<a href="mailto:${userEmail}">${userEmail}</a>)<br>
-    <br>
-    Nachricht:<br>
-    ${
-      message
-        ? `<blockquote>
-            ${message.replace(/\n/g, "<br>")}<br>
-          </blockquote>`
-        : `<i>Keine</i>`
-    }`,
+      subject: `Neue Reservierung von ${userName}: ${productName}`,
+      html: reservationConfirmationLocationEmail({
+        productUrl: `${$app.settings().meta.appUrl}/link/product/${product.get(
+          "id"
+        )}`,
+        productName,
+        userName,
+        userEmail: user.get("email"),
+        start,
+        end,
+        message: record.get("message"),
+      }),
     });
     $app.newMailClient().send(email);
   });
