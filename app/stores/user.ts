@@ -30,8 +30,14 @@ export const useUserStore = defineStore<"user", State>("user", {
     },
     async fetchUserReservations() {
       const { pb } = usePocketbase();
-      const reservations = await pb.collection("reservations").getFullList();
-      this.reservations = reservations;
+      if (pb.authStore?.model?.id) {
+        const reservations = await pb.collection("reservations").getFullList({
+          filter: pb.filter("user = {:user}", {
+            user: pb.authStore.model.id,
+          }),
+        });
+        this.reservations = reservations;
+      }
     },
     setReservationIntent(locationSlug: string, productId: string) {
       this.reservationIntent.locationSlug = locationSlug;
