@@ -11,8 +11,28 @@
     </thead>
     <tbody>
       <tr v-for="reservation in reservations">
-        <td>{{ formatDate(reservation.start, "DD MM", locale) }}</td>
-        <td>{{ formatDate(reservation.end, "DD MM", locale) }}</td>
+        <td
+          :class="{
+            start: true,
+            highlight:
+              highlightDate === 'start' ||
+              (highlightDate === 'date' &&
+                isSameDate(date, new Date(reservation.start))),
+          }"
+        >
+          {{ formatDate(reservation.start, "ddd, DD.MM", locale) }}
+        </td>
+        <td
+          :class="{
+            end: true,
+            highlight:
+              highlightDate === 'end' ||
+              (highlightDate === 'date' &&
+                isSameDate(date, new Date(reservation.end))),
+          }"
+        >
+          {{ formatDate(reservation.end, "ddd, DD.MM", locale) }}
+        </td>
         <td>{{ reservation.expand.product.name }}</td>
         <td>{{ reservation.expand?.user?.name }}</td>
         <td class="note" v-html="reservation.note"></td>
@@ -22,13 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from "~/lib/date";
+import { formatDate, isSameDate } from "~/lib/date";
+import type { Reservation } from "~/models/reservation";
 
 const { locale } = useI18n();
 
-defineProps({
-  reservations: Array,
-});
+defineProps<{
+  reservations: Reservation[];
+  date?: Date;
+  highlightDate: "start" | "end" | "date";
+}>();
 </script>
 
 <style scoped lang="scss">
@@ -41,6 +64,19 @@ td {
   padding: 0.5rem;
   width: 15%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  &:first-child {
+    padding-left: 0;
+  }
+  &:last-child {
+    padding-right: 0;
+  }
+  &.start,
+  &.end {
+    color: var(--body-text-color-light);
+    &.highlight {
+      color: var(--body-text-color);
+    }
+  }
 }
 
 .note {
