@@ -7,6 +7,7 @@
       :required="required"
       :disabled="disabled"
       :readonly="readonly"
+      :data-testid="dataTestid"
       v-model="model"
       class="lb-input"
     />
@@ -23,5 +24,6 @@ const props = defineProps({
   disabled: Boolean,
   readonly: Boolean,
   type: String,
+  dataTestid: String,
 });
 </script>

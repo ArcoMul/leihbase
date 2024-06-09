@@ -1,7 +1,7 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1>{{ t("title") }}</h1>
+      <h1 data-test="signup-h1">{{ t("title") }}</h1>
       <i18n-t keypath="text" tag="p" for="login_text">
         <NuxtLink to="/login">{{ t("login_text") }}</NuxtLink>
       </i18n-t>
@@ -13,6 +13,7 @@
           type="text"
           required
           v-model="name"
+          data-testid="name-input"
         />
         <Input
           id="email"
@@ -21,6 +22,7 @@
           name="email"
           required
           v-model="email"
+          data-testid="email-input"
         />
         <Input
           id="password"
@@ -30,6 +32,7 @@
           required
           password-toggle
           v-model="password"
+          data-testid="password-input"
         />
         <fieldset class="checkbox">
           <input
@@ -37,6 +40,7 @@
             type="checkbox"
             name="terms_and_conditions"
             value="yes"
+            data-testid="tac-checkbox"
             required
           />
           <label for="terms-and-conditions">
@@ -52,11 +56,17 @@
           </label>
         </fieldset>
 
-        <sl-alert variant="danger" :open="!!signupError">
+        <sl-alert
+          variant="danger"
+          :open="!!signupError"
+          data-testid="signup-error"
+        >
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button size="lg" type="submit">{{ t("submit") }}</Button>
+        <Button size="lg" type="submit" data-testid="submit-button">{{
+          t("submit")
+        }}</Button>
       </form>
     </Card>
   </Container>

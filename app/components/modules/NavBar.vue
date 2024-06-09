@@ -9,7 +9,9 @@
       </ul>
       <ul v-else>
         <li class="hidden sm:block">
-          <NuxtLink to="/signup">{{ t("sign_up") }}</NuxtLink>
+          <NuxtLink data-testid="signup-link" to="/signup">
+            {{ t("sign_up") }}
+          </NuxtLink>
         </li>
         <li class="hidden sm:block">
           <NuxtLink to="/login">{{ t("login") }}</NuxtLink>
