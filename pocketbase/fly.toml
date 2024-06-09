@@ -5,7 +5,10 @@ primary_region = 'ams'
   build-target = 'prod'
 
 [env]
+  CONFIG_LOCALE = 'de'
   CONFIG_RESERVATION_REQUIRE_USER = 'false'
+  CONFIG_LENDING_CONDITIONS_LINK = 'https://leihbar-koeln.de/leihbedingungen'
+  CONFIG_LENDING_CONTACT_EMAIL = 'verleih@leihbar-koeln.org'
 
 [[mounts]]
   source = 'pocketbase_data'
