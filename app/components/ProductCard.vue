@@ -14,6 +14,7 @@
       "
       fallback="/images/fallback-product-image-600x600.png"
       aspect-ratio="1:1"
+      border-radius="top"
       loading="lazy"
     />
     <div class="content">

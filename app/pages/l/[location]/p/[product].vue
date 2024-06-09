@@ -1,5 +1,6 @@
 <template>
   <Container width="lg" centered>
+    <Banner />
     <section class="product">
       <div class="media-col">
         <ProductImage
@@ -39,7 +40,7 @@
             </li>
             <li>
               <span v-for="category in product?.expand?.categories">
-                <NuxtLink :to="`/l/${location?.slug}?c=${category.id}`">
+                <NuxtLink :to="`/l/${location?.slug}?category=${category.id}`">
                   {{ category.name_de }}
                 </NuxtLink>
               </span>
@@ -156,13 +157,14 @@ const start = ref(null);
 const end = ref(null);
 const message = ref(null);
 
+userStore.clearReservationIntent();
+
 const { data: location } = await useAsyncData("location", async () => {
   const location = await pb
     .collection("public_locations")
     .getFirstListItem(
       pb.filter("slug = {:slug}", { slug: route.params.location })
     );
-
   return structuredClone(location);
 });
 const { data: product } = await useAsyncData("product", async () => {
@@ -171,9 +173,6 @@ const { data: product } = await useAsyncData("product", async () => {
     .getOne(route.params.product, {
       expand: "categories",
     });
-
-  console.log(product);
-
   return structuredClone(product);
 });
 const { data: reservations, refresh: refreshReservations } = await useAsyncData(
@@ -201,19 +200,21 @@ useHead({
   title: `${product.value?.name} | Leihapp`,
 });
 
+const startOfToday = getStartOfDay();
 function disableDayFn(date) {
   // Get the days the location is open
   const openDays = Object.keys(location.value?.opening_hours);
   // Disable dates which are not on days where the location is open,
-  // or dates which are in the past
-  return !isDateOnDay(date, openDays) || date < getStartOfDay();
+  // or dates which are before today
+  const startOfDate = new Date(date.getTime());
+  startOfDate.setHours(0, 0, 0, 0);
+  return !isDateOnDay(date, openDays) || startOfDate < startOfToday;
 }
 
 function onReserve() {
   if (!pb.authStore.isValid) {
-    router.push(
-      `/login?return=/l/${location.value.slug}/p/${product.value.id}`
-    );
+    userStore.setReservationIntent(location.value.slug, product.value.id);
+    router.push("/signup");
     return;
   }
   dialog.value.show();

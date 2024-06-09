@@ -3,26 +3,28 @@ version: "3.8"
 services:
   app:
     build:
-      context: app
+      context: ../app
       dockerfile: Dockerfile
       target: dev
     ports:
       - "3000:3000"
     environment:
+      HOST: "0.0.0.0"
+      PORT: "3000"
       NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL: http://pocketbase:8080
       NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL: http://localhost:8080
       NUXT_PLAUSIBLE_TRACKING_DOMAIN: ""
     volumes:
-      - ./app:/app
+      - ../app:/app
       - /app/node_modules
     networks:
-      - leihbar
+      - leihbar_tests
 
   pocketbase:
     build:
-      context: pocketbase
+      context: ../pocketbase
       dockerfile: Dockerfile
-      target: dev
+      target: test
     ports:
       - "8080:8080"
     environment:
@@ -32,11 +34,11 @@ services:
       CONFIG_LENDING_CONDITIONS_LINK: "https://example.com/lending-conditions"
       CONFIG_LENDING_CONTACT_EMAIL: "lending@example.com"
     volumes:
-      - ./pocketbase/pb_migrations:/pb/pb_migrations
-      - ./pocketbase/pb_hooks:/pb/pb_hooks
-      - ./pocketbase/pb_data:/pb/pb_data
+      - ../pocketbase/pb_migrations:/pb/pb_migrations
+      - ../pocketbase/pb_hooks:/pb/pb_hooks
+      - /pb/pb_data
     networks:
-      - leihbar
+      - leihbar_tests
 
   mailhog:
     image: mailhog/mailhog
@@ -46,7 +48,7 @@ services:
       - 1025:1025 # smtp server
       - 8025:8025 # web ui
     networks:
-      - leihbar
+      - leihbar_tests
 
 networks:
-  leihbar:
+  leihbar_tests:

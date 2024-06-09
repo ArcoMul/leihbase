@@ -56,13 +56,19 @@ onRecordBeforeCreateRequest((e) => {
 }, "reservations");
 
 onRecordAfterCreateRequest((e) => {
+  const locale = $os.getenv("CONFIG_LOCALE") || "en";
+  const { getNotificationEmailAddresses } = require(`${__hooks}/lib/location`);
   const {
-    getNotificationEmailAddresses,
-  } = require(`${__hooks}/lib/location.js`);
+    reservationConfirmationEmail,
+    reservationConfirmationLocationEmail,
+  } = require(`${__hooks}/lib/emails.${locale}`);
 
-  const isAdmin = e.httpContext.get("admin");
+  const { record, httpContext } = e;
+
+  const isAdmin = httpContext.get("admin");
+  const requestUser = httpContext.get("authRecord");
   if (isAdmin) {
-    // Don't send notification when an admin created the reservation
+    // Don't send confirmations when an admin created the reservation
     return;
   }
 
@@ -70,56 +76,66 @@ onRecordAfterCreateRequest((e) => {
   // also the user involved in the reservation
   // https://pocketbase.io/docs/js-routing/#retrieving-the-current-auth-state
 
-  const { record } = e;
-
   $app.dao().expandRecord(record, ["product", "user", "location"], null);
 
   // Retrieve e-mail addresses to send reservation notifications on from
   // location collection
   const location = record.expandedOne("location");
-  const notificationEmailAddresses = getNotificationEmailAddresses(location);
-  if (notificationEmailAddresses.length < 1) {
-    return;
-  }
 
   const product = record.expandedOne("product");
   const productName = product.get("name");
-  const productId = product.get("id");
-  const message = record.get("message");
 
   const user = record.expandedOne("user");
   const userName = user.get("name");
-  const userEmail = user.get("email");
 
-  notificationEmailAddresses.forEach((to) => {
+  const start = new Date(record.get("start").string().split(" ")[0]);
+  const end = new Date(record.get("end").string().split(" ")[0]);
+
+  // Notify location
+  const notificationEmailAddresses = getNotificationEmailAddresses(location);
+  if (notificationEmailAddresses.length > 0) {
+    notificationEmailAddresses.forEach((to) => {
+      const email = new MailerMessage({
+        from: {
+          address: $app.settings().meta.senderAddress,
+          name: $app.settings().meta.senderName,
+        },
+        to: [{ address: to }],
+        ...reservationConfirmationLocationEmail({
+          productUrl: `${
+            $app.settings().meta.appUrl
+          }/link/product/${product.get("id")}`,
+          productName,
+          userName,
+          userEmail: user.get("email"),
+          start,
+          end,
+          message: record.get("message"),
+        }),
+      });
+      $app.newMailClient().send(email);
+    });
+  }
+
+  // Notify user, if the user is the one making the reservation
+  if (user && requestUser && requestUser.get("id") === user.get("id")) {
     const email = new MailerMessage({
       from: {
         address: $app.settings().meta.senderAddress,
         name: $app.settings().meta.senderName,
       },
-      to: [{ address: to }],
-      subject: `Neue reservierung von ${userName}: ${productName}`,
-      html: `Hi,<br>
-    <br>
-    Neue Reservierung:<br>
-    <br>
-    Gegenstand:<br>
-    <a href="${
-      $app.settings().meta.appUrl
-    }/link/product/${productId}">${productName}</a><br>
-    <br>
-    Person:<br>
-    ${userName} (<a href="mailto:${userEmail}">${userEmail}</a>)<br>
-    <br>
-    Nachricht:<br>
-    ${
-      message
-        ? `<blockquote>
-            ${message.replace(/\n/g, "<br>")}<br>
-          </blockquote>`
-        : `<i>Keine</i>`
-    }`,
+      to: [{ address: user.get("email") }],
+      ...reservationConfirmationEmail({
+        productUrl: `${$app.settings().meta.appUrl}/link/product/${product.get(
+          "id"
+        )}`,
+        productName,
+        userName,
+        start,
+        end,
+        deposit: product.get("deposit"),
+      }),
     });
     $app.newMailClient().send(email);
-  });
+  }
 }, "reservations");

@@ -27,6 +27,6 @@ export function isDateOnDay(date: Date, days: string[]) {
 
 export function getStartOfDay() {
   var startOfDay = new Date();
-  startOfDay.setUTCHours(0, 0, 0, 0);
+  startOfDay.setHours(0, 0, 0, 0);
   return startOfDay;
 }

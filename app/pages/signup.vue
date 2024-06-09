@@ -1,7 +1,10 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1>{{ t("title") }}</h1>
+      <h1 data-test="signup-h1">{{ t("title") }}</h1>
+      <i18n-t keypath="text" tag="p" for="login_text">
+        <NuxtLink to="/login">{{ t("login_text") }}</NuxtLink>
+      </i18n-t>
       <form @submit.prevent="onSignup">
         <Input
           name="name"
@@ -10,6 +13,7 @@
           type="text"
           required
           v-model="name"
+          data-testid="name-input"
         />
         <Input
           id="email"
@@ -18,6 +22,7 @@
           name="email"
           required
           v-model="email"
+          data-testid="email-input"
         />
         <Input
           id="password"
@@ -27,6 +32,7 @@
           required
           password-toggle
           v-model="password"
+          data-testid="password-input"
         />
         <fieldset class="checkbox">
           <input
@@ -34,6 +40,7 @@
             type="checkbox"
             name="terms_and_conditions"
             value="yes"
+            data-testid="tac-checkbox"
             required
           />
           <label for="terms-and-conditions">
@@ -49,11 +56,17 @@
           </label>
         </fieldset>
 
-        <sl-alert variant="danger" :open="!!signupError">
+        <sl-alert
+          variant="danger"
+          :open="!!signupError"
+          data-testid="signup-error"
+        >
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button size="lg" type="submit">{{ t("submit") }}</Button>
+        <Button size="lg" type="submit" data-testid="submit-button">{{
+          t("submit")
+        }}</Button>
       </form>
     </Card>
   </Container>
@@ -62,6 +75,10 @@
 <script setup>
 import Container from "~/components/Container";
 import Card from "~/components/Card";
+import {
+  TYPE_AFTER_SIGNUP,
+  TYPE_AFTER_SIGNUP_WITH_INTENT,
+} from "~/components/banner/Banner.model";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
@@ -109,7 +126,14 @@ async function onSignup() {
     userStore.login();
 
     // Routing
-    router.push(route.query.return ? route.query.return : "/profile");
+    const { locationSlug, productId } = userStore.$state.reservationIntent;
+    if (locationSlug && productId) {
+      userStore.showBanner(TYPE_AFTER_SIGNUP_WITH_INTENT);
+      router.push(`/l/${locationSlug}/p/${productId}`);
+    } else {
+      userStore.showBanner(TYPE_AFTER_SIGNUP);
+      router.push("/profile");
+    }
   } catch (e) {
     console.log(e);
     if (e.data?.data?.password?.code === "validation_length_out_of_range") {
@@ -164,6 +188,8 @@ fieldset.checkbox {
   "en": {
     "page_title": "Sign up",
     "title": "Sign up",
+    "text": "Already have an account? {0}.",
+    "login_text": "Sign in",
     "name": "Name",
     "email": "E-Mail",
     "password": "Password",
@@ -180,6 +206,8 @@ fieldset.checkbox {
   "de": {
     "page_title": "Registrieren",
     "title": "Registrieren",
+    "text": "Du hast bereits ein Konto? {0}.",
+    "login_text": "Einloggen",
     "name": "Name",
     "email": "E-Mail",
     "password": "Kennwort",

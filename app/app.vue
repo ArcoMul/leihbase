@@ -20,6 +20,19 @@ setBasePath(
 
 const { isValid } = usePocketbase();
 const userStore = useUserStore();
+const config = useRuntimeConfig();
+
+if (config.plausibleTrackingDomain) {
+  useHead({
+    script: [
+      {
+        defer: true,
+        "data-domain": config.plausibleTrackingDomain,
+        src: "https://plausible.io/js/script.js",
+      },
+    ],
+  });
+}
 
 if (isValid.value) {
   userStore.fetchUserReservations();

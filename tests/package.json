@@ -1,0 +1,26 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "docker compose up -d; pnpm run playwright:test",
+    "stop": "docker compose down",
+    "test": "docker compose up -d; pnpm run playwright:test; docker compose down",
+    "test:ui": "docker compose up -d; pnpm run playwright:test --ui; docker compose down",
+    "test:headed": "docker compose up -d; pnpm run playwright:test --headed; docker compose down",
+    "playwright:test": "npx playwright test"
+  },
+  "devDependencies": {
+    "@nuxt/test-utils": "^3.13.1",
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.14.2"
+  },
+  "dependencies": {
+    "pocketbase": "^0.21.3"
+  }
+}

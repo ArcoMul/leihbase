@@ -1,5 +1,6 @@
 <template>
   <Container width="sm" centered no-padding>
+    <Banner class="banner" />
     <Card class="card">
       <h1>Profile</h1>
       <p>
@@ -39,6 +40,9 @@ function onLogout() {
 @import "~/assets/styles/_breakpoints.scss";
 
 @media (min-width: $breakpoint-md) {
+  .banner {
+    margin-top: 3rem;
+  }
   .card {
     margin-top: 3rem;
   }

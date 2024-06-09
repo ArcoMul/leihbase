@@ -1,6 +1,6 @@
 FROM alpine:latest AS base
 
-ARG PB_VERSION=0.22.4
+ARG PB_VERSION=0.22.13
 
 RUN apk add --no-cache \
     unzip \
@@ -22,3 +22,11 @@ FROM base AS dev
 EXPOSE 8080
 # start pocketbase
 CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8080"]
+
+FROM base AS test
+EXPOSE 8080
+# start pocketbase
+CMD /pb/pocketbase migrate up; \
+    /pb/pocketbase admin create test@example.com 1234567890; \
+    /pb/pocketbase serve --http=0.0.0.0:8080
+

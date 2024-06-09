@@ -3,7 +3,7 @@
     <Card class="card">
       <h1>{{ t("title") }}</h1>
       <i18n-t keypath="text" tag="p" for="signup_text">
-        <NuxtLink :to="signupLink">{{ t("signup_text") }}</NuxtLink>
+        <NuxtLink to="/signup">{{ t("signup_text") }}</NuxtLink>
       </i18n-t>
       <form @submit.prevent="onLogin">
         <Input
@@ -27,7 +27,7 @@
         <sl-alert variant="danger" :open="!!authenticationError">
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           <i18n-t keypath="error" tag="span" for="error_signup">
-            <NuxtLink :to="signupLink">{{ t("error_signup") }}</NuxtLink>
+            <NuxtLink to="/signup">{{ t("error_signup") }}</NuxtLink>
           </i18n-t>
         </sl-alert>
         <Button size="lg" type="submit">{{ t("submit") }}</Button>
@@ -40,6 +40,10 @@
 import Container from "~/components/Container";
 import Input from "~/components/Input";
 import Card from "~/components/Card";
+import {
+  TYPE_AFTER_LOGIN,
+  TYPE_AFTER_LOGIN_WITH_INTENT,
+} from "~/components/banner/Banner.model";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
@@ -51,7 +55,7 @@ const { t } = useI18n({
 });
 
 const router = useRouter();
-const route = useRoute();
+const userStore = useUserStore();
 const { login, isValid } = usePocketbase();
 
 useHead({
@@ -62,10 +66,6 @@ const email = ref(null);
 const password = ref(null);
 
 const authenticationError = ref(false);
-
-const signupLink = route.query.return
-  ? `/signup?return=${route.query.return}`
-  : "/signup";
 
 async function onLogin() {
   authenticationError.value = false;
@@ -78,8 +78,16 @@ async function onLogin() {
   }
 
   if (isValid.value) {
-    // userStore.login();
-    router.push(route.query.return ? route.query.return : "/profile");
+    // Show after-login banner on next page
+
+    const { locationSlug, productId } = userStore.$state.reservationIntent;
+    if (locationSlug && productId) {
+      userStore.showBanner(TYPE_AFTER_LOGIN_WITH_INTENT);
+      router.push(`/l/${locationSlug}/p/${productId}`);
+    } else {
+      userStore.showBanner(TYPE_AFTER_LOGIN);
+      router.push("/profile");
+    }
   }
 }
 </script>
