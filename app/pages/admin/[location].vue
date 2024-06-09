@@ -1,47 +1,32 @@
 <template>
   <Container width="lg" centered>
-    <h1>{{ location.name }}</h1>
-    <h2>Reservations</h2>
-    <h3>To be returned</h3>
-    <ul>
-      <li v-for="reservation in finishedReservations">
-        {{ reservation.expand.product.name }}
-        ({{ reservation.expand?.user?.name }}) ({{
-          formatDate(reservation.start, "DD MM", locale)
-        }}
-        -
-        {{ formatDate(reservation.end, "DD MM", locale) }})
-      </li>
-    </ul>
-    <h3>Ongoing</h3>
-    <ul>
-      <li v-for="reservation in ongoingReservations">
-        {{ reservation.expand.product.name }}
-        ({{ reservation.expand?.user?.name }}) ({{
-          formatDate(reservation.start, "DD MM", locale)
-        }}
-        -
-        {{ formatDate(reservation.end, "DD MM", locale) }})
-      </li>
-    </ul>
-    <h3>Future</h3>
+    <h1>Reservations - {{ location?.name }}</h1>
 
-    <ul>
-      <li v-for="reservation in futureReservations">
-        {{ reservation.expand.product.name }}
-        ({{ reservation.expand?.user?.name }}) ({{
-          formatDate(reservation.start, "DD MM", locale)
-        }}
-        -
-        {{ formatDate(reservation.end, "DD MM", locale) }})
-      </li>
-    </ul>
+    <section>
+      <h3>Today</h3>
+      <AdminReservationTable
+        v-if="finishedReservations.length > 0"
+        :reservations="finishedReservations"
+      />
+      <p v-else><i>No reservations starting or ending today.</i></p>
+    </section>
+
+    <section>
+      <h3>Ongoing</h3>
+      <AdminReservationTable :reservations="ongoingReservations" />
+    </section>
+
+    <section>
+      <h3>Future</h3>
+      <AdminReservationTable :reservations="futureReservations" />
+    </section>
   </Container>
 </template>
 
 <script lang="ts" setup>
 import { DateTime } from "luxon";
 import { formatDate } from "~/lib/date";
+import AdminReservationTable from "~/components/admin/AdminReservationsTable.vue";
 
 const { pb } = usePocketbase();
 const route = useRoute();
@@ -113,3 +98,12 @@ const { data: futureReservations } = await useAsyncData(
   }
 );
 </script>
+
+<style scoped>
+h1 {
+  margin-bottom: 3rem;
+}
+section {
+  margin-bottom: 3rem;
+}
+</style>
