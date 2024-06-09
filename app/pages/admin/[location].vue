@@ -23,14 +23,11 @@
   </Container>
 </template>
 
-<script lang="ts" setup>
-import { DateTime } from "luxon";
-import { formatDate } from "~/lib/date";
+<script setup>
 import AdminReservationTable from "~/components/admin/AdminReservationsTable.vue";
 
 const { pb } = usePocketbase();
 const route = useRoute();
-const { locale } = useI18n();
 
 const slug = route.params.location;
 
@@ -41,14 +38,12 @@ const { data: location } = await useAsyncData("admin_location", async () => {
   return structuredClone(location);
 });
 
-console.log(
-  pb.filter(
-    "location = {:location} && start < @todayStart && end > @todayStart",
-    {
-      location: location.value.id,
-    }
-  )
-);
+if (!location.value || !location.value.id) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: "Page Not Found",
+  });
+}
 
 const { data: finishedReservations } = await useAsyncData(
   "admin_finished_reservations",
@@ -60,7 +55,7 @@ const { data: finishedReservations } = await useAsyncData(
           location: location.value.id,
         }
       ),
-      expand: ["product,user"],
+      expand: "product,user",
       requestKey: "admin_finished_reservations",
     });
     return structuredClone(reservations);
@@ -77,7 +72,7 @@ const { data: ongoingReservations } = await useAsyncData(
           location: location.value.id,
         }
       ),
-      expand: ["product,user"],
+      expand: "product,user",
       requestKey: "admin_ongoing_reservations",
     });
     return structuredClone(reservations);
@@ -91,7 +86,7 @@ const { data: futureReservations } = await useAsyncData(
       filter: pb.filter("location = {:location} && start > @todayEnd", {
         location: location.value.id,
       }),
-      expand: ["product,user"],
+      expand: "product,user",
       requestKey: "admin_future_reservations",
     });
     return structuredClone(reservations);
