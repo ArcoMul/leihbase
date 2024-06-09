@@ -10,10 +10,15 @@ const Days = [
   "saturday",
 ];
 
+const FORMATS = {
+  "DD MMM YYYY": DateTime.DATE_MED,
+  "DD MM": { weekday: "long", month: "2-digit", day: "2-digit" },
+};
+
 export function formatDate(date: string, format: string, locale: string) {
   return DateTime.fromJSDate(new Date(date))
     .setLocale(locale)
-    .toLocaleString(format);
+    .toLocaleString(FORMATS[format]);
 }
 
 export function isDateOnDay(date: Date, days: string[]) {
