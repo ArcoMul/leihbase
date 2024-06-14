@@ -12,5 +12,6 @@ const location = await pb
 
 await navigateTo({
   path: `/l/${location.slug}/p/${route.params.id}`,
+  replace: true,
 });
 </script>

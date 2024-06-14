@@ -33,7 +33,11 @@
         >
           {{ formatDate(reservation.end, "ddd, DD.MM", locale) }}
         </td>
-        <td>{{ reservation.expand.product.name }}</td>
+        <td>
+          <NuxtLink :to="`/link/product/${reservation.expand.product.id}`">
+            {{ reservation.expand.product.name }}
+          </NuxtLink>
+        </td>
         <td>{{ reservation.expand?.user?.name }}</td>
         <td class="note" v-html="reservation.note"></td>
       </tr>
