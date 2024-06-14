@@ -1,6 +1,9 @@
 <template>
   <Container width="lg" centered>
-    <h1>{{ t("title") }} - {{ location?.name }}</h1>
+    <header class="page-header">
+      <h1>{{ t("title") }} - {{ location?.name }}</h1>
+      <Button @click="handleNewReservationClick">New reservation</Button>
+    </header>
 
     <TabList active="today">
       <Tab id="today" :title="t('tab_shift')">
@@ -61,10 +64,12 @@
       </Tab>
     </TabList>
   </Container>
+  <ReservationDrawer v-model:open="reservationDrawerOpen" />
 </template>
 
 <script setup>
 import AdminReservationTable from "~/components/admin/AdminReservationsTable.vue";
+import ReservationDrawer from "./components/ReservationDrawer.vue";
 import { isToday, startOfDate, endOfDate, formatDate } from "~/lib/date";
 import { ArrowRight, ArrowLeft } from "@iconoir/vue";
 
@@ -78,6 +83,8 @@ const { t } = useI18n({
 const slug = route.params.location;
 
 const date = ref(new Date(Date.now()));
+
+const reservationDrawerOpen = ref(false);
 
 const { data: location } = await useAsyncData("admin_location", async () => {
   const location = await pb
@@ -152,11 +159,19 @@ function handleDayForward() {
   date.value.setDate(date.value.getDate() + 1);
   refreshTodaysReservations();
 }
+
+function handleNewReservationClick() {
+  console.log("CLICK!!!");
+  reservationDrawerOpen.value = true;
+}
 </script>
 
 <style lang="scss" scoped>
-h1 {
+header.page-header {
   margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 section {
   margin-bottom: 3rem;
