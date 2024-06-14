@@ -41,7 +41,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0rem 1rem;
-  height: 4rem;
+  height: var(--navbar-height);
   background-color: var(--header-bg-color);
   position: sticky;
   top: 0;
