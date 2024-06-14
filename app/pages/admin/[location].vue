@@ -1,50 +1,65 @@
 <template>
   <Container width="lg" centered>
-    <h1>Reservations - {{ location?.name }}</h1>
+    <h1>{{ t("title") }} - {{ location?.name }}</h1>
 
-    <section class="today">
-      <header>
-        <button @click="handleDayBackward">
-          <ArrowLeft class="icon" />
-        </button>
-        <h3>
-          {{ isToday(date) ? "Today" : formatDate(date, "ddd, DD.MM", locale) }}
-        </h3>
-        <button @click="handleDayForward">
-          <ArrowRight class="icon" />
-        </button>
-      </header>
-      <AdminReservationTable
-        v-if="todaysReservations.length > 0"
-        :reservations="todaysReservations"
-        :date="date"
-        highlight-date="date"
-      />
-      <p v-else>
-        <i
-          >No reservations starting or ending
-          {{
-            isToday(date) ? "today" : "on " + formatDate(date, "DD.MM", locale)
-          }}.</i
-        >
-      </p>
-    </section>
+    <TabList active="today">
+      <Tab id="today" :title="t('tab_shift')">
+        <section class="today">
+          <header>
+            <button @click="handleDayBackward">
+              <ArrowLeft class="icon" />
+            </button>
+            <h3>
+              {{
+                isToday(date)
+                  ? t("Today")
+                  : formatDate(date, "ddd, DD.MM", locale)
+              }}
+            </h3>
+            <button @click="handleDayForward">
+              <ArrowRight class="icon" />
+            </button>
+          </header>
+          <AdminReservationTable
+            v-if="todaysReservations.length > 0"
+            :reservations="todaysReservations"
+            :date="date"
+            highlight-date="date"
+          />
+          <p v-else>
+            <i>
+              {{
+                t("no_reservations_on_date", {
+                  date: isToday(date)
+                    ? t("today")
+                    : t("on") + " " + formatDate(date, "DD.MM", locale),
+                })
+              }}.
+            </i>
+          </p>
+        </section>
+      </Tab>
 
-    <section>
-      <h3>Ongoing</h3>
-      <AdminReservationTable
-        :reservations="ongoingReservations"
-        highlight-date="end"
-      />
-    </section>
+      <Tab id="ongoing" :title="t('tab_ongoing')">
+        <section>
+          <h3>{{ t("ongoing_title") }}</h3>
+          <AdminReservationTable
+            :reservations="ongoingReservations"
+            highlight-date="end"
+          />
+        </section>
+      </Tab>
 
-    <section>
-      <h3>Future</h3>
-      <AdminReservationTable
-        :reservations="futureReservations"
-        highlight-date="start"
-      />
-    </section>
+      <Tab id="future" :title="t('tab_future')">
+        <section>
+          <h3>{{ t("future_title") }}</h3>
+          <AdminReservationTable
+            :reservations="futureReservations"
+            highlight-date="start"
+          />
+        </section>
+      </Tab>
+    </TabList>
   </Container>
 </template>
 
@@ -56,6 +71,9 @@ import { ArrowRight, ArrowLeft } from "@iconoir/vue";
 const { pb } = usePocketbase();
 const route = useRoute();
 const { locale } = useI18n();
+const { t } = useI18n({
+  useScope: "local",
+});
 
 const slug = route.params.location;
 
@@ -142,6 +160,7 @@ h1 {
 }
 section {
   margin-bottom: 3rem;
+  padding-top: 2rem;
 }
 section > header {
   display: flex;
@@ -171,3 +190,32 @@ section.today {
   display: none;
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "title": "Reservations",
+    "tab_shift": "Shift",
+    "tab_ongoing": "Ongoing",
+    "tab_future": "Future",
+    "today": "heute",
+    "Today": "Heute",
+    "no_reservations_on_date": "No reservations starting or ending {date}",
+    "on": "am",
+    "ongoing_title": "Ongoing reservations",
+    "future_title": "Future Reservations"
+  },
+  "de": {
+    "title": "Reservierungen",
+    "tab_shift": "Schicht",
+    "tab_ongoing": "Laufend",
+    "tab_future": "Zukunft",
+    "today": "heute",
+    "Today": "Heute",
+    "no_reservations_on_date": "Es gibt keine Reservierungen welchem {date} start oder enden",
+    "on": "am",
+    "ongoing_title": "Laufende Reservierungen",
+    "future_title": "Zukünftige Reservierungen"
+  }
+}
+</i18n>
