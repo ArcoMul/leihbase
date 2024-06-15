@@ -2,9 +2,19 @@
   <Drawer header-offset inset v-model:open="open">
     <h2>{{ state === "new" ? "New" : "Edit" }} Reservation</h2>
     <form>
-      <AutoSuggest collection="product" search="name" />
-      <AutoSuggest collection="user" search="name" />
-      <DateInput label="Śtart" />
+      <RecordPickerInput
+        id="reservation-drawer-product-input"
+        label="Product"
+        collection="products"
+        :search="['name']"
+      />
+      <RecordPickerInput
+        id="reservation-drawer-user-input"
+        label="User"
+        collection="users"
+        :search="['name', 'email']"
+      />
+      <DateInput label="Start" />
       <DateInput label="End" />
       <Input label="Note" />
       <Button type="submit">Save</Button>
@@ -13,7 +23,10 @@
 </template>
 
 <script lang="ts" setup>
+import RecordPickerInput from "~/components/admin/RecordPickerInput.vue";
+
 defineProps<{ state: "new" | "edit" }>();
+
 const open = defineModel("open");
 </script>
 

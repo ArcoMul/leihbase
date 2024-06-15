@@ -65,10 +65,12 @@
     </TabList>
   </Container>
   <ReservationDrawer v-model:open="reservationDrawerOpen" />
+  <RecordPicker ref="recordPicker" />
 </template>
 
 <script setup>
 import AdminReservationTable from "~/components/admin/AdminReservationsTable.vue";
+import RecordPicker from "~/components/admin/RecordPicker.vue";
 import ReservationDrawer from "./components/ReservationDrawer.vue";
 import { isToday, startOfDate, endOfDate, formatDate } from "~/lib/date";
 import { ArrowRight, ArrowLeft } from "@iconoir/vue";
@@ -85,6 +87,14 @@ const slug = route.params.location;
 const date = ref(new Date(Date.now()));
 
 const reservationDrawerOpen = ref(false);
+
+const recordPicker = ref(null);
+
+provide("recordPicker", recordPicker);
+
+onMounted(() => {
+  console.log("onmounted", recordPicker.value.show);
+});
 
 const { data: location } = await useAsyncData("admin_location", async () => {
   const location = await pb
@@ -161,7 +171,6 @@ function handleDayForward() {
 }
 
 function handleNewReservationClick() {
-  console.log("CLICK!!!");
   reservationDrawerOpen.value = true;
 }
 </script>
