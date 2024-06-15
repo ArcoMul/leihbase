@@ -47,7 +47,7 @@ if (userStore.banner) {
 
 <style lang="scss" scoped>
 .banner {
-  background-color: var(--success-background);
+  background-color: var(--background-success);
   padding: 1rem 1.25rem;
   border-radius: 5px;
   display: flex;
