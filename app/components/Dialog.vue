@@ -7,14 +7,18 @@
         <Xmark />
       </button>
     </header>
-    <slot></slot>
+    <div class="body">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { Xmark } from "@iconoir/vue";
-const open = defineModel("open");
+
 defineProps<{ inset: boolean; title: string }>();
+
+const open = defineModel("open");
 </script>
 
 <style lang="scss" scoped>
@@ -38,7 +42,7 @@ defineProps<{ inset: boolean; title: string }>();
   left: 50%;
   top: -100%;
   transform: translate(-50%, -50%);
-  width: 600px;
+  width: min(600px, 100%);
   background-color: white;
   z-index: 40;
   transition: top 200ms;
@@ -54,11 +58,19 @@ header {
   justify-content: space-between;
   align-items: center;
   line-height: 1;
+  margin-bottom: 1rem;
+  h2 {
+    margin: 0;
+  }
   button {
     background: transparent;
     border: 0;
     padding: 0.5rem;
     cursor: pointer;
   }
+}
+.body {
+  max-height: 75vh;
+  overflow-y: auto;
 }
 </style>

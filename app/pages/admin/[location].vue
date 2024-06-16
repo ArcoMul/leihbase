@@ -85,16 +85,10 @@ const { t } = useI18n({
 const slug = route.params.location;
 
 const date = ref(new Date(Date.now()));
-
 const reservationDrawerOpen = ref(false);
-
 const recordPicker = ref(null);
 
 provide("recordPicker", recordPicker);
-
-onMounted(() => {
-  console.log("onmounted", recordPicker.value.show);
-});
 
 const { data: location } = await useAsyncData("admin_location", async () => {
   const location = await pb
