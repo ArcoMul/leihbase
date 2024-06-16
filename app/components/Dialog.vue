@@ -69,8 +69,4 @@ header {
     cursor: pointer;
   }
 }
-.body {
-  max-height: 75vh;
-  overflow-y: auto;
-}
 </style>

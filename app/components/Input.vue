@@ -4,6 +4,7 @@
       :type="type"
       :id="id"
       :name="name"
+      :placeholder="placeholder"
       :required="required"
       :disabled="disabled"
       :readonly="readonly"
@@ -14,16 +15,17 @@
   </FormRow>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const model = defineModel();
-const props = defineProps({
-  id: String,
-  label: String,
-  name: String,
-  required: Boolean,
-  disabled: Boolean,
-  readonly: Boolean,
-  type: String,
-  dataTestid: String,
-});
+const props = defineProps<{
+  id?: string;
+  label?: string;
+  name?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  type?: string;
+  dataTestid?: string;
+}>();
 </script>
