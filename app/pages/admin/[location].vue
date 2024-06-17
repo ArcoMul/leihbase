@@ -181,6 +181,9 @@ header.page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  h1 {
+    margin: 0;
+  }
 }
 section {
   margin-bottom: 3rem;
