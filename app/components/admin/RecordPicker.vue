@@ -9,7 +9,7 @@
     <Scrollable height="70vh">
       <table cellspacing="0">
         <tr v-for="record in records" :key="record.id">
-          <td v-for="s in search">
+          <td v-for="s in search" @click="handleRecordClick(record)">
             {{ record[s] }}
           </td>
         </tr>
@@ -19,6 +19,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { RecordModel } from "pocketbase";
+
 const { pb } = usePocketbase();
 
 const open = defineModel("open");
@@ -27,6 +29,7 @@ const title = ref("");
 const collection = ref("");
 const search = ref<string[]>([]);
 const query = ref("");
+let record = ref<RecordModel>();
 
 const { data: records, refresh } = await useAsyncData(async () => {
   const records = await pb.collection(collection.value).getFullList({
@@ -43,20 +46,28 @@ function handleQueryInput() {
   refresh();
 }
 
+function handleRecordClick(_record: RecordModel) {
+  record.value = _record;
+  open.value = false;
+}
+
 function show({
   title: _title,
   collection: _collection,
   search: _search,
+  record: _record,
 }: {
   title: string;
   collection: string;
   search: string[];
+  record: Ref<RecordModel | undefined>;
 }) {
   query.value = "";
   title.value = _title;
   open.value = true;
   collection.value = _collection;
   search.value = _search;
+  record = _record;
   refresh();
 }
 

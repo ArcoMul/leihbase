@@ -1,9 +1,7 @@
 <template>
   <FormRow :for="id" :label="label" :required="required">
-    <button
-      @click.prevent="recordPicker?.show({ title: label, collection, search })"
-    >
-      None
+    <button @click.prevent="handleClick">
+      {{ record ? record[search[0]] : "None" }}
     </button>
   </FormRow>
 </template>
@@ -11,8 +9,8 @@
 <script lang="ts" setup>
 import type RecordPicker from "./RecordPicker.vue";
 
-const model = defineModel();
-defineProps<{
+const model = defineModel<string>();
+const props = defineProps<{
   id: string;
   label: string;
   name?: string;
@@ -26,6 +24,21 @@ defineProps<{
 
 const recordPicker =
   inject<Ref<InstanceType<typeof RecordPicker>>>("recordPicker");
+
+const { record, show } = await useRecordPicker(recordPicker, {
+  title: props.label,
+  collection: props.collection,
+  search: props.search,
+  value: model.value,
+});
+
+watch(record, (newRecord) => {
+  model.value = newRecord?.id;
+});
+
+function handleClick() {
+  show();
+}
 </script>
 
 <style lang="scss" scoped>

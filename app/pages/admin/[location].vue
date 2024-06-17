@@ -64,7 +64,11 @@
       </Tab>
     </TabList>
   </Container>
-  <ReservationDrawer v-model:open="reservationDrawerOpen" />
+  <ReservationDrawer
+    v-model:open="reservationDrawerOpen"
+    :location="location"
+    @update="handleReservationUpdate"
+  />
   <RecordPicker ref="recordPicker" />
 </template>
 
@@ -86,8 +90,8 @@ const slug = route.params.location;
 
 const date = ref(new Date(Date.now()));
 const reservationDrawerOpen = ref(false);
-const recordPicker = ref(null);
 
+const recordPicker = ref(null);
 provide("recordPicker", recordPicker);
 
 const { data: location } = await useAsyncData("admin_location", async () => {
@@ -122,9 +126,8 @@ const { data: todaysReservations, refresh: refreshTodaysReservations } =
     return structuredClone(reservations);
   });
 
-const { data: ongoingReservations } = await useAsyncData(
-  "admin_ongoing_reservations",
-  async () => {
+const { data: ongoingReservations, refresh: refreshOngoingReservations } =
+  await useAsyncData("admin_ongoing_reservations", async () => {
     const reservations = await pb.collection("reservations").getFullList({
       filter: pb.filter(
         "location = {:location} && start < @todayStart && end > @todayEnd",
@@ -137,12 +140,10 @@ const { data: ongoingReservations } = await useAsyncData(
       requestKey: "admin_ongoing_reservations",
     });
     return structuredClone(reservations);
-  }
-);
+  });
 
-const { data: futureReservations } = await useAsyncData(
-  "admin_future_reservations",
-  async () => {
+const { data: futureReservations, refresh: refreshFutureReservations } =
+  await useAsyncData("admin_future_reservations", async () => {
     const reservations = await pb.collection("reservations").getFullList({
       filter: pb.filter("location = {:location} && start > @todayEnd", {
         location: location.value.id,
@@ -152,8 +153,7 @@ const { data: futureReservations } = await useAsyncData(
       requestKey: "admin_future_reservations",
     });
     return structuredClone(reservations);
-  }
-);
+  });
 
 function handleDayBackward() {
   date.value.setDate(date.value.getDate() - 1);
@@ -162,6 +162,12 @@ function handleDayBackward() {
 function handleDayForward() {
   date.value.setDate(date.value.getDate() + 1);
   refreshTodaysReservations();
+}
+
+function handleReservationUpdate() {
+  refreshTodaysReservations();
+  refreshOngoingReservations();
+  refreshFutureReservations();
 }
 
 function handleNewReservationClick() {
