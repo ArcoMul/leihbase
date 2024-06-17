@@ -36,9 +36,18 @@ const emit = defineEmits(["update"]);
 
 const productId = ref<string>();
 const userId = ref<string>();
-const start = ref<Date>();
-const end = ref<Date>();
+const start = ref<Date | null>(null);
+const end = ref<Date | null>(null);
 const note = ref<string>();
+
+watch(open, (isOpening) => {
+  if (!isOpening) return;
+  productId.value = undefined;
+  userId.value = undefined;
+  start.value = null;
+  end.value = null;
+  note.value = undefined;
+});
 
 async function handleSubmit() {
   try {
