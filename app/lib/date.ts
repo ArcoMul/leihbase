@@ -13,10 +13,14 @@ const Days = [
 const FORMATS = {
   "DD MMM YYYY": DateTime.DATE_MED,
   "ddd, DD.MM": { weekday: "long", month: "2-digit", day: "2-digit" },
-  "DD.MM.YYYY": { weekday: "long", month: "2-digit", day: "2-digit" },
+  "DD.MM.YYYY": { year: "numeric", month: "2-digit", day: "2-digit" },
 };
 
-export function formatDate(date: string, format: string, locale: string) {
+export function formatDate(
+  date: string | Date,
+  format: string,
+  locale: string
+) {
   return DateTime.fromJSDate(new Date(date))
     .setLocale(locale)
     .toLocaleString(FORMATS[format]);
