@@ -92,12 +92,12 @@
             <DateInput
               :label="t('start')"
               v-model="start"
-              :disable-day-fn="disableDayFn"
+              :is-date-disallowed="isDateDisallowed"
             />
             <DateInput
               :label="t('end')"
               v-model="end"
-              :disable-day-fn="disableDayFn"
+              :is-date-disallowed="isDateDisallowed"
             />
             <sl-textarea
               :label="t('message')"
@@ -201,7 +201,7 @@ useHead({
 });
 
 const startOfToday = getStartOfDay();
-function disableDayFn(date) {
+function isDateDisallowed(date) {
   // Get the days the location is open
   const openDays = Object.keys(location.value?.opening_hours);
   // Disable dates which are not on days where the location is open,

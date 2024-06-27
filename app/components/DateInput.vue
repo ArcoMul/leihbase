@@ -11,13 +11,18 @@
         @click="handleInputFocus"
       />
       <template #popup>
-        <calendar-date
-          ref="datepicker"
-          show-outside-days
-          @change="handleDateChange"
-        >
-          <calendar-month></calendar-month>
-        </calendar-date>
+        <ClientOnly>
+          <calendar-date
+            ref="datepicker"
+            show-outside-days
+            :isDateDisallowed="isDateDisallowed"
+            @change="handleDateChange"
+          >
+            <ArrowLeft slot="previous" :title="t('previous_month')" />
+            <ArrowRight slot="next" :title="t('next_month')" />
+            <calendar-month></calendar-month>
+          </calendar-date>
+        </ClientOnly>
       </template>
     </Popup>
   </FormRow>
@@ -26,6 +31,7 @@
 <script lang="ts" setup>
 import { DateTime } from "luxon";
 import { formatDate, toShortISO } from "~/lib/date";
+import { ArrowLeft, ArrowRight } from "@iconoir/vue";
 
 const { t, locale } = useI18n();
 
@@ -41,7 +47,7 @@ const props = defineProps({
   label: String,
   name: String,
   required: Boolean,
-  disableDayFn: Function,
+  isDateDisallowed: Function,
 });
 
 const input = ref(null);
@@ -64,3 +70,31 @@ function handleDateChange(e) {
   showPopup.value = false;
 }
 </script>
+
+<style scoped>
+calendar-date::part(previous),
+calendar-date::part(next) {
+  background: transparent;
+  border: 0;
+}
+calendar-month::part(today) {
+  border: 1px solid black;
+}
+calendar-month::part(disallowed) {
+  text-decoration: line-through;
+  opacity: 0.333;
+}
+</style>
+
+<i18n lang="json">
+{
+  "en": {
+    "next_month": "Next month",
+    "previous_month": "Previous month"
+  },
+  "de": {
+    "next_month": "Nächster Monat",
+    "previous_month": "Voriger Monat"
+  }
+}
+</i18n>
