@@ -1,26 +1,38 @@
 <template>
   <FormRow :for="id" :label="label" :required="required">
-    <input
-      :id="id"
-      :name="name"
-      :required="required"
-      ref="input"
-      class="lb-input"
-    />
+    <Popup v-model:open="showPopup">
+      <input
+        :id="id"
+        :name="name"
+        :required="required"
+        :value="model ? formatDate(model, 'DD.MM.YYYY', locale) : ''"
+        ref="input"
+        class="lb-input"
+        @click="handleInputFocus"
+      />
+      <template #popup>
+        <calendar-date
+          ref="datepicker"
+          show-outside-days
+          @change="handleDateChange"
+        >
+          <calendar-month></calendar-month>
+        </calendar-date>
+      </template>
+    </Popup>
   </FormRow>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { DateTime } from "luxon";
-import { formatDate } from "~/lib/date";
-import "pikaday/css/pikaday.css";
+import { formatDate, toShortISO } from "~/lib/date";
 
 const { t, locale } = useI18n();
 
-let Pikaday;
+const datepicker = ref();
 
 if (process.client) {
-  ({ default: Pikaday } = await import("pikaday"));
+  await import("cally");
 }
 
 const model = defineModel();
@@ -33,56 +45,22 @@ const props = defineProps({
 });
 
 const input = ref(null);
-const picker = ref(null);
+const showPopup = ref(false);
 
-onMounted(() => {
-  picker.value = new Pikaday({
-    field: input.value,
-    disableDayFn: props.disableDayFn,
-    toString(date) {
-      return formatDate(date, DateTime.DATE_MED, locale.value);
-    },
-    onSelect(date) {
-      model.value = new Date(
-        Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-      );
-    },
-    i18n: {
-      previousMonth: t("previous_month"),
-      nextMonth: t("next_month"),
-      months: [
-        t("months.january"),
-        t("months.february"),
-        t("months.march"),
-        t("months.april"),
-        t("months.may"),
-        t("months.june"),
-        t("months.july"),
-        t("months.august"),
-        t("months.september"),
-        t("months.october"),
-        t("months.november"),
-        t("months.december"),
-      ],
-      weekdays: [
-        t("week_days.sunday"),
-        t("week_days.monday"),
-        t("week_days.tuesday"),
-        t("week_days.wednesday"),
-        t("week_days.thursday"),
-        t("week_days.friday"),
-        t("week_days.saturday"),
-      ],
-      weekdaysShort: [
-        t("week_days_short.sunday"),
-        t("week_days_short.monday"),
-        t("week_days_short.tuesday"),
-        t("week_days_short.wednesday"),
-        t("week_days_short.thursday"),
-        t("week_days_short.friday"),
-        t("week_days_short.saturday"),
-      ],
-    },
-  });
+watch(model, (value) => {
+  if (value) {
+    datepicker.value.value = toShortISO(value);
+  } else {
+    datepicker.value.value = "";
+  }
 });
+
+function handleInputFocus(e) {
+  showPopup.value = true;
+}
+
+function handleDateChange(e) {
+  model.value = new Date(datepicker.value.value);
+  showPopup.value = false;
+}
 </script>
