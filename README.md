@@ -66,3 +66,17 @@ SMTP values can be configured:
 
 Any sent e-mail can then be viewed in the mailhog web interface at
 http://localhost:8025.
+
+## Tests
+
+Tests are configured and run using [Playwright](https://playwright.dev/).
+
+### Setup
+
+- `$ cd tests`
+- `$ pnpm install`
+- `pnpm exec playwright install`
+
+### Run
+
+- `pnpm run test`
