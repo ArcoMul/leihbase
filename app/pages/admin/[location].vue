@@ -24,10 +24,11 @@
             </button>
           </header>
           <AdminReservationTable
-            v-if="todaysReservations.length > 0"
+            v-if="todaysReservations && todaysReservations.length > 0"
             :reservations="todaysReservations"
             :date="date"
             highlight-date="date"
+            @select="handleReservationSelect"
           />
           <p v-else>
             <i>
@@ -47,8 +48,10 @@
         <section>
           <h3>{{ t("ongoing_title") }}</h3>
           <AdminReservationTable
+            v-if="ongoingReservations"
             :reservations="ongoingReservations"
             highlight-date="end"
+            @select="handleReservationSelect"
           />
         </section>
       </Tab>
@@ -57,8 +60,10 @@
         <section>
           <h3>{{ t("future_title") }}</h3>
           <AdminReservationTable
+            v-if="futureReservations"
             :reservations="futureReservations"
             highlight-date="start"
+            @select="handleReservationSelect"
           />
         </section>
       </Tab>
@@ -66,18 +71,21 @@
   </Container>
   <ReservationDrawer
     v-model:open="reservationDrawerOpen"
+    :state="selectedReservation ? 'edit' : 'new'"
     :location="location"
+    :reservation="selectedReservation"
     @update="handleReservationUpdate"
   />
   <RecordPicker ref="recordPicker" />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import AdminReservationTable from "~/components/admin/AdminReservationsTable.vue";
 import RecordPicker from "~/components/admin/RecordPicker.vue";
 import ReservationDrawer from "./components/ReservationDrawer.vue";
 import { isToday, startOfDate, endOfDate, formatDate } from "~/lib/date";
 import { ArrowRight, ArrowLeft } from "@iconoir/vue";
+import type { Reservation } from "~/models/reservation";
 
 const { pb } = usePocketbase();
 const route = useRoute();
@@ -90,6 +98,7 @@ const slug = route.params.location;
 
 const date = ref(new Date(Date.now()));
 const reservationDrawerOpen = ref(false);
+const selectedReservation = ref<Reservation | null>(null);
 
 const recordPicker = ref(null);
 provide("recordPicker", recordPicker);
@@ -114,7 +123,7 @@ const { data: todaysReservations, refresh: refreshTodaysReservations } =
       filter: pb.filter(
         "location = {:location} && ((start >= {:dateStart} && start <= {:dateEnd}) || (end >= {:dateStart} && end <= {:dateEnd}))",
         {
-          location: location.value.id,
+          location: location.value?.id,
           dateStart: startOfDate(date.value),
           dateEnd: endOfDate(date.value),
         }
@@ -123,7 +132,7 @@ const { data: todaysReservations, refresh: refreshTodaysReservations } =
       expand: "product,user",
       requestKey: "admin_todays_reservations",
     });
-    return structuredClone(reservations);
+    return structuredClone(reservations) as Reservation[];
   });
 
 const { data: ongoingReservations, refresh: refreshOngoingReservations } =
@@ -132,27 +141,27 @@ const { data: ongoingReservations, refresh: refreshOngoingReservations } =
       filter: pb.filter(
         "location = {:location} && start < @todayStart && end > @todayEnd",
         {
-          location: location.value.id,
+          location: location.value?.id,
         }
       ),
       sort: "end",
       expand: "product,user",
       requestKey: "admin_ongoing_reservations",
     });
-    return structuredClone(reservations);
+    return structuredClone(reservations) as Reservation[];
   });
 
 const { data: futureReservations, refresh: refreshFutureReservations } =
   await useAsyncData("admin_future_reservations", async () => {
     const reservations = await pb.collection("reservations").getFullList({
       filter: pb.filter("location = {:location} && start > @todayEnd", {
-        location: location.value.id,
+        location: location.value?.id,
       }),
       sort: "start",
       expand: "product,user",
       requestKey: "admin_future_reservations",
     });
-    return structuredClone(reservations);
+    return structuredClone(reservations) as Reservation[];
   });
 
 function handleDayBackward() {
@@ -170,7 +179,13 @@ function handleReservationUpdate() {
   refreshFutureReservations();
 }
 
+function handleReservationSelect(reservation: Reservation) {
+  selectedReservation.value = reservation;
+  reservationDrawerOpen.value = true;
+}
+
 function handleNewReservationClick() {
+  selectedReservation.value = null;
   reservationDrawerOpen.value = true;
 }
 </script>

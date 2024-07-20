@@ -25,12 +25,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { RecordModel } from "pocketbase";
 import RecordPickerInput from "~/components/admin/RecordPickerInput.vue";
+import type { RecordModel } from "pocketbase";
+import type { Reservation } from "~/models/reservation";
 
 const { pb } = usePocketbase();
 
-const props = defineProps<{ state: "new" | "edit"; location: RecordModel }>();
+const props = defineProps<{
+  state: "new" | "edit";
+  location: RecordModel;
+  reservation: Reservation | null;
+}>();
 const open = defineModel("open");
 const emit = defineEmits(["update"]);
 
@@ -42,23 +47,38 @@ const note = ref<string>();
 
 watch(open, (isOpening) => {
   if (!isOpening) return;
-  productId.value = undefined;
-  userId.value = undefined;
-  start.value = null;
-  end.value = null;
-  note.value = undefined;
+  productId.value = props.reservation?.product || undefined;
+  userId.value = props.reservation?.user || undefined;
+  start.value = props.reservation?.start
+    ? new Date(props.reservation.start)
+    : null;
+  end.value = props.reservation?.end ? new Date(props.reservation.end) : null;
+  note.value = props.reservation?.note || undefined;
 });
 
 async function handleSubmit() {
+  const formData = {
+    user: userId.value,
+    product: productId.value,
+    location: props.location.id,
+    start: start.value,
+    end: end.value,
+    note: note.value,
+  };
   try {
-    await pb.collection("reservations").create({
-      user: userId.value,
-      product: productId.value,
-      location: props.location.id,
-      start: start.value,
-      end: end.value,
-      note: note.value,
-    });
+    if (props.state === "new") {
+      // Create new reservation
+      await pb.collection("reservations").create(formData);
+    } else if (props.state === "edit") {
+      if (!props.reservation?.id) {
+        throw new Error("reservation_undefined");
+      }
+      // Update existing reservation
+      await pb
+        .collection("reservations")
+        .update(props.reservation.id, formData);
+    }
+
     open.value = false;
     emit("update");
   } catch (err) {

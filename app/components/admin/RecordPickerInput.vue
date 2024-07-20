@@ -25,7 +25,7 @@ const props = defineProps<{
 const recordPicker =
   inject<Ref<InstanceType<typeof RecordPicker>>>("recordPicker");
 
-const { record, show } = await useRecordPicker(recordPicker, {
+const { record, show } = await useRecordPicker(model, recordPicker, {
   title: props.label,
   collection: props.collection,
   search: props.search,

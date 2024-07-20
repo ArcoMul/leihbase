@@ -1,4 +1,6 @@
-export interface Reservation {
+import type { RecordModel } from "pocketbase";
+
+export type Reservation = RecordModel & {
   id: string;
   user: string;
   product: string;
@@ -7,4 +9,5 @@ export interface Reservation {
   end: Date;
   message: string;
   note: string;
-}
+  expand: any;
+};

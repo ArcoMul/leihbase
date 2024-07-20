@@ -1,4 +1,5 @@
 import type { RecordModel } from "pocketbase";
+import type { ModelRef } from "vue";
 import type RecordPicker from "~/components/admin/RecordPicker.vue";
 
 /**
@@ -10,6 +11,7 @@ import type RecordPicker from "~/components/admin/RecordPicker.vue";
  * @returns
  */
 export async function useRecordPicker(
+  model: ModelRef<string | undefined, string>,
   recordPicker: Ref<InstanceType<typeof RecordPicker> | undefined>,
   {
     title,
@@ -27,10 +29,21 @@ export async function useRecordPicker(
 
   const record = ref<RecordModel>();
 
+  // Retrieve record if a value is defined
   if (value) {
     record.value = await pb.collection(collection).getOne(value);
   }
 
+  // Refresh record on value change
+  watch(model, async (newValue) => {
+    if (!newValue) {
+      record.value = undefined;
+      return;
+    }
+    record.value = await pb.collection(collection).getOne(newValue);
+  });
+
+  // Expose function to show RecordPicker dialog
   function show() {
     recordPicker?.value?.show({
       title,

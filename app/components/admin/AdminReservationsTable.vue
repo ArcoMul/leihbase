@@ -10,13 +10,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="reservation in reservations">
+      <tr
+        v-for="reservation in reservations"
+        @click="handleReservationClick(reservation)"
+      >
         <td
           :class="{
             start: true,
             highlight:
               highlightDate === 'start' ||
               (highlightDate === 'date' &&
+                date &&
                 isSameDate(date, new Date(reservation.start))),
           }"
         >
@@ -28,13 +32,18 @@
             highlight:
               highlightDate === 'end' ||
               (highlightDate === 'date' &&
+                date &&
                 isSameDate(date, new Date(reservation.end))),
           }"
         >
           {{ formatDate(reservation.end, "ddd, DD.MM", locale) }}
         </td>
         <td>
-          <NuxtLink :to="`/link/product/${reservation.expand.product.id}`">
+          <NuxtLink
+            :to="`/link/product/${reservation.expand.product.id}`"
+            target="_blank"
+            @click.stop
+          >
             {{ reservation.expand.product.name }}
           </NuxtLink>
         </td>
@@ -50,12 +59,17 @@ import { formatDate, isSameDate } from "~/lib/date";
 import type { Reservation } from "~/models/reservation";
 
 const { locale } = useI18n();
+const emit = defineEmits<{ select: [reservation: Reservation] }>();
 
 defineProps<{
   reservations: Reservation[];
   date?: Date;
   highlightDate: "start" | "end" | "date";
 }>();
+
+function handleReservationClick(reservation: Reservation) {
+  emit("select", reservation);
+}
 </script>
 
 <style scoped lang="scss">
@@ -68,12 +82,6 @@ td {
   padding: 0.5rem;
   width: 15%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-  &:first-child {
-    padding-left: 0;
-  }
-  &:last-child {
-    padding-right: 0;
-  }
   &.start,
   &.end {
     color: var(--body-text-color-light);
@@ -81,6 +89,11 @@ td {
       color: var(--body-text-color);
     }
   }
+}
+
+tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .note {

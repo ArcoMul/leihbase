@@ -86,6 +86,12 @@ onRecordAfterCreateRequest((e) => {
   const productName = product.get("name");
 
   const user = record.expandedOne("user");
+
+  if (!user) {
+    // Don't send a confirmation if no user is defined
+    return;
+  }
+
   const userName = user.get("name");
 
   const start = new Date(record.get("start").string().split(" ")[0]);
