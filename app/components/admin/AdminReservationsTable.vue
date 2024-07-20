@@ -48,7 +48,7 @@
           </NuxtLink>
         </td>
         <td>{{ reservation.expand?.user?.name }}</td>
-        <td class="note" v-html="reservation.note"></td>
+        <td class="note" v-html="reservation.note.replace(/<br>/g, ' ')"></td>
       </tr>
     </tbody>
   </table>

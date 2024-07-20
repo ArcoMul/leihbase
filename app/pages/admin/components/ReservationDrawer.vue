@@ -18,7 +18,7 @@
       />
       <DateInput label="Start" v-model="start" />
       <DateInput label="End" v-model="end" />
-      <Input label="Note" v-model="note" />
+      <Textarea label="Note" v-model="note" />
       <Button type="submit">Save</Button>
     </form>
   </Drawer>
@@ -53,7 +53,7 @@ watch(open, (isOpening) => {
     ? new Date(props.reservation.start)
     : null;
   end.value = props.reservation?.end ? new Date(props.reservation.end) : null;
-  note.value = props.reservation?.note || undefined;
+  note.value = props.reservation?.note.replace(/<br>/g, "\n") || undefined;
 });
 
 async function handleSubmit() {
@@ -63,7 +63,7 @@ async function handleSubmit() {
     location: props.location.id,
     start: start.value,
     end: end.value,
-    note: note.value,
+    note: note.value?.replace(/\n/g, "<br>"),
   };
   try {
     if (props.state === "new") {

@@ -101,10 +101,7 @@
               :is-date-disallowed="isDateDisallowed"
               :show-outside-days="false"
             />
-            <sl-textarea
-              :label="t('message')"
-              @input="(event) => (message = event.target.value)"
-            />
+            <Textarea :label="t('message')" v-model="message" />
 
             <sl-alert variant="danger" :open="reservationCreationError">
               <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
