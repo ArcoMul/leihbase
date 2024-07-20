@@ -16,6 +16,7 @@
             ref="datepicker"
             show-outside-days
             :isDateDisallowed="isDateDisallowed"
+            :locale="locale"
             @change="handleDateChange"
           >
             <ArrowLeft slot="previous" :title="t('previous_month')" />
@@ -29,7 +30,6 @@
 </template>
 
 <script lang="ts" setup>
-import { DateTime } from "luxon";
 import { formatDate, toShortISO } from "~/lib/date";
 import { ArrowLeft, ArrowRight } from "@iconoir/vue";
 
