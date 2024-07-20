@@ -1,35 +1,69 @@
 <template>
   <Drawer header-offset inset v-model:open="open">
-    <h2>{{ state === "new" ? "New" : "Edit" }} Reservation</h2>
+    <header>
+      <h2>{{ state === "new" ? t("new") : t("edit") }}</h2>
+      <Button
+        v-if="state === 'edit'"
+        variant="secondary"
+        circle
+        @click="handleRemoveClick"
+      >
+        <Trash />
+      </Button>
+    </header>
     <form @submit.prevent="handleSubmit">
       <RecordPickerInput
         id="reservation-drawer-product-input"
-        label="Product"
+        :label="t('product')"
         collection="products"
         :search="['name']"
         v-model="productId"
       />
       <RecordPickerInput
         id="reservation-drawer-user-input"
-        label="User"
+        :label="t('user')"
         collection="users"
         :search="['name', 'email']"
         v-model="userId"
       />
-      <DateInput label="Start" v-model="start" />
-      <DateInput label="End" v-model="end" />
-      <Textarea label="Note" v-model="note" />
-      <Button type="submit">Save</Button>
+      <DateInput :label="t('start')" v-model="start" />
+      <DateInput :label="t('end')" v-model="end" />
+      <Textarea :label="t('note')" v-model="note" />
+      <footer>
+        <Button type="submit">{{ t("save") }}</Button>
+        <Button variant="secondary" @click="handleCancelClick">{{
+          t("cancel")
+        }}</Button>
+      </footer>
     </form>
   </Drawer>
+  <Dialog
+    v-model:open="removeDialogOpen"
+    inset
+    :title="t('remove_dialog_title')"
+  >
+    <p class="remove-dialog-text">{{ t("remove_dialog_text") }}</p>
+    <footer>
+      <Button @click="handleRemoveDialogConfirmClick">
+        {{ t("remove_dialog_confirm") }}
+      </Button>
+      <Button variant="secondary" @click="handleRemoveDialogCancelClick">
+        {{ t("remove_dialog_cancel") }}
+      </Button>
+    </footer>
+  </Dialog>
 </template>
 
 <script lang="ts" setup>
 import RecordPickerInput from "~/components/admin/RecordPickerInput.vue";
+import { Trash } from "@iconoir/vue";
 import type { RecordModel } from "pocketbase";
 import type { Reservation } from "~/models/reservation";
 
 const { pb } = usePocketbase();
+const { t } = useI18n({
+  useScope: "local",
+});
 
 const props = defineProps<{
   state: "new" | "edit";
@@ -85,6 +119,35 @@ async function handleSubmit() {
     console.error(err);
   }
 }
+
+function handleCancelClick() {
+  open.value = false;
+}
+
+const removeDialogOpen = ref(false);
+
+function handleRemoveClick() {
+  removeDialogOpen.value = true;
+}
+
+async function handleRemoveDialogConfirmClick() {
+  if (!props.reservation?.id) {
+    console.error("No reservation id given to delete");
+    return;
+  }
+  try {
+    await pb.collection("reservations").delete(props.reservation.id);
+    removeDialogOpen.value = false;
+    open.value = false;
+    emit("update");
+  } catch (e) {
+    console.error("Error removing reservation", e);
+  }
+}
+
+function handleRemoveDialogCancelClick() {
+  removeDialogOpen.value = false;
+}
 </script>
 
 <style scoped>
@@ -94,4 +157,51 @@ form {
   gap: 1rem;
   align-items: flex-start;
 }
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+footer {
+  display: flex;
+  gap: 1rem;
+}
+.remove-dialog-text {
+  margin-bottom: 1.666rem;
+}
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "new": "New Reservation",
+    "edit": "Edit Reservation",
+    "product": "Product",
+    "user": "User",
+    "start": "Start",
+    "end": "End",
+    "note": "Note",
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove_dialog_title": "Remove reservieration",
+    "remove_dialog_text": "Are you sure you want to remove this reservation? There is no way to undo this.",
+    "remove_dialog_confirm": "Remove reservation",
+    "remove_dialog_cancel": "Cancel"
+  },
+  "de": {
+    "new": "Neue Reservierung",
+    "edit": "Reservierung bearbeiten",
+    "product": "Produkt",
+    "user": "Nutzer:in",
+    "start": "Start",
+    "end": "Ende",
+    "note": "Notiz  ",
+    "save": "Speichern",
+    "cancel": "Annulieren",
+    "remove_dialog_title": "Reservierung entfernen",
+    "remove_dialog_text": "Bist du sicher, dass du diese Reservierung endgültig entfernen möchtest?",
+    "remove_dialog_confirm": "Reservierung entfernen",
+    "remove_dialog_cancel": "Annulieren"
+  }
+}
+</i18n>

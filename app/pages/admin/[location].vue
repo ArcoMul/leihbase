@@ -254,7 +254,7 @@ section.today {
     "tab_future": "Zukunft",
     "today": "heute",
     "Today": "Heute",
-    "no_reservations_on_date": "Es gibt keine Reservierungen welchem {date} start oder enden",
+    "no_reservations_on_date": "Es gibt keine Reservierungen, die {date} starten oder enden",
     "on": "am",
     "ongoing_title": "Laufende Reservierungen",
     "future_title": "Zukünftige Reservierungen"

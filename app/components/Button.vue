@@ -2,7 +2,12 @@
   <component
     :is="component"
     :type="component === 'button' ? 'button' : undefined"
-    :class="{ ['variant-' + variant]: true, ['size-' + size]: true, rounded }"
+    :class="{
+      ['variant-' + variant]: true,
+      ['size-' + size]: true,
+      rounded,
+      circle,
+    }"
     :href="href"
   >
     <span v-if="$slots.prefix" class="prefix">
@@ -20,6 +25,7 @@ const props = withDefaults(
     variant?: "primary" | "secondary";
     size?: "lg" | "md";
     rounded?: boolean;
+    circle?: boolean;
   }>(),
   { variant: "primary", size: "md" }
 );
@@ -70,6 +76,13 @@ button {
 
   &.rounded {
     border-radius: 5px;
+  }
+  &.circle {
+    border-radius: 100%;
+    height: 2rem;
+    width: 2rem;
+    padding: 0.333rem;
+    font-size: 1rem;
   }
 
   .prefix {
