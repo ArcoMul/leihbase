@@ -93,11 +93,13 @@
               :label="t('start')"
               v-model="start"
               :is-date-disallowed="isDateDisallowed"
+              :show-outside-days="false"
             />
             <DateInput
               :label="t('end')"
               v-model="end"
               :is-date-disallowed="isDateDisallowed"
+              :show-outside-days="false"
             />
             <sl-textarea
               :label="t('message')"

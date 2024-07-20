@@ -14,7 +14,7 @@
         <ClientOnly>
           <calendar-date
             ref="datepicker"
-            show-outside-days
+            :show-outside-days="showOutsideDays"
             :isDateDisallowed="isDateDisallowed"
             :locale="locale"
             @change="handleDateChange"
@@ -41,14 +41,18 @@ if (process.client) {
   await import("cally");
 }
 
-const model = defineModel();
-const props = defineProps({
-  id: String,
-  label: String,
-  name: String,
-  required: Boolean,
-  isDateDisallowed: Function,
-});
+const model = defineModel<Date>();
+const props = withDefaults(
+  defineProps<{
+    id: string;
+    label: string;
+    name: string;
+    required: boolean;
+    isDateDisallowed: Function;
+    showOutsideDays: boolean;
+  }>(),
+  { showOutsideDays: true }
+);
 
 const input = ref(null);
 const showPopup = ref(false);
@@ -61,11 +65,11 @@ watch(model, (value) => {
   }
 });
 
-function handleInputFocus(e) {
+function handleInputFocus() {
   showPopup.value = true;
 }
 
-function handleDateChange(e) {
+function handleDateChange() {
   model.value = new Date(datepicker.value.value);
   showPopup.value = false;
 }
@@ -83,6 +87,9 @@ calendar-month::part(today) {
 calendar-month::part(disallowed) {
   text-decoration: line-through;
   opacity: 0.333;
+}
+calendar-month::part(outside) {
+  cursor: pointer;
 }
 </style>
 
