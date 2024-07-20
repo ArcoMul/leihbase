@@ -29,6 +29,7 @@
       <DateInput :label="t('start')" v-model="start" />
       <DateInput :label="t('end')" v-model="end" />
       <Textarea :label="t('note')" v-model="note" />
+      <Alert v-if="error">{{ error }}</Alert>
       <footer>
         <Button type="submit">{{ t("save") }}</Button>
         <Button variant="secondary" @click="handleCancelClick">{{
@@ -40,15 +41,15 @@
   <Dialog
     v-model:open="removeDialogOpen"
     inset
-    :title="t('remove_dialog_title')"
+    :title="t('remove_dialog.title')"
   >
-    <p class="remove-dialog-text">{{ t("remove_dialog_text") }}</p>
+    <p class="remove-dialog-text">{{ t("remove_dialog.text") }}</p>
     <footer>
       <Button @click="handleRemoveDialogConfirmClick">
-        {{ t("remove_dialog_confirm") }}
+        {{ t("remove_dialog.confirm") }}
       </Button>
       <Button variant="secondary" @click="handleRemoveDialogCancelClick">
-        {{ t("remove_dialog_cancel") }}
+        {{ t("remove_dialog.cancel") }}
       </Button>
     </footer>
   </Dialog>
@@ -78,9 +79,11 @@ const userId = ref<string>();
 const start = ref<Date | null>(null);
 const end = ref<Date | null>(null);
 const note = ref<string>();
+const error = ref<string | null>(null);
 
 watch(open, (isOpening) => {
   if (!isOpening) return;
+  error.value = null;
   productId.value = props.reservation?.product || undefined;
   userId.value = props.reservation?.user || undefined;
   start.value = props.reservation?.start
@@ -116,7 +119,15 @@ async function handleSubmit() {
     open.value = false;
     emit("update");
   } catch (err) {
-    console.error(err);
+    if (err?.message === "Overlapping_reservation.") {
+      error.value = t("errors.overlapping_reservation");
+    } else if (err?.message === "Start_before_today.") {
+      error.value = t("errors.start_before_today");
+    } else if (err?.message === "End_before_today.") {
+      error.value = t("errors.end_before_today");
+    } else {
+      error.value = t("errors.general");
+    }
   }
 }
 
@@ -183,10 +194,18 @@ footer {
     "note": "Note",
     "save": "Save",
     "cancel": "Cancel",
-    "remove_dialog_title": "Remove reservieration",
-    "remove_dialog_text": "Are you sure you want to remove this reservation? There is no way to undo this.",
-    "remove_dialog_confirm": "Remove reservation",
-    "remove_dialog_cancel": "Cancel"
+    "remove_dialog": {
+      "title": "Remove reservieration",
+      "text": "Are you sure you want to remove this reservation? There is no way to undo this.",
+      "confirm": "Remove reservation",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "overlapping_reservation": "There is already a reservation for this product during the given period.",
+      "start_before_today": "The start of the reservation is before today.",
+      "end_before_today": "The end of the reservation is before today.",
+      "general": "Something went wrong while creating the reservation, please try again."
+    }
   },
   "de": {
     "new": "Neue Reservierung",
@@ -198,10 +217,18 @@ footer {
     "note": "Notiz  ",
     "save": "Speichern",
     "cancel": "Annulieren",
-    "remove_dialog_title": "Reservierung entfernen",
-    "remove_dialog_text": "Bist du sicher, dass du diese Reservierung endgültig entfernen möchtest?",
-    "remove_dialog_confirm": "Reservierung entfernen",
-    "remove_dialog_cancel": "Annulieren"
+    "remove_dialog": {
+      "title": "Reservierung entfernen",
+      "text": "Bist du sicher, dass du diese Reservierung endgültig entfernen möchtest?",
+      "confirm": "Reservierung entfernen",
+      "cancel": "Annulieren"
+    },
+    "errors": {
+      "overlapping_reservation": "Das Produkt ist für diesen Termin bereits reserviert.",
+      "start_before_today": "Der Beginn der Reservierung liegt vor dem heutigen Tag.",
+      "end_before_today": "Das Enddatum der Reservierung liegt vor dem heutigen Tag",
+      "general": "Beim Erstellen deiner Reservierung ist ein Fehler aufgetreten, bitte versuche es erneut."
+    }
   }
 }
 </i18n>
