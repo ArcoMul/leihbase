@@ -2,7 +2,9 @@
   <Container width="lg" centered>
     <header class="page-header">
       <h1>{{ t("title") }} - {{ location?.name }}</h1>
-      <Button @click="handleNewReservationClick">New reservation</Button>
+      <Button @click="handleNewReservationClick">{{
+        t("new_reservation")
+      }}</Button>
     </header>
 
     <TabList active="today">
@@ -237,6 +239,7 @@ section.today {
 {
   "en": {
     "title": "Reservations",
+    "new_reservation": "New reservation",
     "tab_shift": "Shift",
     "tab_ongoing": "Ongoing",
     "tab_future": "Future",
@@ -249,6 +252,7 @@ section.today {
   },
   "de": {
     "title": "Reservierungen",
+    "new_reservation": "Neue Reservierung",
     "tab_shift": "Schicht",
     "tab_ongoing": "Laufend",
     "tab_future": "Zukunft",
