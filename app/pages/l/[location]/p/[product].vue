@@ -1,6 +1,6 @@
 <template>
   <Container width="lg" centered>
-    <Banner />
+    <PageAlert />
     <section class="product">
       <div class="media-col">
         <ProductImage

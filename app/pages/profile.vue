@@ -1,6 +1,6 @@
 <template>
   <Container width="sm" centered no-padding>
-    <Banner class="banner" />
+    <PageAlert class="banner" />
     <Card class="card">
       <h1>Profile</h1>
       <p>

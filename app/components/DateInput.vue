@@ -81,6 +81,10 @@ calendar-date::part(next) {
   background: transparent;
   border: 0;
 }
+calendar-month::part(day) {
+  inline-size: 2rem;
+  block-size: 2rem;
+}
 calendar-month::part(today) {
   border: 1px solid black;
 }

@@ -33,6 +33,11 @@
         <Button size="lg" type="submit">{{ t("submit") }}</Button>
       </form>
     </Card>
+    <footer>
+      <a href="/signup">{{ t("signup") }}</a>
+      •
+      <a href="/reset-password">{{ t("forgot_password") }}</a>
+    </footer>
   </Container>
 </template>
 
@@ -43,7 +48,7 @@ import Card from "~/components/Card";
 import {
   TYPE_AFTER_LOGIN,
   TYPE_AFTER_LOGIN_WITH_INTENT,
-} from "~/components/banner/Banner.model";
+} from "~/components/page-alert/PageAlert.model";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
@@ -112,6 +117,14 @@ form {
 form sl-input {
   width: 100%;
 }
+footer {
+  width: 100%;
+  margin: 0;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--body-text-color-light);
+  font-size: var(--body-font-sm);
+}
 </style>
 
 <i18n lang="json">
@@ -123,7 +136,9 @@ form sl-input {
     "password": "Password",
     "error": "Log in not successful, please review your account details, or {0} to create an account",
     "error_signup": "sign up",
-    "submit": "Log in"
+    "submit": "Log in",
+    "signup": "Sign up",
+    "forgot_password": "Forgot password?"
   },
   "de": {
     "title": "Einloggen",
@@ -132,7 +147,9 @@ form sl-input {
     "password": "Kennwort",
     "error": "Einloggen nicht erfolgreich, bitte überprüfe deine Kontodaten, oder {0} um ein Konto zu erstellen",
     "error_signup": "melde dich an",
-    "submit": "Einloggen"
+    "submit": "Einloggen",
+    "signup": "Registrieren",
+    "forgot_password": "Passwort vergessen?"
   }
 }
 </i18n>

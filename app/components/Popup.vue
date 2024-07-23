@@ -35,7 +35,7 @@ watch(open, (isOpening) => {
 .popup {
   position: absolute;
   top: calc(100% + 4px);
-  padding: 1rem;
+  padding: 0.75rem;
   border: 1px solid #ccc;
   background-color: white;
   z-index: 90;

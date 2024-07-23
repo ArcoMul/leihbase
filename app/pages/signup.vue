@@ -78,7 +78,7 @@ import Card from "~/components/Card";
 import {
   TYPE_AFTER_SIGNUP,
   TYPE_AFTER_SIGNUP_WITH_INTENT,
-} from "~/components/banner/Banner.model";
+} from "~/components/page-alert/PageAlert.model";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
