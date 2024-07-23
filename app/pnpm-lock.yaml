@@ -14,15 +14,15 @@ dependencies:
   '@shoelace-style/shoelace':
     specifier: ^2.14.0
     version: 2.14.0(@types/react@18.2.66)
+  cally:
+    specifier: ^0.7.1
+    version: 0.7.1
   luxon:
     specifier: ^3.4.4
     version: 3.4.4
   nuxt:
     specifier: ^3.10.3
     version: 3.10.3(rollup@4.13.0)(sass@1.72.0)(vite@5.1.6)
-  pikaday:
-    specifier: ^1.8.2
-    version: 1.8.2
   pocketbase:
     specifier: ^0.21.1
     version: 0.21.1
@@ -2407,6 +2407,10 @@ packages:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
     dev: false
 
+  /atomico@1.79.2:
+    resolution: {integrity: sha512-mshhLRMeIltNYbnQnqgnrvJ/uDa8XDfTQcjw3ymOygQqwHIQ4Sp0LcNYMCbACkV3DtV+eDXb9szwU4qMUuGwYQ==}
+    dev: false
+
   /autoprefixer@10.4.18(postcss@8.4.35):
     resolution: {integrity: sha512-1DKbDfsr6KUElM6wg+0zRNkB/Q7WcKYAaK+pzXn+Xqmszm/5Xa9coeNdtP88Vi+dPzZnMjhge8GIV49ZQkDa+g==}
     engines: {node: ^10 || ^12 || >=14}
@@ -2559,6 +2563,12 @@ packages:
       ssri: 10.0.5
       tar: 6.2.0
       unique-filename: 3.0.0
+    dev: false
+
+  /cally@0.7.1:
+    resolution: {integrity: sha512-pMWInVWdwuQMmXvGQfPVECHRLnQgtwJ4Ya+dIU4D+7I4AQIR7nsVON0cOi4paioNzvtSuu/HiUr22RQOcmiqxA==}
+    dependencies:
+      atomico: 1.79.2
     dev: false
 
   /camelcase@6.3.0:
@@ -4904,10 +4914,6 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
-
-  /pikaday@1.8.2:
-    resolution: {integrity: sha512-TNtsE+34BIax3WtkB/qqu5uepV1McKYEgvL3kWzU7aqPCpMEN6rBF3AOwu4WCwAealWlBGobXny/9kJb49C1ew==}
-    dev: false
 
   /pinia@2.1.7(vue@3.4.21):
     resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}

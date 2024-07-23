@@ -27,7 +27,8 @@ export default defineNuxtConfig({
   vue: {
     compilerOptions: {
       // treat all tags with a dash as custom elements
-      isCustomElement: (tag) => tag.startsWith("sl-"),
+      isCustomElement: (tag) =>
+        tag.startsWith("sl-") || tag.startsWith("calendar-"),
     },
   },
 });

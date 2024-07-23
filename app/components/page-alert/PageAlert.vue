@@ -1,30 +1,25 @@
 <template>
-  <div v-if="type === TYPE_AFTER_LOGIN" class="banner">
-    <ThumbsUp />
+  <Alert v-if="type === TYPE_AFTER_LOGIN">
     {{ t("success_login") }}
-  </div>
-  <div v-else-if="type === TYPE_AFTER_LOGIN_WITH_INTENT" class="banner">
-    <ThumbsUp />
+  </Alert>
+  <Alert v-else-if="type === TYPE_AFTER_LOGIN_WITH_INTENT">
     {{ t("success_login_with_intent") }}
-  </div>
-  <div v-else-if="type === TYPE_AFTER_SIGNUP" class="banner">
-    <ThumbsUp />
+  </Alert>
+  <Alert v-else-if="type === TYPE_AFTER_SIGNUP">
     {{ t("success_signup") }}
-  </div>
-  <div v-else-if="type === TYPE_AFTER_SIGNUP_WITH_INTENT" class="banner">
-    <ThumbsUp />
+  </Alert>
+  <Alert v-else-if="type === TYPE_AFTER_SIGNUP_WITH_INTENT">
     {{ t("success_signup_with_intent") }}
-  </div>
+  </Alert>
 </template>
 
 <script setup lang="ts">
-import { ThumbsUp } from "@iconoir/vue";
 import {
   TYPE_AFTER_LOGIN,
   TYPE_AFTER_LOGIN_WITH_INTENT,
   TYPE_AFTER_SIGNUP,
   TYPE_AFTER_SIGNUP_WITH_INTENT,
-} from "./Banner.model";
+} from "./PageAlert.model";
 
 const { t } = useI18n({
   useScope: "local",
@@ -44,17 +39,6 @@ if (userStore.banner) {
   userStore.resetBanner();
 }
 </script>
-
-<style lang="scss" scoped>
-.banner {
-  background-color: var(--success-background);
-  padding: 1rem 1.25rem;
-  border-radius: 5px;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-</style>
 
 <i18n lang="json">
 {

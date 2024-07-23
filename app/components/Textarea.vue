@@ -1,7 +1,6 @@
 <template>
   <FormRow :for="id" :label="label" :required="required">
-    <input
-      :type="type"
+    <textarea
       :id="id"
       :name="name"
       :placeholder="placeholder"
@@ -10,8 +9,10 @@
       :readonly="readonly"
       :data-testid="dataTestid"
       v-model="model"
+      rows="3"
       class="lb-input"
-    />
+    >
+    </textarea>
   </FormRow>
 </template>
 
@@ -25,7 +26,13 @@ const props = defineProps<{
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  type?: string;
   dataTestid?: string;
 }>();
 </script>
+
+<style scoped>
+.lb-input {
+  line-height: 1.15;
+  padding: var(--spacing-3) var(--spacing-3);
+}
+</style>

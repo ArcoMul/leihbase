@@ -1,88 +1,111 @@
 <template>
   <FormRow :for="id" :label="label" :required="required">
-    <input
-      :id="id"
-      :name="name"
-      :required="required"
-      ref="input"
-      class="lb-input"
-    />
+    <Popup v-model:open="showPopup">
+      <input
+        :id="id"
+        :name="name"
+        :required="required"
+        :value="model ? formatDate(model, 'DD.MM.YYYY', locale) : ''"
+        ref="input"
+        class="lb-input"
+        @click="handleInputFocus"
+      />
+      <template #popup>
+        <ClientOnly>
+          <calendar-date
+            ref="datepicker"
+            :show-outside-days="showOutsideDays"
+            :isDateDisallowed="isDateDisallowed"
+            :locale="locale"
+            @change="handleDateChange"
+          >
+            <ArrowLeft slot="previous" :title="t('previous_month')" />
+            <ArrowRight slot="next" :title="t('next_month')" />
+            <calendar-month></calendar-month>
+          </calendar-date>
+        </ClientOnly>
+      </template>
+    </Popup>
   </FormRow>
 </template>
 
-<script setup>
-import { DateTime } from "luxon";
-import { formatDate } from "~/lib/date";
-import "pikaday/css/pikaday.css";
+<script lang="ts" setup>
+import { formatDate, toShortISO } from "~/lib/date";
+import { ArrowLeft, ArrowRight } from "@iconoir/vue";
 
 const { t, locale } = useI18n();
 
-let Pikaday;
+const datepicker = ref();
 
 if (process.client) {
-  ({ default: Pikaday } = await import("pikaday"));
+  await import("cally");
 }
 
-const model = defineModel();
-const props = defineProps({
-  id: String,
-  label: String,
-  name: String,
-  required: Boolean,
-  disableDayFn: Function,
-});
+const model = defineModel<Date>();
+const props = withDefaults(
+  defineProps<{
+    id: string;
+    label: string;
+    name: string;
+    required: boolean;
+    isDateDisallowed: Function;
+    showOutsideDays: boolean;
+  }>(),
+  { showOutsideDays: true }
+);
 
 const input = ref(null);
-const picker = ref(null);
+const showPopup = ref(false);
 
-onMounted(() => {
-  picker.value = new Pikaday({
-    field: input.value,
-    disableDayFn: props.disableDayFn,
-    toString(date) {
-      return formatDate(date, DateTime.DATE_MED, locale.value);
-    },
-    onSelect(date) {
-      model.value = new Date(
-        Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-      );
-    },
-    i18n: {
-      previousMonth: t("previous_month"),
-      nextMonth: t("next_month"),
-      months: [
-        t("months.january"),
-        t("months.february"),
-        t("months.march"),
-        t("months.april"),
-        t("months.may"),
-        t("months.june"),
-        t("months.july"),
-        t("months.august"),
-        t("months.september"),
-        t("months.october"),
-        t("months.november"),
-        t("months.december"),
-      ],
-      weekdays: [
-        t("week_days.sunday"),
-        t("week_days.monday"),
-        t("week_days.tuesday"),
-        t("week_days.wednesday"),
-        t("week_days.thursday"),
-        t("week_days.friday"),
-        t("week_days.saturday"),
-      ],
-      weekdaysShort: [
-        t("week_days_short.sunday"),
-        t("week_days_short.monday"),
-        t("week_days_short.tuesday"),
-        t("week_days_short.wednesday"),
-        t("week_days_short.thursday"),
-        t("week_days_short.friday"),
-        t("week_days_short.saturday"),
-      ],
-    },
-  });
+watch(model, (value) => {
+  if (value) {
+    datepicker.value.value = toShortISO(value);
+  } else {
+    datepicker.value.value = "";
+  }
 });
+
+function handleInputFocus() {
+  showPopup.value = true;
+}
+
+function handleDateChange() {
+  model.value = new Date(datepicker.value.value);
+  showPopup.value = false;
+}
 </script>
+
+<style scoped>
+calendar-date::part(previous),
+calendar-date::part(next) {
+  background: transparent;
+  border: 0;
+}
+calendar-month::part(day) {
+  inline-size: 2rem;
+  block-size: 2rem;
+}
+calendar-month::part(today) {
+  border: 1px solid black;
+}
+calendar-month::part(disallowed) {
+  text-decoration: line-through;
+  opacity: 0.333;
+}
+calendar-month::part(outside) {
+  cursor: pointer;
+}
+</style>
+
+<i18n lang="json">
+{
+  "en": {
+    "next_month": "Next month",
+    "previous_month": "Previous month"
+  },
+  "de": {
+    "next_month": "Nächster Monat",
+    "previous_month": "Voriger Monat"
+  }
+}
+</i18n>
