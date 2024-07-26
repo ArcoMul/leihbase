@@ -85,7 +85,7 @@
 import AdminReservationTable from "~/components/admin/AdminReservationsTable.vue";
 import RecordPicker from "~/components/admin/RecordPicker.vue";
 import ReservationDrawer from "./components/ReservationDrawer.vue";
-import { isToday, startOfDate, endOfDate, formatDate } from "~/lib/date";
+import { isToday, startOfUTCDate, endOfUTCDate, formatDate } from "~/lib/date";
 import { ArrowRight, ArrowLeft } from "@iconoir/vue";
 import type { Reservation } from "~/models/reservation";
 
@@ -126,8 +126,8 @@ const { data: todaysReservations, refresh: refreshTodaysReservations } =
         "location = {:location} && ((start >= {:dateStart} && start <= {:dateEnd}) || (end >= {:dateStart} && end <= {:dateEnd}))",
         {
           location: location.value?.id,
-          dateStart: startOfDate(date.value),
-          dateEnd: endOfDate(date.value),
+          dateStart: startOfUTCDate(date.value),
+          dateEnd: endOfUTCDate(date.value),
         }
       ),
       sort: "start",

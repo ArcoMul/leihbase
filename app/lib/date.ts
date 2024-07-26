@@ -50,9 +50,21 @@ export function startOfDate(date: Date): Date {
   return d;
 }
 
+export function startOfUTCDate(date: Date): Date {
+  const d = new Date(date.getTime());
+  d.setUTCHours(0, 0, 0, 0);
+  return d;
+}
+
 export function endOfDate(date: Date): Date {
   const d = new Date(date.getTime());
   d.setHours(23, 59, 59, 999);
+  return d;
+}
+
+export function endOfUTCDate(date: Date): Date {
+  const d = new Date(date.getTime());
+  d.setUTCHours(23, 59, 59, 999);
   return d;
 }
 
