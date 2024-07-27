@@ -119,8 +119,7 @@ form sl-input {
 }
 footer {
   width: 100%;
-  margin: 0;
-  margin-top: 1rem;
+  margin-block: 1rem;
   text-align: center;
   color: var(--body-text-color-light);
   font-size: var(--body-font-sm);

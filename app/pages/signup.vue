@@ -152,7 +152,7 @@ async function onSignup() {
 
 @media (min-width: $breakpoint-sm) {
   .card {
-    margin-top: 3rem;
+    margin-block: 3rem;
   }
   h1 {
     margin-top: -1rem;
