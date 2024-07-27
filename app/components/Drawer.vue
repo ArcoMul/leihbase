@@ -53,6 +53,7 @@ function handleDocumentKeyDown(e: KeyboardEvent) {
   background-color: white;
   transition: left 200ms;
   z-index: 10;
+  overflow-y: auto;
   &.open {
     left: 33.33%;
   }
