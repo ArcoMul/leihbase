@@ -334,11 +334,20 @@ section {
     flex-grow: 1;
     .info-header {
       display: flex;
-      align-items: center;
-      gap: 2rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--fluid-spacing-4);
       margin-bottom: var(--fluid-spacing-4);
       h1 {
         margin: 0;
+        margin-bottom: -5px;
+      }
+      @media screen and (min-width: $breakpoint-md) {
+        flex-direction: row;
+        align-items: center;
+        h1 {
+          margin: 0;
+        }
       }
     }
     h2,
