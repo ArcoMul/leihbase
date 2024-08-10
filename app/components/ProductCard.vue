@@ -4,6 +4,7 @@
     :href="href"
     :to="to"
     :class="{ root: true, clicked }"
+    data-testid="product-card"
     @click="clicked = true"
   >
     <ProductImage

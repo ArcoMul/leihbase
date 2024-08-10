@@ -50,7 +50,7 @@
         </header>
 
         <div class="info-header">
-          <h1>{{ product?.name }}</h1>
+          <h1 data-testid="product-page-h1">{{ product?.name }}</h1>
           <AvailabilityBadge :available="available" />
         </div>
 
@@ -73,7 +73,13 @@
           class="upcoming-reservations"
         />
 
-        <Button size="lg" @click="onReserve">{{ t("reserve_button") }}</Button>
+        <Button
+          size="lg"
+          data-testid="reserve-button"
+          @click.prevent="onReserve"
+        >
+          {{ t("reserve_button") }}
+        </Button>
 
         <sl-dialog ref="dialog" label="Reservieren" class="dialog-overview">
           <!-- Opening hours -->

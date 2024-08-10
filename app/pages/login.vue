@@ -3,7 +3,9 @@
     <Card class="card">
       <h1>{{ t("title") }}</h1>
       <i18n-t keypath="text" tag="p" for="signup_text">
-        <NuxtLink to="/signup">{{ t("signup_text") }}</NuxtLink>
+        <NuxtLink to="/signup" data-testid="signup-link">
+          {{ t("signup_text") }}
+        </NuxtLink>
       </i18n-t>
       <form @submit.prevent="onLogin">
         <Input
