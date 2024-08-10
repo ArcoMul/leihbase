@@ -228,6 +228,7 @@ async function onSubmit() {
       start: start.value,
       end: end.value,
       message: message.value,
+      send_confirmation: true,
     });
   } catch (e) {
     console.log(e.data);

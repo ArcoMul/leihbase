@@ -7,24 +7,36 @@ onRecordBeforeCreateRequest((e) => {
   const start = new Date(record.get("start").string().split(" ")[0]);
   const end = new Date(record.get("end").string().split(" ")[0]);
   const isAdmin = httpContext.get("admin");
+  const requestUser = httpContext.get("authRecord");
   const requireUser = $os.getenv("CONFIG_RESERVATION_REQUIRE_USER") !== "false";
 
   // Store location of product in reservation
   $app.dao().expandRecord(record, ["product"], null);
   const product = record.expandedOne("product");
+  $app.dao().expandRecord(product, ["location"], null);
+  const location = product.expandedOne("location");
+  const isLocationUser = location.get("users").includes(requestUser.get("id"));
   record.set("location", product.get("location"));
 
   // Don't allow reserving where start of end is before today
-  if (start < startOfDay && !isAdmin) {
+  // Except if the user is an admin or a location user
+  if (start < startOfDay && !isAdmin && !isLocationUser) {
     throw new BadRequestError("Start_before_today.");
   }
-  if (end < startOfDay && !isAdmin) {
+  if (end < startOfDay && !isAdmin && !isLocationUser) {
     throw new BadRequestError("End_before_today.");
   }
 
-  // Make sure the reservation is linekd to a user
-  if (requireUser && !record.get("user") && !isAdmin) {
+  // Make sure the reservation is linked to a user
+  if (requireUser && !record.get("user") && !isAdmin && !isLocationUser) {
     throw new BadRequestError("User_not_defined.");
+  }
+
+  // If send_confirmation isn't set yet, make sure to set it to false for admin
+  // or location users, so that no confirmations are send when creating
+  // reservations from the admin section or pocketbase interface
+  if (!record.get("send_confirmation") && (isAdmin || isLocationUser)) {
+    record.set("send_confirmation", false);
   }
 
   // Make sure there is no overlapping reservation for the same product in the
@@ -65,10 +77,13 @@ onRecordAfterCreateRequest((e) => {
 
   const { record, httpContext } = e;
 
-  const isAdmin = httpContext.get("admin");
   const requestUser = httpContext.get("authRecord");
-  if (isAdmin) {
-    // Don't send confirmations when an admin created the reservation
+  $app.dao().expandRecord(record, ["location"], null);
+  const location = record.expandedOne("location");
+
+  if (!record.get("send_confirmation")) {
+    // Prevent sending notifications if the reservation has been marked to not
+    // send those
     return;
   }
 
@@ -76,11 +91,7 @@ onRecordAfterCreateRequest((e) => {
   // also the user involved in the reservation
   // https://pocketbase.io/docs/js-routing/#retrieving-the-current-auth-state
 
-  $app.dao().expandRecord(record, ["product", "user", "location"], null);
-
-  // Retrieve e-mail addresses to send reservation notifications on from
-  // location collection
-  const location = record.expandedOne("location");
+  $app.dao().expandRecord(record, ["product", "user"], null);
 
   const product = record.expandedOne("product");
   const productName = product.get("name");
