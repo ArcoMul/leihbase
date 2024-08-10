@@ -1,7 +1,10 @@
 <template>
   <Container width="lg" centered>
     <header class="page-header">
-      <h1>{{ t("title") }} - {{ location?.name }}</h1>
+      <div>
+        <h1 class="h2">{{ location?.name }}</h1>
+        <h2 class="h1">{{ t("title") }}</h2>
+      </div>
       <Button @click="handleNewReservationClick">{{
         t("new_reservation")
       }}</Button>
@@ -193,23 +196,30 @@ function handleNewReservationClick() {
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/breakpoints.scss";
+
 header.page-header {
-  margin-bottom: 3rem;
+  margin-bottom: var(--fluid-spacing-12);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  h1 {
+  flex-direction: column;
+  align-items: flex-start;
+  h1,
+  h2 {
     margin: 0;
+  }
+  @media screen and (min-width: $breakpoint-sm) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 section {
-  margin-bottom: 3rem;
   padding-top: 2rem;
 }
 section > header {
   display: flex;
   margin-bottom: 1rem;
-  gap: 1rem;
+  gap: var(--fluid-spacing-8);
   & > h3 {
     margin: 0;
   }
