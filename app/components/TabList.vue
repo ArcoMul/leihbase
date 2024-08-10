@@ -42,6 +42,8 @@ onBeforeMount(() => {
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/breakpoints.scss";
+
 ul {
   list-style: none;
   display: flex;
@@ -57,7 +59,7 @@ li::after {
   content: "";
   height: 1px;
   background-color: var(--body-text-color);
-  width: 1rem;
+  width: var(--fluid-spacing-4);
 }
 li:first-child::before {
   width: 0.25rem;
@@ -79,10 +81,12 @@ button {
   line-height: 1;
   cursor: pointer;
   border-radius: 5px 5px 0 0;
-  min-width: 6rem;
   &.active {
     font-weight: var(--font-weight-semibold);
     border-bottom: 1px solid transparent;
+  }
+  @media screen and (min-width: $breakpoint-sm) {
+    min-width: 6rem;
   }
 }
 </style>
