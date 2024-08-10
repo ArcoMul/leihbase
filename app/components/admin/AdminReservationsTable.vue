@@ -75,6 +75,9 @@ function handleReservationClick(reservation: Reservation) {
 <style scoped lang="scss">
 table {
   width: 100%;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 th,
 td {
