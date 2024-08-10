@@ -64,9 +64,9 @@
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button size="lg" type="submit" data-testid="submit-button">{{
-          t("submit")
-        }}</Button>
+        <Button size="lg" type="submit" data-testid="submit-button">
+          {{ t("submit") }}
+        </Button>
       </form>
     </Card>
   </Container>
@@ -89,7 +89,6 @@ const { t } = useI18n({
   useScope: "local",
 });
 const router = useRouter();
-const route = useRoute();
 const userStore = useUserStore();
 const { pb, login } = usePocketbase();
 

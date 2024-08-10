@@ -1,7 +1,7 @@
 <template>
   <component
     :is="component"
-    :type="component === 'button' ? 'button' : undefined"
+    :type="component === 'button' ? type : undefined"
     :class="{
       ['variant-' + variant]: true,
       ['size-' + size]: true,
@@ -26,6 +26,7 @@ const props = withDefaults(
     size?: "lg" | "md";
     rounded?: boolean;
     circle?: boolean;
+    type?: "submit" | "reset" | "button" | undefined;
   }>(),
   { variant: "primary", size: "md" }
 );
