@@ -57,6 +57,7 @@
         </fieldset>
 
         <sl-alert
+          v-if="!!signupError"
           variant="danger"
           :open="!!signupError"
           data-testid="signup-error"

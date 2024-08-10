@@ -28,7 +28,7 @@ const props = withDefaults(
     circle?: boolean;
     type?: "submit" | "reset" | "button" | undefined;
   }>(),
-  { variant: "primary", size: "md" }
+  { variant: "primary", size: "md", type: "button" }
 );
 
 const component = computed(() => {
