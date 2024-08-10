@@ -3,7 +3,10 @@
     :class="{ overlay: true, open, 'header-offset': headerOffset }"
     @click="close"
   ></div>
-  <div :class="{ sidebar: true, open, 'header-offset': headerOffset, inset }">
+  <div
+    ref="sidebar"
+    :class="{ sidebar: true, open, 'header-offset': headerOffset, inset }"
+  >
     <slot></slot>
   </div>
 </template>
@@ -11,8 +14,12 @@
 <script lang="ts" setup>
 defineProps<{ headerOffset: boolean; inset: boolean }>();
 const open = defineModel("open");
+const sidebar = ref<HTMLDivElement>();
 watch(open, (isOpening) => {
   if (isOpening) {
+    if (sidebar.value) {
+      sidebar.value.scrollTop = 0;
+    }
     document.addEventListener("keydown", handleDocumentKeyDown);
   } else {
     document.removeEventListener("keydown", handleDocumentKeyDown);
