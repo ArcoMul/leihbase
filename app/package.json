@@ -10,20 +10,20 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@iconoir/vue": "^7.5.0",
-    "@nuxtjs/i18n": "^8.3.0",
-    "@shoelace-style/shoelace": "^2.14.0",
+    "@iconoir/vue": "^7.8.0",
+    "@nuxtjs/i18n": "^8.3.3",
+    "@shoelace-style/shoelace": "^2.16.0",
     "@vueup/vue-quill": "^1.2.0",
     "cally": "^0.7.1",
-    "luxon": "^3.4.4",
-    "nuxt": "^3.10.3",
-    "pocketbase": "^0.21.1",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "luxon": "^3.5.0",
+    "nuxt": "^3.12.4",
+    "pocketbase": "^0.21.4",
+    "vue": "^3.4.37",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
-    "@nuxt/kit": "^3.11.1",
-    "@pinia/nuxt": "^0.5.1",
-    "sass": "^1.72.0"
+    "@nuxt/kit": "^3.12.4",
+    "@pinia/nuxt": "^0.5.3",
+    "sass": "^1.77.8"
   }
 }
