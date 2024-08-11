@@ -126,10 +126,10 @@ async function onSignup() {
     userStore.login();
 
     // Routing
-    const { locationSlug, productId } = userStore.$state.reservationIntent;
-    if (locationSlug && productId) {
+    const { path } = userStore.$state.authenticationIntent;
+    if (path) {
       userStore.showBanner(TYPE_AFTER_SIGNUP_WITH_INTENT);
-      router.push(`/l/${locationSlug}/p/${productId}`);
+      router.push(path);
     } else {
       userStore.showBanner(TYPE_AFTER_SIGNUP);
       router.push("/profile");

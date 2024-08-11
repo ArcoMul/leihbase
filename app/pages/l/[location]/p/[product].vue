@@ -162,7 +162,7 @@ const start = ref(null);
 const end = ref(null);
 const message = ref(null);
 
-userStore.clearReservationIntent();
+userStore.clearAuthenticationIntent();
 
 const { data: location } = await useAsyncData("location", async () => {
   const location = await pb
@@ -218,7 +218,9 @@ function isDateDisallowed(date) {
 
 function onReserve() {
   if (!pb.authStore.isValid) {
-    userStore.setReservationIntent(location.value.slug, product.value.id);
+    userStore.setAuthenticationIntent(
+      `/l/${location.value.slug}/p/${product.value.id}`
+    );
     router.push("/signup");
     return;
   }

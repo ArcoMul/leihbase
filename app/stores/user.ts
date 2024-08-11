@@ -3,9 +3,8 @@ import type { RecordModel } from "pocketbase";
 interface State {
   name: string | null;
   reservations: RecordModel[] | [];
-  reservationIntent: {
-    locationSlug: string | null;
-    productId: string | null;
+  authenticationIntent: {
+    path: string | null;
   };
   banner: string | null;
 }
@@ -14,9 +13,8 @@ export const useUserStore = defineStore<"user", State>("user", {
   state: () => ({
     name: null,
     reservations: [],
-    reservationIntent: {
-      locationSlug: null,
-      productId: null,
+    authenticationIntent: {
+      path: null,
     },
     banner: null,
   }),
@@ -39,13 +37,11 @@ export const useUserStore = defineStore<"user", State>("user", {
         this.reservations = reservations;
       }
     },
-    setReservationIntent(locationSlug: string, productId: string) {
-      this.reservationIntent.locationSlug = locationSlug;
-      this.reservationIntent.productId = productId;
+    setAuthenticationIntent(path: string) {
+      this.authenticationIntent.path = path;
     },
-    clearReservationIntent() {
-      this.reservationIntent.locationSlug = null;
-      this.reservationIntent.productId = null;
+    clearAuthenticationIntent() {
+      this.authenticationIntent.path = null;
     },
     showBanner(banner: string) {
       this.banner = banner;
