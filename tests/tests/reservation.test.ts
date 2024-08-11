@@ -9,7 +9,7 @@ test.describe("reservation", () => {
     await page.waitForURL(/\/l\/test-store\/p\/(.+)/);
     await expect(page.url()).toContain("/l/test-store/p/");
     await waitForHydration(page);
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(300);
     await expect(page.getByTestId("product-page-h1")).toBeDefined();
     await page.getByTestId("reserve-button").click();
     await page.waitForURL(/\/signup/);
