@@ -13,6 +13,7 @@
     "@iconoir/vue": "^7.5.0",
     "@nuxtjs/i18n": "^8.3.0",
     "@shoelace-style/shoelace": "^2.14.0",
+    "@vueup/vue-quill": "^1.2.0",
     "cally": "^0.7.1",
     "luxon": "^3.4.4",
     "nuxt": "^3.10.3",

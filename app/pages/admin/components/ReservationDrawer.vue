@@ -28,7 +28,7 @@
       />
       <DateInput :label="t('start')" v-model="start" />
       <DateInput :label="t('end')" v-model="end" />
-      <Textarea :label="t('note')" v-model="note" />
+      <RichTextarea :label="t('note')" v-model="note" />
       <Alert v-if="error" variant="error">{{ error }}</Alert>
       <footer>
         <Button type="submit">{{ t("save") }}</Button>
@@ -90,7 +90,7 @@ watch(open, (isOpening) => {
     ? new Date(props.reservation.start)
     : null;
   end.value = props.reservation?.end ? new Date(props.reservation.end) : null;
-  note.value = props.reservation?.note.replace(/<br>/g, "\n") || undefined;
+  note.value = props.reservation?.note || "";
 });
 
 async function handleSubmit() {
@@ -100,7 +100,7 @@ async function handleSubmit() {
     location: props.location.id,
     start: start.value,
     end: end.value,
-    note: note.value?.replace(/\n/g, "<br>"),
+    note: note.value,
   };
   try {
     if (props.state === "new") {
