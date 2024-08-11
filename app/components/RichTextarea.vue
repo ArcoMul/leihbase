@@ -56,7 +56,7 @@ watch(model, (newValue) => {
   flex-direction: column;
 }
 .textarea {
-  height: 9rem;
+  height: 10rem;
   display: flex;
   flex-direction: column;
 }
@@ -65,18 +65,10 @@ watch(model, (newValue) => {
 <style>
 .ql-container {
   overflow: hidden;
+  font-size: 1rem !important;
 }
-.ql-editor p,
-.ql-editor ol,
-.ql-editor ul,
-.ql-editor pre,
-.ql-editor blockquote,
-.ql-editor h1,
-.ql-editor h2,
-.ql-editor h3,
-.ql-editor h4,
-.ql-editor h5,
-.ql-editor h6 {
-  margin-bottom: 1rem !important;
+.ql-editor > ul,
+.ql-editor > ol {
+  padding-left: 0 !important;
 }
 </style>

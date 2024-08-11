@@ -48,7 +48,7 @@
           </NuxtLink>
         </td>
         <td>{{ reservation.expand?.user?.name }}</td>
-        <td class="note" v-html="reservation.note.replace(/<br>/g, ' ')"></td>
+        <td class="note" v-html="reservation.note"></td>
       </tr>
     </tbody>
   </table>
@@ -98,14 +98,19 @@ tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
+</style>
 
+<style scoped>
 .note {
   width: 40%;
 }
-</style>
-
-<style>
-.admin-reservations-table td p:last-child {
-  margin: 0;
+.note :deep(p),
+.note :deep(ul),
+.note :deep(ol) {
+  margin-bottom: 0;
+}
+.note :deep(ul),
+.note :deep(ol) {
+  padding-left: 1.333rem;
 }
 </style>
