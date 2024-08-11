@@ -46,8 +46,8 @@ import Container from "~/components/Container";
 import Input from "~/components/Input";
 import Card from "~/components/Card";
 import {
-  TYPE_AFTER_LOGIN,
-  TYPE_AFTER_LOGIN_WITH_INTENT,
+  AFTER_LOGIN,
+  AFTER_LOGIN_RESERVATION_INTENT,
 } from "~/components/page-alert/PageAlert.model";
 
 const { t } = useI18n({
@@ -71,7 +71,7 @@ const authenticationError = ref(false);
 // If the 'return' query parameter is set in the url,
 // set the authentication intent
 if (route.query.return) {
-  userStore.setAuthenticationIntent(route.query.return);
+  userStore.setAuthenticationIntent(null, route.query.return);
 }
 
 async function onLogin() {
@@ -86,12 +86,16 @@ async function onLogin() {
 
   if (isValid.value) {
     // Show after-login banner on next page
-    const { path } = userStore.$state.authenticationIntent;
+    const { path, intent } = userStore.$state.authenticationIntent;
     if (path) {
-      userStore.showBanner(TYPE_AFTER_LOGIN_WITH_INTENT);
+      if (intent && intent === "reservation") {
+        userStore.showBanner(AFTER_LOGIN_RESERVATION_INTENT);
+      } else {
+        userStore.showBanner(AFTER_LOGIN);
+      }
       router.push(path);
     } else {
-      userStore.showBanner(TYPE_AFTER_LOGIN);
+      userStore.showBanner(AFTER_LOGIN);
       router.push("/profile");
     }
   }

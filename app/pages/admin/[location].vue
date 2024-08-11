@@ -1,5 +1,6 @@
 <template>
   <Container width="lg" centered>
+    <PageAlert class="banner" />
     <header class="page-header">
       <div>
         <h1 class="h2">{{ location?.name }}</h1>

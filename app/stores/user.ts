@@ -4,6 +4,7 @@ interface State {
   name: string | null;
   reservations: RecordModel[] | [];
   authenticationIntent: {
+    intent: "reservation" | null;
     path: string | null;
   };
   banner: string | null;
@@ -14,6 +15,7 @@ export const useUserStore = defineStore<"user", State>("user", {
     name: null,
     reservations: [],
     authenticationIntent: {
+      intent: null,
       path: null,
     },
     banner: null,
@@ -37,7 +39,8 @@ export const useUserStore = defineStore<"user", State>("user", {
         this.reservations = reservations;
       }
     },
-    setAuthenticationIntent(path: string) {
+    setAuthenticationIntent(intent: null | "reservation", path: string) {
+      this.authenticationIntent.intent = intent;
       this.authenticationIntent.path = path;
     },
     clearAuthenticationIntent() {

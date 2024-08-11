@@ -219,6 +219,7 @@ function isDateDisallowed(date) {
 function onReserve() {
   if (!pb.authStore.isValid) {
     userStore.setAuthenticationIntent(
+      "reservation",
       `/l/${location.value.slug}/p/${product.value.id}`
     );
     router.push("/signup");

@@ -77,8 +77,8 @@
 import Container from "~/components/Container";
 import Card from "~/components/Card";
 import {
-  TYPE_AFTER_SIGNUP,
-  TYPE_AFTER_SIGNUP_WITH_INTENT,
+  AFTER_SIGNUP,
+  AFTER_SIGNUP_RESERVATION_INTENT,
 } from "~/components/page-alert/PageAlert.model";
 
 if (process.client) {
@@ -126,12 +126,16 @@ async function onSignup() {
     userStore.login();
 
     // Routing
-    const { path } = userStore.$state.authenticationIntent;
+    const { path, intent } = userStore.$state.authenticationIntent;
     if (path) {
-      userStore.showBanner(TYPE_AFTER_SIGNUP_WITH_INTENT);
+      if (intent && intent === "reservation") {
+        userStore.showBanner(AFTER_SIGNUP_RESERVATION_INTENT);
+      } else {
+        userStore.showBanner(AFTER_SIGNUP);
+      }
       router.push(path);
     } else {
-      userStore.showBanner(TYPE_AFTER_SIGNUP);
+      userStore.showBanner(AFTER_SIGNUP);
       router.push("/profile");
     }
   } catch (e) {

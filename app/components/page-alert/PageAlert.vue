@@ -1,24 +1,24 @@
 <template>
-  <Alert v-if="type === TYPE_AFTER_LOGIN">
+  <Alert v-if="type === AFTER_LOGIN">
     {{ t("success_login") }}
   </Alert>
-  <Alert v-else-if="type === TYPE_AFTER_LOGIN_WITH_INTENT">
+  <Alert v-else-if="type === AFTER_LOGIN_RESERVATION_INTENT">
     {{ t("success_login_with_intent") }}
   </Alert>
-  <Alert v-else-if="type === TYPE_AFTER_SIGNUP">
+  <Alert v-else-if="type === AFTER_SIGNUP">
     {{ t("success_signup") }}
   </Alert>
-  <Alert v-else-if="type === TYPE_AFTER_SIGNUP_WITH_INTENT">
+  <Alert v-else-if="type === AFTER_SIGNUP_RESERVATION_INTENT">
     {{ t("success_signup_with_intent") }}
   </Alert>
 </template>
 
 <script setup lang="ts">
 import {
-  TYPE_AFTER_LOGIN,
-  TYPE_AFTER_LOGIN_WITH_INTENT,
-  TYPE_AFTER_SIGNUP,
-  TYPE_AFTER_SIGNUP_WITH_INTENT,
+  AFTER_LOGIN,
+  AFTER_LOGIN_RESERVATION_INTENT,
+  AFTER_SIGNUP,
+  AFTER_SIGNUP_RESERVATION_INTENT,
 } from "./PageAlert.model";
 
 const { t } = useI18n({
