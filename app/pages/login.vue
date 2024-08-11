@@ -25,13 +25,11 @@
           password-toggle
           v-model="password"
         />
-
-        <sl-alert variant="danger" :open="!!authenticationError">
-          <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+        <Alert v-if="!!authenticationError" variant="error" class="error">
           <i18n-t keypath="error" tag="span" for="error_signup">
             <NuxtLink to="/signup">{{ t("error_signup") }}</NuxtLink>
           </i18n-t>
-        </sl-alert>
+        </Alert>
         <Button size="lg" type="submit">{{ t("submit") }}</Button>
       </form>
     </Card>
@@ -52,16 +50,12 @@ import {
   TYPE_AFTER_LOGIN_WITH_INTENT,
 } from "~/components/page-alert/PageAlert.model";
 
-if (process.client) {
-  await import("@shoelace-style/shoelace/dist/components/alert/alert.js");
-  await import("@shoelace-style/shoelace/dist/components/icon/icon.js");
-}
-
 const { t } = useI18n({
   useScope: "local",
 });
 
 const router = useRouter();
+const route = useRoute();
 const userStore = useUserStore();
 const { login, isValid } = usePocketbase();
 
@@ -73,6 +67,12 @@ const email = ref(null);
 const password = ref(null);
 
 const authenticationError = ref(false);
+
+// If the 'return' query parameter is set in the url,
+// set the authentication intent
+if (route.query.return) {
+  userStore.setAuthenticationIntent(route.query.return);
+}
 
 async function onLogin() {
   authenticationError.value = false;
@@ -117,6 +117,9 @@ form {
 }
 form sl-input {
   width: 100%;
+}
+.error {
+  margin: 0;
 }
 footer {
   width: 100%;
