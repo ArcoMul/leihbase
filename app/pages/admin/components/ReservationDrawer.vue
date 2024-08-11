@@ -29,7 +29,7 @@
       <DateInput :label="t('start')" v-model="start" />
       <DateInput :label="t('end')" v-model="end" />
       <Textarea :label="t('note')" v-model="note" />
-      <Alert v-if="error">{{ error }}</Alert>
+      <Alert v-if="error" variant="error">{{ error }}</Alert>
       <footer>
         <Button type="submit">{{ t("save") }}</Button>
         <Button variant="secondary" @click="handleCancelClick">{{

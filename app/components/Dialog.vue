@@ -1,11 +1,17 @@
 <template>
-  <div :class="{ background: true, open }" @click="open = false"></div>
-  <div :class="{ dialog: true, open, inset }">
+  <div
+    :class="{ background: true, 'header-offset': headerOffset, open }"
+    @click="open = false"
+  ></div>
+  <div :class="{ dialog: true, 'header-offset': headerOffset, open, inset }">
     <header>
-      <h2>{{ title }}</h2>
-      <button @click="open = false">
-        <Xmark />
-      </button>
+      <div class="title">
+        <h2>{{ title }}</h2>
+        <button @click="open = false">
+          <Xmark />
+        </button>
+      </div>
+      <slot name="header"></slot>
     </header>
     <div class="body">
       <slot></slot>
@@ -16,12 +22,19 @@
 <script lang="ts" setup>
 import { Xmark } from "@iconoir/vue";
 
-defineProps<{ inset: boolean; title: string }>();
+defineProps<{
+  headerOffset: boolean;
+  inset: boolean;
+  title: string;
+  bodyClass: string;
+}>();
 
 const open = defineModel("open");
 </script>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/breakpoints.scss";
+
 .background {
   position: fixed;
   left: 0;
@@ -32,6 +45,10 @@ const open = defineModel("open");
   background-color: rgba(0, 0, 0, 0);
   pointer-events: none;
   transition: background-color 200ms;
+  &.header-offset {
+    top: var(--navbar-height);
+    height: calc(100% - var(--navbar-height));
+  }
   &.open {
     pointer-events: all;
     background-color: rgba(0, 0, 0, 0.2);
@@ -46,19 +63,32 @@ const open = defineModel("open");
   background-color: white;
   z-index: 40;
   transition: top 200ms;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  &.header-offset {
+    top: calc(-100% + var(--navbar-height));
+    max-height: calc(90vh - var(--navbar-height));
+  }
   &.open {
     top: 50%;
   }
   &.inset {
     padding: 2rem;
   }
+  @media screen and (min-width: $breakpoint-sm) {
+    height: auto;
+    max-height: 90vh;
+  }
 }
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  line-height: 1;
-  margin-bottom: 1rem;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
   h2 {
     margin: 0;
   }
@@ -68,5 +98,8 @@ header {
     padding: 0.5rem;
     cursor: pointer;
   }
+}
+.body {
+  overflow-y: scroll;
 }
 </style>

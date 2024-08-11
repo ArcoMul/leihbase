@@ -1,20 +1,20 @@
 <template>
   <Dialog v-model:open="open" inset :title="title">
-    <Input
-      placeholder="Enter search query..."
-      class="input"
-      v-model="query"
-      @input="handleQueryInput"
-    />
-    <Scrollable height="70vh">
-      <table cellspacing="0">
-        <tr v-for="record in records" :key="record.id">
-          <td v-for="s in search" @click="handleRecordClick(record)">
-            {{ record[s] }}
-          </td>
-        </tr>
-      </table>
-    </Scrollable>
+    <template #header>
+      <Input
+        placeholder="Enter search query..."
+        class="input"
+        v-model="query"
+        @input="handleQueryInput"
+      />
+    </template>
+    <table cellspacing="0">
+      <tr v-for="record in records" :key="record.id">
+        <td v-for="s in search" @click="handleRecordClick(record)">
+          {{ record[s] }}
+        </td>
+      </tr>
+    </table>
   </Dialog>
 </template>
 
