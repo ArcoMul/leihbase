@@ -71,11 +71,33 @@
         <section>
           <h3>{{ t("future_title") }}</h3>
           <AdminReservationTable
-            v-if="futureReservations"
+            v-if="futureReservations && futureReservations.length > 0"
             :reservations="futureReservations"
             highlight-date="start"
             @select="handleReservationSelect"
           />
+          <p v-else>
+            <i>
+              {{ t("no_future_reservations") }}
+            </i>
+          </p>
+        </section>
+      </Tab>
+
+      <Tab id="past" :title="t('tab_past')">
+        <section>
+          <h3>{{ t("past_title") }}</h3>
+          <AdminReservationTable
+            v-if="pastReservations?.items && pastReservations.items.length > 0"
+            :reservations="pastReservations.items"
+            highlight-date="both"
+            @select="handleReservationSelect"
+          />
+          <p v-else>
+            <i>
+              {{ t("no_past_reservations") }}
+            </i>
+          </p>
         </section>
       </Tab>
     </TabList>
@@ -97,6 +119,7 @@ import ReservationDrawer from "./components/ReservationDrawer.vue";
 import { isToday, startOfUTCDate, endOfUTCDate, formatDate } from "~/lib/date";
 import { ArrowRight, ArrowLeft } from "@iconoir/vue";
 import type { Reservation } from "~/models/reservation";
+import type { ListResult } from "pocketbase";
 
 const { pb } = usePocketbase();
 const route = useRoute();
@@ -175,6 +198,19 @@ const { data: futureReservations, refresh: refreshFutureReservations } =
     return structuredClone(reservations) as Reservation[];
   });
 
+const { data: pastReservations, refresh: refreshPastReservations } =
+  await useAsyncData("admin_past_reservations", async () => {
+    const reservations = await pb.collection("reservations").getList(0, 50, {
+      filter: pb.filter("location = {:location} && end < @todayStart", {
+        location: location.value?.id,
+      }),
+      sort: "end",
+      expand: "product,user",
+      requestKey: "admin_past_reservations",
+    });
+    return structuredClone(reservations) as ListResult<Reservation>;
+  });
+
 function handleDayBackward() {
   date.value.setDate(date.value.getDate() - 1);
   refreshTodaysReservations();
@@ -188,6 +224,7 @@ function handleReservationUpdate() {
   refreshTodaysReservations();
   refreshOngoingReservations();
   refreshFutureReservations();
+  refreshPastReservations();
 }
 
 function handleReservationSelect(reservation: Reservation) {
@@ -256,6 +293,7 @@ section.today {
   "en": {
     "title": "Reservations",
     "new_reservation": "New reservation",
+    "tab_past": "Past",
     "tab_shift": "Shift",
     "tab_ongoing": "Ongoing",
     "tab_future": "Future",
@@ -266,11 +304,13 @@ section.today {
     "no_future_reservations": "There are no future reservations.",
     "on": "am",
     "ongoing_title": "Ongoing reservations",
-    "future_title": "Future Reservations"
+    "future_title": "Future reservations",
+    "past_title": "Past Reservations (last 50)"
   },
   "de": {
     "title": "Reservierungen",
     "new_reservation": "Neue Reservierung",
+    "tab_past": "Archiv",
     "tab_shift": "Schicht",
     "tab_ongoing": "Laufend",
     "tab_future": "Zukunft",
@@ -281,7 +321,8 @@ section.today {
     "no_future_reservations": "Es gibt keine zukünftige Reservierungen.",
     "on": "am",
     "ongoing_title": "Laufende Reservierungen",
-    "future_title": "Zukünftige Reservierungen"
+    "future_title": "Zukünftige Reservierungen",
+    "past_title": "Vergangene Reservierungen (letzte 50)"
   }
 }
 </i18n>
