@@ -34,8 +34,8 @@ if (config.plausibleTrackingDomain) {
   });
 }
 
-if (isValid.value) {
-  userStore.fetchUserReservations();
+if (isValid.value && !userStore.hasInitialData) {
+  userStore.fetchInitialData();
 }
 </script>
 

@@ -85,6 +85,7 @@ async function onLogin() {
   }
 
   if (isValid.value) {
+    userStore.login();
     // Show after-login banner on next page
     const { path, intent } = userStore.$state.authenticationIntent;
     if (path) {

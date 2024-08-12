@@ -3,6 +3,9 @@
     <NuxtLink to="/" class="logo">Leihbar<br />Köln</NuxtLink>
     <nav>
       <ul v-if="isValid">
+        <li v-if="userStore.locations.length > 0">
+          <NuxtLink to="/admin">{{ t("admin") }}</NuxtLink>
+        </li>
         <li>
           <NuxtLink to="/profile">{{ t("profile") }}</NuxtLink>
         </li>
@@ -31,6 +34,7 @@ const { t } = useI18n({
   useScope: "local",
 });
 const { isValid } = usePocketbase();
+const userStore = useUserStore();
 </script>
 
 <style lang="scss" scoped>
@@ -99,12 +103,14 @@ header {
   "en": {
     "sign_up": "Sign up",
     "login": "Login",
-    "profile": "Profile"
+    "profile": "Profile",
+    "admin": "Admin"
   },
   "de": {
     "sign_up": "Registrieren",
     "login": "Einloggen",
-    "profile": "Profil"
+    "profile": "Profil",
+    "admin": "Admin"
   }
 }
 </i18n>

@@ -2,7 +2,9 @@ import type { RecordModel } from "pocketbase";
 
 interface State {
   name: string | null;
+  hasInitialData: boolean;
   reservations: RecordModel[] | [];
+  locations: RecordModel[] | [];
   authenticationIntent: {
     intent: "reservation" | null;
     path: string | null;
@@ -13,7 +15,9 @@ interface State {
 export const useUserStore = defineStore<"user", State>("user", {
   state: () => ({
     name: null,
+    hasInitialData: false,
     reservations: [],
+    locations: [],
     authenticationIntent: {
       intent: null,
       path: null,
@@ -23,10 +27,20 @@ export const useUserStore = defineStore<"user", State>("user", {
   actions: {
     login({ name }: { name?: string } = {}) {
       const { pb } = usePocketbase();
+      // Store user name
       this.name = name || pb.authStore?.model?.name;
+      // Fetch initial data
+      this.fetchInitialData();
     },
     logout() {
       this.name = null;
+    },
+    async fetchInitialData() {
+      await Promise.all([
+        this.fetchUserReservations(),
+        this.fetchUserLocations(),
+      ]);
+      this.hasInitialData = true;
     },
     async fetchUserReservations() {
       const { pb } = usePocketbase();
@@ -37,6 +51,13 @@ export const useUserStore = defineStore<"user", State>("user", {
           }),
         });
         this.reservations = reservations;
+      }
+    },
+    async fetchUserLocations() {
+      const { pb } = usePocketbase();
+      if (pb.authStore?.model?.id) {
+        const locations = await pb.collection("location").getFullList();
+        this.locations = locations;
       }
     },
     setAuthenticationIntent(intent: null | "reservation", path: string) {
