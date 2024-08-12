@@ -102,6 +102,7 @@ async function handleSubmit() {
     end: end.value,
     note: note.value,
   };
+  error.value = "";
   try {
     if (props.state === "new") {
       // Create new reservation
