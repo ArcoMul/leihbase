@@ -11,7 +11,7 @@
       }}</Button>
     </header>
 
-    <TabList active="today">
+    <TabList active="today" class="tablist">
       <Tab id="today" :title="t('tab_shift')">
         <section class="today">
           <header>
@@ -285,6 +285,13 @@ section.today {
 }
 .date-field {
   display: none;
+}
+@media screen and (max-width: $breakpoint-sm) {
+  .tablist :deep(ul) {
+    --spacing-start: var(--fluid-spacing-8);
+    --spacing-end: var(--fluid-spacing-8);
+    margin-inline: calc(var(--fluid-spacing-8) * -1);
+  }
 }
 </style>
 

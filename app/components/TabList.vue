@@ -1,17 +1,19 @@
 <template>
-  <nav>
-    <ul>
-      <li v-for="tab in tabs">
-        <button
-          :class="activeTabId === tab.props?.id ? 'active' : ''"
-          @click="handleClick(tab)"
-        >
-          {{ tab?.props?.title }}
-        </button>
-      </li>
-    </ul>
-  </nav>
-  <slot></slot>
+  <div>
+    <nav>
+      <ul>
+        <li v-for="tab in tabs">
+          <button
+            :class="activeTabId === tab.props?.id ? 'active' : ''"
+            @click="handleClick(tab)"
+          >
+            {{ tab?.props?.title }}
+          </button>
+        </li>
+      </ul>
+    </nav>
+    <slot></slot>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -44,10 +46,14 @@ onBeforeMount(() => {
 @import "~/assets/styles/breakpoints.scss";
 
 ul {
+  --spacing-between: var(--fluid-spacing-4);
+  --spacing-start: var(--fluid-spacing-4);
+  --spacing-end: var(--fluid-spacing-4);
   list-style: none;
   display: flex;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
 }
 li {
   display: flex;
@@ -58,15 +64,16 @@ li::after {
   content: "";
   height: 1px;
   background-color: var(--body-text-color);
-  width: var(--fluid-spacing-4);
+  width: var(--spacing-between);
 }
 li:first-child::before {
-  width: 0.25rem;
+  width: var(--spacing-start);
 }
 li:last-child {
   width: 100%;
   &::after {
     width: 100%;
+    min-width: var(--spacing-end);
   }
 }
 button {
