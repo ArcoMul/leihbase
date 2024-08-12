@@ -54,11 +54,16 @@
         <section>
           <h3>{{ t("ongoing_title") }}</h3>
           <AdminReservationTable
-            v-if="ongoingReservations"
+            v-if="ongoingReservations && ongoingReservations.length > 0"
             :reservations="ongoingReservations"
             highlight-date="end"
             @select="handleReservationSelect"
           />
+          <p v-else>
+            <i>
+              {{ t("no_ongoing_reservations") }}
+            </i>
+          </p>
         </section>
       </Tab>
 
@@ -257,6 +262,8 @@ section.today {
     "today": "heute",
     "Today": "Heute",
     "no_reservations_on_date": "No reservations starting or ending {date}",
+    "no_ongoing_reservations": "There are no ongoing reservations.",
+    "no_future_reservations": "There are no future reservations.",
     "on": "am",
     "ongoing_title": "Ongoing reservations",
     "future_title": "Future Reservations"
@@ -270,6 +277,8 @@ section.today {
     "today": "heute",
     "Today": "Heute",
     "no_reservations_on_date": "Es gibt keine Reservierungen, die {date} starten oder enden",
+    "no_ongoing_reservations": "Es gibt keine laufende Reservierungen.",
+    "no_future_reservations": "Es gibt keine zukünftige Reservierungen.",
     "on": "am",
     "ongoing_title": "Laufende Reservierungen",
     "future_title": "Zukünftige Reservierungen"
