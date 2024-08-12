@@ -19,6 +19,7 @@
             start: true,
             highlight:
               highlightDate === 'start' ||
+              highlightDate === 'both' ||
               (highlightDate === 'date' &&
                 date &&
                 isSameDate(date, new Date(reservation.start))),
@@ -31,6 +32,7 @@
             end: true,
             highlight:
               highlightDate === 'end' ||
+              highlightDate === 'both' ||
               (highlightDate === 'date' &&
                 date &&
                 isSameDate(date, new Date(reservation.end))),
@@ -66,7 +68,7 @@ const emit = defineEmits<{ select: [reservation: Reservation] }>();
 defineProps<{
   reservations: Reservation[];
   date?: Date;
-  highlightDate: "start" | "end" | "date";
+  highlightDate: "start" | "end" | "date" | "both";
 }>();
 
 function handleReservationClick(reservation: Reservation) {
