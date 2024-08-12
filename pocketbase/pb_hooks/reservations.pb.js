@@ -1,6 +1,7 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 onRecordBeforeCreateRequest((e) => {
+  const { hasOverlappingReservations } = require(`${__hooks}/lib/reservation`);
   const { record, httpContext } = e;
   var startOfDay = new Date();
   startOfDay.setUTCHours(0, 0, 0, 0);
@@ -41,21 +42,7 @@ onRecordBeforeCreateRequest((e) => {
 
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
-  const records = $app
-    .dao()
-    .findRecordsByFilter(
-      "reservations",
-      "product = {:product} && start < {:end} && end > {:start}",
-      null,
-      1,
-      0,
-      {
-        product: record.get("product"),
-        start: record.get("start"),
-        end: record.get("end"),
-      }
-    );
-  if (records.length > 0) {
+  if (hasOverlappingReservations(record)) {
     throw new BadRequestError("Overlapping_reservation.");
   }
 
@@ -65,6 +52,16 @@ onRecordBeforeCreateRequest((e) => {
     "message",
     record.get("message").replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "")
   );
+}, "reservations");
+
+onRecordBeforeUpdateRequest((e) => {
+  const { hasOverlappingReservations } = require(`${__hooks}/lib/reservation`);
+  const { record } = e;
+  // Make sure there is no overlapping reservation for the same product in the
+  // same timespan
+  if (hasOverlappingReservations(record)) {
+    throw new BadRequestError("Overlapping_reservation.");
+  }
 }, "reservations");
 
 onRecordAfterCreateRequest((e) => {
