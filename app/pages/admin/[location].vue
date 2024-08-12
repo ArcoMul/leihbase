@@ -204,7 +204,7 @@ const { data: pastReservations, refresh: refreshPastReservations } =
       filter: pb.filter("location = {:location} && end < @todayStart", {
         location: location.value?.id,
       }),
-      sort: "end",
+      sort: "-end",
       expand: "product,user",
       requestKey: "admin_past_reservations",
     });
