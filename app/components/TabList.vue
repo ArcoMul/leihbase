@@ -24,7 +24,7 @@ defineSlots<{
 }>();
 
 const slots = useSlots();
-const tabs = ref<VNode[]>([]);
+const tabs = ref<VNode[]>(slots.default ? slots.default() : []);
 const activeTabId = ref<string | null>(props.active);
 
 provide("activeTabId", activeTabId);
@@ -36,7 +36,6 @@ function handleClick(tab: VNode) {
 onBeforeMount(() => {
   if (slots.default) {
     tabs.value = slots.default();
-    console.log(tabs.value);
   }
 });
 </script>
