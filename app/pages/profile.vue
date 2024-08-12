@@ -32,7 +32,7 @@ if (!isValid.value) {
 
 function onLogout() {
   logout();
-  router.push("/");
+  window.location.href = "/";
 }
 </script>
 
