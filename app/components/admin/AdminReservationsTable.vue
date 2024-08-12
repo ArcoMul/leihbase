@@ -2,11 +2,11 @@
   <table class="admin-reservations-table" cellspacing="0">
     <thead>
       <tr>
-        <th>Start</th>
-        <th>End</th>
-        <th>Product</th>
-        <th>User</th>
-        <th class="note">Note</th>
+        <th>{{ t("start") }}</th>
+        <th>{{ t("end") }}</th>
+        <th>{{ t("product") }}</th>
+        <th>{{ t("user") }}</th>
+        <th class="note">{{ t("note") }}</th>
       </tr>
     </thead>
     <tbody>
@@ -58,7 +58,9 @@
 import { formatDate, isSameDate } from "~/lib/date";
 import type { Reservation } from "~/models/reservation";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n({
+  useScope: "local",
+});
 const emit = defineEmits<{ select: [reservation: Reservation] }>();
 
 defineProps<{
@@ -114,3 +116,22 @@ tbody tr:hover {
   padding-left: 1.333rem;
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "start": "Start",
+    "end": "End",
+    "product": "Product",
+    "user": "User",
+    "note": "Note"
+  },
+  "de": {
+    "start": "Start",
+    "end": "Ende",
+    "product": "Produkt",
+    "user": "Nutzer",
+    "note": "Notiz"
+  }
+}
+</i18n>
