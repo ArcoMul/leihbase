@@ -301,7 +301,7 @@ section.today {
     "title": "Reservations",
     "new_reservation": "New reservation",
     "tab_past": "Past",
-    "tab_shift": "Shift",
+    "tab_shift": "Today",
     "tab_ongoing": "Ongoing",
     "tab_future": "Future",
     "today": "heute",
@@ -317,10 +317,10 @@ section.today {
   "de": {
     "title": "Reservierungen",
     "new_reservation": "Neue Reservierung",
-    "tab_past": "Archiv",
-    "tab_shift": "Schicht",
-    "tab_ongoing": "Laufend",
-    "tab_future": "Zukunft",
+    "tab_past": "Vergangene",
+    "tab_shift": "Heutige",
+    "tab_ongoing": "Laufende",
+    "tab_future": "Anstehende",
     "today": "heute",
     "Today": "Heute",
     "no_reservations_on_date": "Es gibt keine Reservierungen, die {date} starten oder enden",
@@ -328,7 +328,7 @@ section.today {
     "no_future_reservations": "Es gibt keine zukünftige Reservierungen.",
     "on": "am",
     "ongoing_title": "Laufende Reservierungen",
-    "future_title": "Zukünftige Reservierungen",
+    "future_title": "Anstehende Reservierungen",
     "past_title": "Vergangene Reservierungen (letzte 50)"
   }
 }
