@@ -217,7 +217,7 @@ footer {
     "end": "Ende",
     "note": "Notiz  ",
     "save": "Speichern",
-    "cancel": "Annulieren",
+    "cancel": "Abbrechen",
     "remove_dialog": {
       "title": "Reservierung entfernen",
       "text": "Bist du sicher, dass du diese Reservierung endgültig entfernen möchtest?",
