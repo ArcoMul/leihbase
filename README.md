@@ -14,10 +14,11 @@ Web application to manage Leihladen, also known as Borrow Stores.
 - 🏷️ Product category filtering
 - 🧑‍🤝‍🧑 User sign-up/login
 - 🎫 Product reservations
+- 👷 A back-end to manage reservations
 
 ## Screenshots
 
-<img src="./screenshots/screenshot-index-page.png" width="49%" /><img src="./screenshots/screenshot-product-page.png" width="49%" />
+<img src="./screenshots/screenshot-index-page.png" width="49%" /><img src="./screenshots/screenshot-product-page.png" width="49%" /><img src="./screenshots/screenshot-reservation-dialog.png" width="49%" /><img src="./screenshots/screenshot-admin-page.png" width="49%" />
 
 ## Tech
 
