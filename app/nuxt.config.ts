@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: "Leihapp",
+      title: "Leihbase",
       link: [
         { rel: "favicon", type: "image/png", href: "/favicon-192x192.png" },
         { rel: "stylesheet", href: "/fonts/inter/inter.css" },

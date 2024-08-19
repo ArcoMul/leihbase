@@ -68,7 +68,7 @@ const { data: location } = await useAsyncData("location", async () => {
 });
 
 useHead({
-  title: `${location.value?.name} | Leihbase`,
+  title: location.value?.name,
 });
 </script>
 

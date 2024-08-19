@@ -60,7 +60,7 @@ const userStore = useUserStore();
 const { login, isValid } = usePocketbase();
 
 useHead({
-  title: `Login | Leihapp`,
+  title: `Login`,
 });
 
 const email = ref(null);

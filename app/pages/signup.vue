@@ -96,7 +96,7 @@ const { pb, login } = usePocketbase();
 const signupError = ref(null);
 
 useHead({
-  title: `${t("page_title")} | Leihbase`,
+  title: t("page_title"),
 });
 
 const name = ref(null);

@@ -202,7 +202,7 @@ const available = computed(() =>
 );
 
 useHead({
-  title: `${product.value?.name} | Leihapp`,
+  title: `${product.value?.name} | ${location.value?.name}`,
 });
 
 const startOfToday = getStartOfDay();

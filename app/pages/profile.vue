@@ -20,7 +20,7 @@ const router = useRouter();
 const user = ref(null);
 
 useHead({
-  title: `Profile | Leihapp`,
+  title: "Profile",
 });
 
 if (!isValid.value) {
