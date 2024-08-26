@@ -61,6 +61,6 @@ setup.describe("setup", () => {
   // as Nuxt first needs to finish building
   setup("wait for homepage", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle("Test Store | Leihbase", { timeout: 30000 });
+    await expect(page).toHaveTitle("Test Store", { timeout: 30000 });
   });
 });
