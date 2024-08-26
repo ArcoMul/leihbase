@@ -8,7 +8,7 @@
         E-mail: {{ user?.email }} {{ user?.verified ? "" : "(unbestätigt)" }}
       </p>
       <hr />
-      <Button size="lg" @click="onLogout">Logout</Button>
+      <Button size="lg" :loading="loggingOut" @click="onLogout">Logout</Button>
     </Card>
   </Container>
 </template>
@@ -18,6 +18,7 @@ const { pb, isValid, logout } = usePocketbase();
 const router = useRouter();
 
 const user = ref(null);
+const loggingOut = ref(false);
 
 useHead({
   title: "Profile",
@@ -31,6 +32,7 @@ if (!isValid.value) {
 }
 
 function onLogout() {
+  loggingOut.value = true;
   logout();
   window.location.href = "/";
 }

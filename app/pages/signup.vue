@@ -65,7 +65,12 @@
           <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
           {{ signupError }}
         </sl-alert>
-        <Button size="lg" type="submit" data-testid="submit-button">
+        <Button
+          :loading="loading"
+          size="lg"
+          type="submit"
+          data-testid="submit-button"
+        >
           {{ t("submit") }}
         </Button>
       </form>
@@ -94,6 +99,7 @@ const userStore = useUserStore();
 const { pb, login } = usePocketbase();
 
 const signupError = ref(null);
+const loading = ref(false);
 
 useHead({
   title: t("page_title"),
@@ -111,6 +117,7 @@ async function onSignup() {
     passwordConfirm: password.value,
   };
   signupError.value = null;
+  loading.value = true;
 
   try {
     // Create account
@@ -140,6 +147,7 @@ async function onSignup() {
     }
   } catch (e) {
     console.log(e);
+    loading.value = false;
     if (e.data?.data?.password?.code === "validation_length_out_of_range") {
       signupError.value = t("errors.password_length");
     } else if (e.data?.data?.email?.code === "validation_invalid_email") {

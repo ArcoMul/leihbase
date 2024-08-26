@@ -30,7 +30,9 @@
             <NuxtLink to="/signup">{{ t("error_signup") }}</NuxtLink>
           </i18n-t>
         </Alert>
-        <Button size="lg" type="submit">{{ t("submit") }}</Button>
+        <Button :loading="loading" size="lg" type="submit">
+          {{ t("submit") }}
+        </Button>
       </form>
     </Card>
     <footer>
@@ -66,6 +68,7 @@ useHead({
 const email = ref(null);
 const password = ref(null);
 
+const loading = ref(false);
 const authenticationError = ref(false);
 
 // If the 'return' query parameter is set in the url,
@@ -76,10 +79,12 @@ if (route.query.return) {
 
 async function onLogin() {
   authenticationError.value = false;
+  loading.value = true;
 
   try {
     await login(email.value, password.value);
   } catch (e) {
+    loading.value = false;
     authenticationError.value = true;
     return;
   }

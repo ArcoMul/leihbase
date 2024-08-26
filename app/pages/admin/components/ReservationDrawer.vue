@@ -31,7 +31,7 @@
       <RichTextarea :label="t('note')" v-model="note" />
       <Alert v-if="error" variant="error">{{ error }}</Alert>
       <footer>
-        <Button type="submit">{{ t("save") }}</Button>
+        <Button :loading="isSubmitting" type="submit">{{ t("save") }}</Button>
         <Button variant="secondary" @click="handleCancelClick">{{
           t("cancel")
         }}</Button>
@@ -45,7 +45,7 @@
   >
     <p class="remove-dialog-text">{{ t("remove_dialog.text") }}</p>
     <footer>
-      <Button @click="handleRemoveDialogConfirmClick">
+      <Button :loading="isRemoving" @click="handleRemoveDialogConfirmClick">
         {{ t("remove_dialog.confirm") }}
       </Button>
       <Button variant="secondary" @click="handleRemoveDialogCancelClick">
@@ -105,6 +105,7 @@ watch(open, (isOpening) => {
   }
 });
 
+const isSubmitting = ref(false);
 async function handleSubmit() {
   const formData = {
     user: userId.value,
@@ -115,6 +116,7 @@ async function handleSubmit() {
     note: note.value,
   };
   error.value = "";
+  isSubmitting.value = true;
   try {
     if (props.state === "new") {
       // Create new reservation
@@ -128,10 +130,11 @@ async function handleSubmit() {
         .collection("reservations")
         .update(props.reservation.id, formData);
     }
-
     open.value = false;
+    isSubmitting.value = false;
     emit("update");
   } catch (err) {
+    isSubmitting.value = false;
     if (err?.message === "Overlapping_reservation.") {
       error.value = t("errors.overlapping_reservation");
     } else if (err?.message === "Start_before_today.") {
@@ -154,17 +157,21 @@ function handleRemoveClick() {
   removeDialogOpen.value = true;
 }
 
+const isRemoving = ref(false);
 async function handleRemoveDialogConfirmClick() {
   if (!props.reservation?.id) {
     console.error("No reservation id given to delete");
     return;
   }
+  isRemoving.value = true;
   try {
     await pb.collection("reservations").delete(props.reservation.id);
     removeDialogOpen.value = false;
     open.value = false;
+    isRemoving.value = false;
     emit("update");
   } catch (e) {
+    isRemoving.value = false;
     console.error("Error removing reservation", e);
   }
 }

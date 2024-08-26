@@ -114,7 +114,7 @@
               {{ reservationCreationError }}
             </sl-alert>
 
-            <Button size="lg" type="submit">
+            <Button :loading="isSubmittingReservation" size="lg" type="submit">
               {{ t("reserve_now_button") }}
             </Button>
           </form>
@@ -228,8 +228,10 @@ function onReserve() {
   dialog.value.show();
 }
 
+const isSubmittingReservation = ref(false);
 async function onSubmit() {
   reservationCreationError.value = null;
+  isSubmittingReservation.value = true;
   try {
     const reservation = await pb.collection("reservations").create({
       user: pb.authStore.model.id,
@@ -240,7 +242,7 @@ async function onSubmit() {
       send_confirmation: true,
     });
   } catch (e) {
-    console.log(e.data);
+    isSubmittingReservation.value = false;
     if (e.data.code === 400 && e.data.message === "Overlapping_reservation.") {
       reservationCreationError.value = t("errors.overlapping_reservation");
     } else if (
@@ -260,6 +262,7 @@ async function onSubmit() {
   refreshReservations();
 
   dialog.value.hide();
+  isSubmittingReservation.value = false;
 }
 </script>
 
