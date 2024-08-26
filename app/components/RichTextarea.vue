@@ -39,7 +39,6 @@ const props = defineProps<{
 }>();
 
 watch(model, (newValue) => {
-  console.log("new value", newValue, editor.value);
   if (!newValue) {
     editor.value.setHTML("");
   }

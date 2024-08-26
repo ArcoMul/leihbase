@@ -90,7 +90,19 @@ watch(open, (isOpening) => {
     ? new Date(props.reservation.start)
     : null;
   end.value = props.reservation?.end ? new Date(props.reservation.end) : null;
-  note.value = props.reservation?.note || "";
+  if (props.reservation) {
+    note.value = props.reservation?.note || "";
+  } else if (props.location.note_default) {
+    // NOTE: this weird HTML formatting is required because the Quill richt-text
+    // editor for some reason wants the HTML formatted this way, otherwise it
+    // inserts extra paragraphs...
+    note.value = props.location.note_default.replace(
+      /<\/p>[\n\r]+<p>/g,
+      "\n</p><p>"
+    );
+  } else {
+    note.value = "";
+  }
 });
 
 async function handleSubmit() {

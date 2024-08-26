@@ -40,6 +40,11 @@ onRecordBeforeCreateRequest((e) => {
     record.set("send_confirmation", false);
   }
 
+  // Set default note content
+  if (!record.get("note") && location.get("note_default")) {
+    record.set("note", location.get("note_default"));
+  }
+
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
   if (hasOverlappingReservations(record)) {
