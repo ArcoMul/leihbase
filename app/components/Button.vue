@@ -10,6 +10,7 @@
       loading,
     }"
     :href="href"
+    :disabled="!mounted"
   >
     <span v-if="$slots.prefix" class="prefix">
       <slot name="prefix"></slot>
@@ -36,6 +37,11 @@ const props = withDefaults(
 const component = computed(() => {
   if (props.href) return "a";
   return "button";
+});
+
+const mounted = ref(false);
+onMounted(() => {
+  mounted.value = true;
 });
 </script>
 
@@ -87,9 +93,12 @@ button {
     padding: 0.333rem;
     font-size: 1rem;
   }
-  &.loading {
+  &.loading,
+  &[disabled] {
     pointer-events: none;
     opacity: 0.5;
+  }
+  &.loading {
     &:after {
       content: "";
       width: 1em;
