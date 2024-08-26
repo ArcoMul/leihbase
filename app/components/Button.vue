@@ -7,6 +7,7 @@
       ['size-' + size]: true,
       rounded,
       circle,
+      loading,
     }"
     :href="href"
   >
@@ -27,8 +28,9 @@ const props = withDefaults(
     rounded?: boolean;
     circle?: boolean;
     type?: "submit" | "reset" | "button" | undefined;
+    loading?: boolean;
   }>(),
-  { variant: "primary", size: "md", type: "button" }
+  { variant: "primary", size: "md", type: "button", loading: false }
 );
 
 const component = computed(() => {
@@ -85,6 +87,22 @@ button {
     padding: 0.333rem;
     font-size: 1rem;
   }
+  &.loading {
+    pointer-events: none;
+    opacity: 0.5;
+    &:after {
+      content: "";
+      width: 1em;
+      height: 1em;
+      margin-left: 0.666rem;
+      border: 2px solid currentColor;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      display: inline-block;
+      box-sizing: border-box;
+      animation: rotation 1s linear infinite;
+    }
+  }
 
   .prefix {
     display: inline-flex;
@@ -93,6 +111,14 @@ button {
     height: 1em;
     margin-right: 0.5em;
     align-items: center;
+  }
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
