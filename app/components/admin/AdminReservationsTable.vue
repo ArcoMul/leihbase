@@ -1,64 +1,87 @@
 <template>
-  <table class="admin-reservations-table" cellspacing="0">
-    <thead>
-      <tr>
-        <th>{{ t("start") }}</th>
-        <th>{{ t("end") }}</th>
-        <th>{{ t("product") }}</th>
-        <th>{{ t("user") }}</th>
-        <th class="note">{{ t("note") }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="reservation in reservations"
-        @click="handleReservationClick(reservation)"
-      >
-        <td
-          :class="{
-            start: true,
-            highlight:
-              highlightDate === 'start' ||
-              highlightDate === 'both' ||
-              (highlightDate === 'date' &&
-                date &&
-                isSameDate(date, new Date(reservation.start))),
-          }"
+  <div class="admin-reservations-table">
+    <table cellspacing="0">
+      <thead>
+        <tr>
+          <th>{{ t("start") }}</th>
+          <th>{{ t("end") }}</th>
+          <th>{{ t("product") }}</th>
+          <th>{{ t("user") }}</th>
+          <th>{{ t("picked_up") }}</th>
+          <th>{{ t("returned") }}</th>
+          <th>{{ t("deposit") }}</th>
+          <th>{{ t("note") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="reservation in reservations"
+          @click="handleReservationClick(reservation)"
         >
-          {{ formatDate(reservation.start, "ddd, DD.MM", locale) }}
-        </td>
-        <td
-          :class="{
-            end: true,
-            highlight:
-              highlightDate === 'end' ||
-              highlightDate === 'both' ||
-              (highlightDate === 'date' &&
-                date &&
-                isSameDate(date, new Date(reservation.end))),
-          }"
-        >
-          {{ formatDate(reservation.end, "ddd, DD.MM", locale) }}
-        </td>
-        <td>
-          <NuxtLink
-            :to="`/link/product/${reservation.expand.product.id}`"
-            target="_blank"
-            @click.stop
+          <td
+            :class="{
+              start: true,
+              highlight:
+                highlightDate === 'start' ||
+                highlightDate === 'both' ||
+                (highlightDate === 'date' &&
+                  date &&
+                  isSameDate(date, new Date(reservation.start))),
+            }"
           >
-            {{ reservation.expand.product.name }}
-          </NuxtLink>
-        </td>
-        <td>{{ reservation.expand?.user?.name }}</td>
-        <td class="note" v-html="reservation.note"></td>
-      </tr>
-    </tbody>
-  </table>
+            {{ formatDate(reservation.start, "ddd, DD.MM", locale) }}
+          </td>
+          <td
+            :class="{
+              end: true,
+              highlight:
+                highlightDate === 'end' ||
+                highlightDate === 'both' ||
+                (highlightDate === 'date' &&
+                  date &&
+                  isSameDate(date, new Date(reservation.end))),
+            }"
+          >
+            {{ formatDate(reservation.end, "ddd, DD.MM", locale) }}
+          </td>
+          <td>
+            <NuxtLink
+              :to="`/link/product/${reservation.expand.product.id}`"
+              target="_blank"
+              @click.stop
+            >
+              {{ reservation.expand.product.name }}
+            </NuxtLink>
+          </td>
+          <td>{{ reservation.expand?.user?.name }}</td>
+          <td>
+            <Check v-if="reservation.started" class="check" />
+            <Xmark v-else class="xmark" />
+          </td>
+          <td>
+            <Check v-if="reservation.ended" class="check" />
+            <Xmark v-else class="xmark" />
+          </td>
+          <td>€{{ reservation.deposit }}</td>
+          <td>
+            <Tooltip v-if="reservation.note" :html="reservation.note">
+              <MessageText class="note-icon" />
+            </Tooltip>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { formatDate, isSameDate } from "~/lib/date";
 import type { Reservation } from "~/models/reservation";
+import { Check, Xmark, MessageText } from "@iconoir/vue";
+
+if (import.meta.client) {
+  await import("@shoelace-style/shoelace/dist/components/tooltip/tooltip.js");
+}
 
 const { t, locale } = useI18n({
   useScope: "local",
@@ -77,18 +100,22 @@ function handleReservationClick(reservation: Reservation) {
 </script>
 
 <style scoped lang="scss">
-table {
+.admin-reservations-table {
   width: 100%;
-  display: block;
   overflow-x: auto;
-  white-space: nowrap;
+}
+table {
+  min-width: 100%;
 }
 th,
 td {
   text-align: left;
   padding: 0.5rem;
-  width: 15%;
+  max-width: 200px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  overflow: hidden;
   &.start,
   &.end {
     color: var(--body-text-color-light);
@@ -102,19 +129,29 @@ tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
+
+.check {
+  color: #15b845;
+  stroke-width: 3px;
+}
+.xmark {
+  stroke-width: 0.75px;
+}
+.note-icon {
+  width: 1.1em;
+  height: 1.1em;
+  margin-bottom: -2px;
+}
 </style>
 
 <style scoped>
-.note {
-  width: 40%;
-}
-.note :deep(p),
-.note :deep(ul),
-.note :deep(ol) {
+sl-tooltip :deep(p),
+sl-tooltip :deep(ul),
+sl-tooltip :deep(ol) {
   margin-bottom: 0;
 }
-.note :deep(ul),
-.note :deep(ol) {
+sl-tooltip :deep(ul),
+sl-tooltip :deep(ol) {
   padding-left: 1.333rem;
 }
 </style>
@@ -126,6 +163,9 @@ tbody tr:hover {
     "end": "End",
     "product": "Product",
     "user": "User",
+    "picked_up": "Picked Up",
+    "returned": "Returned",
+    "deposit": "Deposit",
     "note": "Note"
   },
   "de": {
@@ -133,6 +173,9 @@ tbody tr:hover {
     "end": "Ende",
     "product": "Produkt",
     "user": "Nutzer",
+    "picked_up": "Abgeholt",
+    "returned": "Zurückgegeben",
+    "deposit": "Pfand",
     "note": "Notiz"
   }
 }
