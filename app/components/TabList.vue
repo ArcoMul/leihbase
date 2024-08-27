@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav>
-      <ul>
+      <ul class="tablist">
         <li v-for="tab in tabs">
           <button
             :class="activeTabId === tab.props?.id ? 'active' : ''"

@@ -287,7 +287,7 @@ section.today {
   display: none;
 }
 @media screen and (max-width: $breakpoint-sm) {
-  .tablist :deep(ul) {
+  .tablist :deep(ul.tablist) {
     --spacing-start: var(--fluid-spacing-8);
     --spacing-end: var(--fluid-spacing-8);
     margin-inline: calc(var(--fluid-spacing-8) * -1);
