@@ -10,7 +10,7 @@
       loading,
     }"
     :href="href"
-    :disabled="!mounted"
+    :disabled="disabled"
   >
     <span v-if="$slots.prefix" class="prefix">
       <slot name="prefix"></slot>
@@ -30,6 +30,7 @@ const props = withDefaults(
     circle?: boolean;
     type?: "submit" | "reset" | "button" | undefined;
     loading?: boolean;
+    disabled?: boolean;
   }>(),
   { variant: "primary", size: "md", type: "button", loading: false }
 );
@@ -37,11 +38,6 @@ const props = withDefaults(
 const component = computed(() => {
   if (props.href) return "a";
   return "button";
-});
-
-const mounted = ref(false);
-onMounted(() => {
-  mounted.value = true;
 });
 </script>
 
