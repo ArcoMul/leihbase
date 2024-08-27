@@ -28,6 +28,11 @@
       />
       <DateInput :label="t('start')" v-model="start" />
       <DateInput :label="t('end')" v-model="end" />
+      <Switch id="started" :label="t('collected')" v-model="started" />
+      <Switch id="ended" :label="t('returned')" v-model="ended" />
+      <Input :label="t('deposit')" v-model="deposit" type="number">
+        <template #prefix>€</template>
+      </Input>
       <RichTextarea :label="t('note')" v-model="note" />
       <Alert v-if="error" variant="error">{{ error }}</Alert>
       <footer>
@@ -78,6 +83,9 @@ const productId = ref<string>();
 const userId = ref<string>();
 const start = ref<Date | null>(null);
 const end = ref<Date | null>(null);
+const started = ref<boolean>(false);
+const ended = ref<boolean>(false);
+const deposit = ref<number>(0);
 const note = ref<string>();
 const error = ref<string | null>(null);
 
@@ -90,6 +98,9 @@ watch(open, (isOpening) => {
     ? new Date(props.reservation.start)
     : null;
   end.value = props.reservation?.end ? new Date(props.reservation.end) : null;
+  started.value = props.reservation?.started || false;
+  ended.value = props.reservation?.ended || false;
+  deposit.value = props.reservation?.deposit || 0;
   if (props.reservation) {
     note.value = props.reservation?.note || "";
   } else if (props.location.note_default) {
@@ -113,7 +124,10 @@ async function handleSubmit() {
     location: props.location.id,
     start: start.value,
     end: end.value,
-    note: note.value,
+    started: started.value,
+    ended: ended.value,
+    deposit: deposit.value,
+    note: note.value === "<p><br></p>" ? "" : note.value,
   };
   error.value = "";
   isSubmitting.value = true;
@@ -211,6 +225,8 @@ footer {
     "user": "User",
     "start": "Start",
     "end": "End",
+    "collected": "Picked up",
+    "returned": "Returned",
     "note": "Note",
     "save": "Save",
     "cancel": "Cancel",
@@ -234,6 +250,9 @@ footer {
     "user": "Nutzer:in",
     "start": "Start",
     "end": "Ende",
+    "collected": "Abgeholt",
+    "returned": "Zurückgegeben",
+    "deposit": "Deposit",
     "note": "Notiz  ",
     "save": "Speichern",
     "cancel": "Abbrechen",
