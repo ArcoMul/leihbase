@@ -81,3 +81,51 @@ Tests are configured and run using [Playwright](https://playwright.dev/).
 ### Run
 
 - `pnpm run test`
+
+## Configuration
+
+### Pocketbase Admin
+
+### Location
+
+#### Notifications
+
+Using the following JSON format the e-mail addresses which should receives
+notifications of this location can be configured:
+
+```
+[
+  "example@example.com",
+  "sarah@example.com"
+]
+```
+
+#### Opening Hours
+
+Using the following JSON format the opening hours of a location can be
+configured:
+
+```
+{
+  "tuesday": [
+    {
+      "from": "18:00",
+      "to": "19:00"
+    },
+  ],
+  "friday": [
+    {
+      "from": "17:00",
+      "to": "19:00"
+    }
+  ]
+}
+```
+
+#### Config field
+
+In the config JSON field of a location are the following configurations
+available:
+
+`config.allow_same_day_reservations` - Allows a reservation to start on the same
+day as that another reservation ends

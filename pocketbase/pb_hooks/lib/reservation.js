@@ -1,15 +1,18 @@
-function hasOverlappingReservations(record) {
+function hasOverlappingReservations(record, allowSameDay) {
   // A cancelled reservation is allowed to have an overlap
   if (record.get('cancelled')) {
     return false;
   }
+  // When allowing same day reservations the start of one reservation can be on
+  // the same day as the end of another reservation
+  const startEndComparison = allowSameDay ? "start < {:end} && end > {:start}" : "start <= {:end} && end >= {:start}";
   const records = $app
     .dao()
     .findRecordsByFilter(
       "reservations",
       record.get("id")
-        ? "id != {:id} && product = {:product} && cancelled != true && start < {:end} && end > {:start}"
-        : "product = {:product} && cancelled != true && start < {:end} && end > {:start}",
+        ? `id != {:id} && product = {:product} && cancelled != true && ${startEndComparison}`
+        : `product = {:product} && cancelled != true && ${startEndComparison}`,
       null,
       1,
       0,

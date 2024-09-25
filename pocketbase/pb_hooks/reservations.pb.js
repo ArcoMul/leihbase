@@ -47,7 +47,8 @@ onRecordBeforeCreateRequest((e) => {
 
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
-  if (hasOverlappingReservations(record)) {
+  const locationConfig = JSON.parse(location.get("config"));
+  if (hasOverlappingReservations(record, !!locationConfig['allow_same_day_reservations'])) {
     throw new BadRequestError("Overlapping_reservation.");
   }
 
@@ -62,9 +63,11 @@ onRecordBeforeCreateRequest((e) => {
 onRecordBeforeUpdateRequest((e) => {
   const { hasOverlappingReservations } = require(`${__hooks}/lib/reservation`);
   const { record } = e;
+  const location = record.expandedOne("location");
+  const locationConfig = JSON.parse(location.get("config"));
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
-  if (hasOverlappingReservations(record)) {
+  if (hasOverlappingReservations(record, !!locationConfig.allow_same_day_reservations)) {
     throw new BadRequestError("Overlapping_reservation.");
   }
 }, "reservations");
