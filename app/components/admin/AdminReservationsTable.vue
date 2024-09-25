@@ -16,6 +16,7 @@
       <tbody>
         <tr
           v-for="reservation in reservations"
+          :class="{cancelled: reservation.cancelled}"
           @click="handleReservationClick(reservation)"
         >
           <td
@@ -123,6 +124,10 @@ td {
       color: var(--body-text-color);
     }
   }
+}
+tr.cancelled td {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 tbody tr:hover {

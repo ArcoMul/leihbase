@@ -1,11 +1,15 @@
 function hasOverlappingReservations(record) {
+  // A cancelled reservation is allowed to have an overlap
+  if (record.get('cancelled')) {
+    return false;
+  }
   const records = $app
     .dao()
     .findRecordsByFilter(
       "reservations",
       record.get("id")
-        ? "id != {:id} && product = {:product} && start < {:end} && end > {:start}"
-        : "product = {:product} && start < {:end} && end > {:start}",
+        ? "id != {:id} && product = {:product} && cancelled != true && start < {:end} && end > {:start}"
+        : "product = {:product} && cancelled != true && start < {:end} && end > {:start}",
       null,
       1,
       0,

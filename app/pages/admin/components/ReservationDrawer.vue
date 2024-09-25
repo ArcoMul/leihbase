@@ -11,6 +11,7 @@
         <Trash />
       </Button>
     </header>
+    <Alert v-if="props.reservation?.cancelled" variant="warning">{{ t('reservation_is_cancelled') }}</Alert>
     <form @submit.prevent="handleSubmit">
       <RecordPickerInput
         id="reservation-drawer-product-input"
@@ -34,6 +35,7 @@
         <template #prefix>€</template>
       </Input>
       <RichTextarea :label="t('note')" v-model="note" />
+      <Switch id="cancelled" :label="t('cancelled')" v-model="cancelled" />
       <Alert v-if="error" variant="error">{{ error }}</Alert>
       <footer>
         <Button :loading="isSubmitting" type="submit">{{ t("save") }}</Button>
@@ -85,6 +87,7 @@ const start = ref<Date | null>(null);
 const end = ref<Date | null>(null);
 const started = ref<boolean>(false);
 const ended = ref<boolean>(false);
+const cancelled = ref<boolean>(false);
 const deposit = ref<number>(0);
 const note = ref<string>();
 const error = ref<string | null>(null);
@@ -100,6 +103,7 @@ watch(open, (isOpening) => {
   end.value = props.reservation?.end ? new Date(props.reservation.end) : null;
   started.value = props.reservation?.started || false;
   ended.value = props.reservation?.ended || false;
+  cancelled.value = props.reservation?.cancelled || false;
   deposit.value = props.reservation?.deposit || 0;
   if (props.reservation) {
     note.value = props.reservation?.note || "";
@@ -126,6 +130,7 @@ async function handleSubmit() {
     end: end.value,
     started: started.value,
     ended: ended.value,
+    cancelled: cancelled.value,
     deposit: deposit.value,
     note: note.value === "<p><br></p>" ? "" : note.value,
   };
@@ -221,10 +226,12 @@ footer {
   "en": {
     "new": "New Reservation",
     "edit": "Edit Reservation",
+    "reservation_is_cancelled": "This reservation is cancelled",
     "product": "Product",
     "user": "User",
     "start": "Start",
     "end": "End",
+    "cancelled": "Cancelled",
     "collected": "Picked up",
     "returned": "Returned",
     "deposit": "Deposit",
@@ -247,10 +254,12 @@ footer {
   "de": {
     "new": "Neue Reservierung",
     "edit": "Reservierung bearbeiten",
+    "reservation_is_cancelled": "Diese Reservierung ist annuliert",
     "product": "Produkt",
     "user": "Nutzer:in",
     "start": "Start",
     "end": "Ende",
+    "cancelled": "Annuliert",
     "collected": "Abgeholt",
     "returned": "Zurückgegeben",
     "deposit": "Pfand",
