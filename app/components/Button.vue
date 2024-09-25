@@ -11,6 +11,7 @@
     }"
     :href="href"
     :disabled="disabled"
+    :data-client-mounted="isClientMounted"
   >
     <span v-if="$slots.prefix" class="prefix">
       <slot name="prefix"></slot>
@@ -34,6 +35,8 @@ const props = withDefaults(
   }>(),
   { variant: "primary", size: "md", type: "button", loading: false }
 );
+
+const { isClientMounted } = useClientMounted();
 
 const component = computed(() => {
   if (props.href) return "a";

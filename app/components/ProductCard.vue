@@ -5,6 +5,7 @@
     :to="to"
     :class="{ root: true, clicked }"
     data-testid="product-card"
+    :data-client-mounted="isClientMounted"
     @click="clicked = true"
   >
     <ProductImage
@@ -64,11 +65,14 @@ const config = useRuntimeConfig();
 // Has been clicked (for active state)
 const clicked = ref(false);
 
+const { isClientMounted } = useClientMounted();
+
 // Pick component type based on to/href property
 const component = computed(() => {
   if (props.to || props.href) return resolveComponent("NuxtLink");
   return "button";
 });
+
 </script>
 
 <style lang="scss" scoped>
