@@ -83,7 +83,7 @@
 
         <sl-dialog ref="dialog" label="Reservieren" class="dialog-overview">
           <!-- Opening hours -->
-          <p v-if="location?.opening_hours" class="opening-hours">
+          <p v-if="location?.opening_hours" class="opening-hours" data-testid="opening-hours">
             <span>{{ t("opening_hours_of") }} {{ location?.name }}:</span><br />
             <span v-html="openingHoursToString(location?.opening_hours)"></span>
           </p>

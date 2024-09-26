@@ -21,7 +21,6 @@ test.describe("signup", () => {
     await page.getByTestId("tac-checkbox").check();
     await page.getByTestId("submit-button").click();
     await expect(page.getByTestId("signup-error")).toHaveCount(0);
-    await page.waitForTimeout(500);
     // await page.screenshot({ path: "test.png", fullPage: true });
     await page.waitForURL(/\/profile/);
     await expect(page).toHaveURL("/profile");
