@@ -10,7 +10,6 @@
       loading,
     }"
     :href="href"
-    :disabled="disabled"
     :data-client-mounted="isClientMounted"
   >
     <span v-if="$slots.prefix" class="prefix">
@@ -31,7 +30,6 @@ const props = withDefaults(
     circle?: boolean;
     type?: "submit" | "reset" | "button" | undefined;
     loading?: boolean;
-    disabled?: boolean;
   }>(),
   { variant: "primary", size: "md", type: "button", loading: false }
 );
@@ -92,8 +90,7 @@ button {
     padding: 0.333rem;
     font-size: 1rem;
   }
-  &.loading,
-  &[disabled] {
+  &.loading {
     pointer-events: none;
     opacity: 0.5;
   }

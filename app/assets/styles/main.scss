@@ -68,23 +68,24 @@
   --font-weight-bold: 700;
   --font-weight-black: 900;
 
-  --body-bg-color: #feddc1;
-  --body-text-color: #082342; // #041a33;
-  --body-text-color-light: #837e7b;
+  --body-bg-color: #feddc1; // #eee;
+  --body-bg-color-light: #ffe7d3; // #fff
+  --body-text-color: #082342; // #333;
+  --body-text-color-light: #837e7b; // #666;
 
   --body-font-md: 1rem;
   --body-font-sm: 0.897rem;
 
-  --header-bg-color: #0d79f2;
-  --header-text-color: #fee8d5;
+  --header-bg-color: #0d79f2; // #555;
+  --header-text-color: #fee8d5; // #fff;
 
-  --footer-bg-color: #ffe7d3;
+  --footer-bg-color: #ffe7d3; // #ddd;
   --footer-text-color: #404d5d;
 
-  --button-primary-bg-color: #0d79f2;
-  --button-primary-text-color: #fee8d5;
-  --button-secondary-bg-color: #fef3ea;
-  --button-secondary-text-color: var(--body-text-color);
+  --button-primary-bg-color: #0d79f2; // #333;
+  --button-primary-text-color: #fee8d5; // #fff;
+  --button-secondary-bg-color: #fef3ea; // #ddd;
+  --button-secondary-text-color: #333;
 
   --input-border-radius: 5px;
   --input-border-color: #ccc;

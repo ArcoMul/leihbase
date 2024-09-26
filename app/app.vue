@@ -22,21 +22,28 @@ const { isValid } = usePocketbase();
 const userStore = useUserStore();
 const config = useRuntimeConfig();
 
-if (config.plausibleTrackingDomain) {
-  useHead({
-    script: [
-      {
-        defer: true,
-        "data-domain": config.plausibleTrackingDomain,
-        src: "https://plausible.io/js/script.js",
-      },
-    ],
-  });
-}
+const { leihbase } = await useLeihbase();
+
+const style = [`body {
+  ${leihbase.value.style}
+}`]
+
+useHead({
+  script: [
+    config.plausibleTrackingDomain &&
+    {
+      defer: true,
+      "data-domain": config.plausibleTrackingDomain,
+      src: "https://plausible.io/js/script.js",
+    },
+  ],
+  style
+});
 
 if (isValid.value && !userStore.hasInitialData) {
   userStore.fetchInitialData();
 }
+
 </script>
 
 <style lang="scss">

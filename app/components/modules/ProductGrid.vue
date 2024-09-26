@@ -214,9 +214,9 @@ header {
   margin: 0;
   a {
     display: inline-block;
-    background-color: var(--bg-secondary-light);
+    background-color: var(--button-secondary-bg-color);
     border: 2px solid transparent;
-    color: var(--body-text-color);
+    color: var(--button-secondary-text-color);
     text-decoration: none;
     padding: 0.5rem 1rem;
     &:hover {

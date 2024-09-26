@@ -7,12 +7,7 @@
 const { t } = useI18n({
   useScope: "local",
 });
-const { pb } = usePocketbase();
-
-// TODO: remove/fix $autoCancel
-const [leihbase] = await pb
-  .collection("leihbase")
-  .getFullList({ fields: ["imprint"], $autoCancel: false });
+const { leihbase } = await useLeihbase(["imprint"]);
 </script>
 
 <style scoped>
