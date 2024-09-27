@@ -29,13 +29,13 @@
       </div>
     </div>
     <div v-if="products && products.length > 0" class="products">
-      <div v-for="product in products" :key="product.id">
+      <template v-for="product in products" :key="product.id">
         <ProductCard
           :product="product"
           :to="`/l/${props.location.slug}/p/${product.id}`"
           class="product"
         />
-      </div>
+      </template>
     </div>
     <div v-else>
       <p>{{ t("no_products_found") }} 🙃</p>
@@ -128,6 +128,8 @@ const { data: productsData, refresh: refreshProducts } = await useAsyncData(
     return structuredClone(data);
   }
 );
+
+console.log(productsData.value?.items)
 
 const products = computed(() => {
   return productsData.value?.items;
