@@ -7,6 +7,6 @@ export function isToday(reservation: { start: string; end: string }): boolean {
   return (
     DateTime.fromJSDate(new Date(reservation.start)).startOf("day") <=
       startOfToday &&
-    DateTime.fromJSDate(new Date(reservation.end)).startOf("day") > endOfToday
+    DateTime.fromJSDate(new Date(reservation.end)).startOf("day") >= endOfToday
   );
 }

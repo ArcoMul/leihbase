@@ -186,7 +186,7 @@ const { data: reservations, refresh: refreshReservations } = await useAsyncData(
     const reservations = await pb
       .collection("public_reservations")
       .getFullList({
-        filter: pb.filter("product = {:product} && end > @now", {
+        filter: pb.filter("product = {:product} && end >= @todayStart", {
           product: product.value.id,
         }),
         sort: "start",
