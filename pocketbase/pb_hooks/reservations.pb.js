@@ -48,7 +48,8 @@ onRecordBeforeCreateRequest((e) => {
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
   const locationConfig = JSON.parse(location.get("config"));
-  if (hasOverlappingReservations(record, !!locationConfig['allow_same_day_reservations'])) {
+  const allowSameDayReservations = isLocationUser || !!locationConfig['allow_same_day_reservations'];
+  if (hasOverlappingReservations(record, allowSameDayReservations)) {
     throw new BadRequestError("Overlapping_reservation.");
   }
 
@@ -62,13 +63,17 @@ onRecordBeforeCreateRequest((e) => {
 
 onRecordBeforeUpdateRequest((e) => {
   const { hasOverlappingReservations } = require(`${__hooks}/lib/reservation`);
-  const { record } = e;
+  const { record, httpContext } = e;
+  const requestUser = httpContext.get("authRecord");
   $app.dao().expandRecord(record, ["location"], null);
   const location = record.expandedOne("location");
-  const locationConfig = JSON.parse(location.get("config"));
+  const isLocationUser = location.get("users").includes(requestUser.get("id"));
+
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
-  if (hasOverlappingReservations(record, !!locationConfig.allow_same_day_reservations)) {
+  const locationConfig = JSON.parse(location.get("config"));
+  const allowSameDayReservations = isLocationUser || !!locationConfig.allow_same_day_reservations;
+  if (hasOverlappingReservations(record, allowSameDayReservations)) {
     throw new BadRequestError("Overlapping_reservation.");
   }
 }, "reservations");
