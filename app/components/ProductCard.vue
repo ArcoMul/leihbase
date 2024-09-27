@@ -106,8 +106,12 @@ a.root.clicked {
   max-height: 1rem;
   margin-bottom: 0;
   line-height: 1;
+  height: 1rem;
+  box-sizing: content-box;
   text-overflow: ellipsis;
   overflow: hidden;
+  padding-block: 0.5rem;
+  margin-block: -0.5rem;
   white-space: nowrap;
   font-weight: var(--font-weight-bold);
 }
