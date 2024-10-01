@@ -10,6 +10,15 @@ setup.describe("setup", () => {
     // Auth as admin
     await pb.admins.authWithPassword("test@example.com", "1234567890");
 
+    // Configure mailing
+    await pb.settings.update({
+      smtp: {
+        enabled: true,
+        host: "mailhog",
+        port: 1025,
+      },
+    });
+
     // Create test store
     let location;
     try {
