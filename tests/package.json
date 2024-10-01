@@ -11,7 +11,7 @@
     "start": "docker compose up -d; pnpm run playwright:test",
     "stop": "docker compose down",
     "test": "docker compose build; docker compose up -d; pnpm run playwright:test; docker compose down",
-    "test:ui": "docker compose up -d; pnpm run playwright:test --ui; docker compose down",
+    "test:ui": "docker compose build; docker compose up -d; pnpm run playwright:test --ui; docker compose down",
     "test:headed": "docker compose up -d; pnpm run playwright:test --headed; docker compose down",
     "playwright:test": "npx playwright test"
   },
