@@ -100,12 +100,14 @@
               v-model="start"
               :is-date-disallowed="isDateDisallowed"
               :show-outside-days="false"
+              data-testid="start-input"
             />
             <DateInput
               :label="t('end')"
               v-model="end"
               :is-date-disallowed="isDateDisallowed"
               :show-outside-days="false"
+              data-testid="end-input"
             />
             <Textarea :label="t('message')" v-model="message" />
 
@@ -114,7 +116,7 @@
               {{ reservationCreationError }}
             </sl-alert>
 
-            <Button :loading="isSubmittingReservation" size="lg" type="submit">
+            <Button :loading="isSubmittingReservation" size="lg" type="submit" data-testid="reserve-submit">
               {{ t("reserve_now_button") }}
             </Button>
           </form>

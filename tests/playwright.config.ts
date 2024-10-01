@@ -1,6 +1,16 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices, selectors } from "@playwright/test";
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
-import { fileURLToPath } from "url";
+
+// Selector to query, and unwrap a shadowroot element
+const createShadowRootEngine = () => ({
+  query(root, selector) {
+    return root.querySelector(selector).shadowRoot;
+  },
+  queryAll(root, selector) {
+    return Array.from(root.querySelectorAll(selector)).map((s) => s.shadowRoot);
+  },
+});
+await selectors.register("shadow", createShadowRootEngine);
 
 /**
  * Read environment variables from file.

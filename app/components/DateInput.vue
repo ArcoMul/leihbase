@@ -8,6 +8,7 @@
         :value="model ? formatDate(model, 'DD.MM.YYYY', locale) : ''"
         ref="input"
         class="lb-input"
+        :data-testid="dataTestid"
         @click="handleInputFocus"
       />
       <template #popup>
@@ -17,6 +18,7 @@
             :show-outside-days="showOutsideDays"
             :isDateDisallowed="isDateDisallowed"
             :locale="locale"
+            :data-testid="`${dataTestid}-calendar`"
             @change="handleDateChange"
           >
             <ArrowLeft slot="previous" :title="t('previous_month')" />
@@ -50,6 +52,7 @@ const props = withDefaults(
     required: boolean;
     isDateDisallowed: Function;
     showOutsideDays: boolean;
+    dataTestid: string;
   }>(),
   { showOutsideDays: true }
 );

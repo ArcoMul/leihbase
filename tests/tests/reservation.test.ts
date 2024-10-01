@@ -31,5 +31,25 @@ test.describe("reservation", () => {
     await waitForClientMount(page.getByTestId("reserve-button"));
     await page.getByTestId("reserve-button").click();
     await expect(page.getByTestId("opening-hours")).toBeVisible();
+    // enter start
+    await page.getByTestId("start-input").click();
+    await expect(page.getByTestId("start-input-calendar")).toBeVisible();
+    await page
+      .getByTestId("start-input-calendar")
+      .locator("shadow=calendar-month >> td button:not([aria-disabled=true])")
+      .nth(0)
+      .click();
+    // enter end
+    await page.getByTestId("end-input").click();
+    await expect(page.getByTestId("end-input-calendar")).toBeVisible();
+    await page
+      .getByTestId("end-input-calendar")
+      .locator("shadow=calendar-month >> td button:not([aria-disabled=true])")
+      .nth(1)
+      .click();
+    // submit
+    await page.getByTestId("reserve-submit").click();
+
+    await expect(page.getByTestId("opening-hours")).toBeHidden();
   });
 });
