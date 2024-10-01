@@ -47,7 +47,7 @@ onRecordBeforeCreateRequest((e) => {
 
   // Make sure there is no overlapping reservation for the same product in the
   // same timespan
-  const locationConfig = JSON.parse(location.get("config"));
+  const locationConfig = location.getString("config") ? JSON.parse(location.getString("config")) : {};
   const allowSameDayReservations = isLocationUser || !!locationConfig['allow_same_day_reservations'];
   if (hasOverlappingReservations(record, allowSameDayReservations)) {
     throw new BadRequestError("Overlapping_reservation.");

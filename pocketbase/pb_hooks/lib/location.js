@@ -1,8 +1,8 @@
 function getNotificationEmailAddresses(locationRecord) {
-  if (!locationRecord.get("notifications")) {
-    return;
+  if (!locationRecord.getString("notifications")) {
+    return [];
   }
-  const notifications = JSON.parse(locationRecord.get("notifications"));
+  const notifications = JSON.parse(locationRecord.getString("notifications"));
   if (
     !notifications ||
     !Array.isArray(notifications) ||
