@@ -1,13 +1,17 @@
 <template>
   <FormRow :for="id" :label="label" :required="required">
     <button @click.prevent="handleClick">
-      {{ record ? record[search[0]] : "None" }}
+      {{ isLoading ? t('loading') : record ? record[search[0]] : "None" }}
     </button>
   </FormRow>
 </template>
 
 <script lang="ts" setup>
 import type RecordPicker from "./RecordPicker.vue";
+
+const { t } = useI18n({
+  useScope: "local",
+});
 
 const model = defineModel<string>();
 const props = defineProps<{
@@ -25,7 +29,7 @@ const props = defineProps<{
 const recordPicker =
   inject<Ref<InstanceType<typeof RecordPicker>>>("recordPicker");
 
-const { record, show } = await useRecordPicker(model, recordPicker, {
+const { record, show, isLoading } = await useRecordPicker(model, recordPicker, {
   title: props.label,
   collection: props.collection,
   search: props.search,
@@ -57,3 +61,14 @@ button {
   }
 }
 </style>
+
+<i18n lang="json">
+{
+  "en": {
+    "loading": "Loading..."
+  },
+  "de": {
+    "loading": "Laden..."
+  }
+}
+</i18n>

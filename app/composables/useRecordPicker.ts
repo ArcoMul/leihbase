@@ -29,6 +29,8 @@ export async function useRecordPicker(
 
   const record = ref<RecordModel>();
 
+  const isLoading = ref(false);
+
   // Retrieve record if a value is defined
   if (value) {
     record.value = await pb.collection(collection).getOne(value);
@@ -40,7 +42,9 @@ export async function useRecordPicker(
       record.value = undefined;
       return;
     }
+    isLoading.value = true;
     record.value = await pb.collection(collection).getOne(newValue);
+    isLoading.value = false;
   });
 
   // Expose function to show RecordPicker dialog
@@ -53,5 +57,5 @@ export async function useRecordPicker(
     });
   }
 
-  return { record, show };
+  return { record, show, isLoading };
 }
