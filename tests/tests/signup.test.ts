@@ -6,7 +6,8 @@ test.describe("signup", () => {
     await page.goto("/");
     await waitForHydration(page);
     await page.getByTestId("signup-link").click();
-    await expect(page.getByTestId("signup-h1")).toBeDefined();
+    await page.waitForURL(/\/signup/);
+    await expect(page.getByTestId("signup-h1")).toBeVisible();
   });
   test("can sign up", async ({ page }) => {
     // page.on("console", (msg) => {
