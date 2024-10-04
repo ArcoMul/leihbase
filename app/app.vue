@@ -20,14 +20,16 @@ setBasePath(
 
 const { isValid } = usePocketbase();
 const userStore = useUserStore();
-const config = useRuntimeConfig();
+const {
+  public: { plausibleTrackingDomain },
+} = useRuntimeConfig();
 
-if (config.plausibleTrackingDomain) {
+if (plausibleTrackingDomain) {
   useHead({
     script: [
       {
         defer: true,
-        "data-domain": config.plausibleTrackingDomain,
+        "data-domain": plausibleTrackingDomain,
         src: "https://plausible.io/js/script.js",
       },
     ],

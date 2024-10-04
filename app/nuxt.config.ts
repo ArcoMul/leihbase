@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   runtimeConfig: {
-    plausibleTrackingDomain: "", // NUXT_PLAUSIBLE_TRACKING_DOMAIN
     public: {
+      plausibleTrackingDomain: "", // NUXT_PUBLIC_PLAUSIBLE_TRACKING_DOMAIN
       pocketbase: {
         serverBaseUrl: "", // NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL
         clientBaseUrl: "", // NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL

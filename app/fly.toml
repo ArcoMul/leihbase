@@ -7,6 +7,7 @@ primary_region = 'ams'
 [env]
   NUXT_PUBLIC_POCKETBASE_CLIENT_BASE_URL = 'https://leihbar-pocketbase.fly.dev'
   NUXT_PUBLIC_POCKETBASE_SERVER_BASE_URL = 'http://leihbar-pocketbase.flycast'
+  NUXT_PUBLIC_LAUSIBLE_TRACKING_DOMAIN = 'katalog.leihbar-koeln.org'
 
 [http_service]
   internal_port = 3000
