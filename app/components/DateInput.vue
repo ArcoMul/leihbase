@@ -43,16 +43,16 @@ if (process.client) {
   await import("cally");
 }
 
-const model = defineModel<Date>();
-const props = withDefaults(
+const model = defineModel<Date | null>();
+withDefaults(
   defineProps<{
     id: string;
     label: string;
-    name: string;
-    required: boolean;
-    isDateDisallowed: Function;
-    showOutsideDays: boolean;
-    dataTestid: string;
+    name?: string;
+    required?: boolean;
+    isDateDisallowed?: Function;
+    showOutsideDays?: boolean;
+    dataTestid?: string;
   }>(),
   { showOutsideDays: true }
 );

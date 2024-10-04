@@ -11,7 +11,9 @@
         <Trash />
       </Button>
     </header>
-    <Alert v-if="props.reservation?.cancelled" variant="warning">{{ t('reservation_is_cancelled') }}</Alert>
+    <Alert v-if="props.reservation?.cancelled" variant="warning">{{
+      t("reservation_is_cancelled")
+    }}</Alert>
     <form @submit.prevent="handleSubmit">
       <RecordPickerInput
         id="reservation-drawer-product-input"
@@ -27,15 +29,44 @@
         :search="['name', 'email']"
         v-model="userId"
       />
-      <DateInput :label="t('start')" v-model="start" />
-      <DateInput :label="t('end')" v-model="end" />
-      <Switch id="started" :label="t('collected')" v-model="started" />
-      <Switch id="ended" :label="t('returned')" v-model="ended" />
-      <Input :label="t('deposit')" v-model="deposit" type="number">
+      <DateInput
+        id="reservation-drawer-start-input"
+        :label="t('start')"
+        v-model="start"
+      />
+      <DateInput
+        id="reservation-drawer-end-input"
+        :label="t('end')"
+        v-model="end"
+      />
+      <Switch
+        id="reservation-drawer-started-input"
+        :label="t('collected')"
+        v-model="started"
+      />
+      <Switch
+        id="reservation-drawer-ended-input"
+        :label="t('returned')"
+        v-model="ended"
+      />
+      <Input
+        id="reservation-drawer-deposit-input"
+        :label="t('deposit')"
+        v-model="deposit"
+        type="number"
+      >
         <template #prefix>€</template>
       </Input>
-      <RichTextarea :label="t('note')" v-model="note" />
-      <Switch id="cancelled" :label="t('cancelled')" v-model="cancelled" />
+      <RichTextarea
+        id="reservation-drawer-note-input"
+        :label="t('note')"
+        v-model="note"
+      />
+      <Switch
+        id="reservation-drawer-cancelled-input"
+        :label="t('cancelled')"
+        v-model="cancelled"
+      />
       <Alert v-if="error" variant="error">{{ error }}</Alert>
       <footer>
         <Button :loading="isSubmitting" type="submit">{{ t("save") }}</Button>

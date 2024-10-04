@@ -23,10 +23,9 @@
 import { Xmark } from "@iconoir/vue";
 
 defineProps<{
-  headerOffset: boolean;
   inset: boolean;
   title: string;
-  bodyClass: string;
+  headerOffset?: boolean;
 }>();
 
 const open = defineModel("open");
