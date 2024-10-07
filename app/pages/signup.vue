@@ -1,7 +1,7 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1 data-test="signup-h1">{{ t("title") }}</h1>
+      <h1 data-testid="signup-h1">{{ t("title") }}</h1>
       <i18n-t keypath="text" tag="p" for="login_text">
         <NuxtLink to="/login">{{ t("login_text") }}</NuxtLink>
       </i18n-t>

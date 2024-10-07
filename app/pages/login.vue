@@ -1,7 +1,7 @@
 <template>
   <Container width="sm" centered no-padding>
     <Card class="card">
-      <h1>{{ t("title") }}</h1>
+      <h1 data-testid="login-h1">{{ t("title") }}</h1>
       <i18n-t keypath="text" tag="p" for="signup_text">
         <NuxtLink to="/signup" data-testid="signup-link">
           {{ t("signup_text") }}
@@ -13,6 +13,7 @@
           type="email"
           id="email"
           name="email"
+          data-testid="email-input"
           required
           v-model="email"
         />
@@ -21,16 +22,27 @@
           type="password"
           id="password"
           name="password"
+          data-testid="password-input"
           required
           password-toggle
           v-model="password"
         />
-        <Alert v-if="!!authenticationError" variant="error" class="error">
+        <Alert
+          v-if="!!authenticationError"
+          variant="error"
+          class="error"
+          data-testid="login-error"
+        >
           <i18n-t keypath="error" tag="span" for="error_signup">
             <NuxtLink to="/signup">{{ t("error_signup") }}</NuxtLink>
           </i18n-t>
         </Alert>
-        <Button :loading="loading" size="lg" type="submit">
+        <Button
+          :loading="loading"
+          size="lg"
+          type="submit"
+          data-testid="submit-button"
+        >
           {{ t("submit") }}
         </Button>
       </form>

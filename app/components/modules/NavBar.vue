@@ -17,7 +17,9 @@
           </NuxtLink>
         </li>
         <li class="hidden sm:block">
-          <NuxtLink to="/login">{{ t("login") }}</NuxtLink>
+          <NuxtLink data-testid="login-link" to="/login">{{
+            t("login")
+          }}</NuxtLink>
         </li>
         <li class="account sm:hidden">
           <NuxtLink to="/login"><User class="user-icon" /></NuxtLink>
