@@ -16,7 +16,7 @@
       <tbody>
         <tr
           v-for="reservation in reservations"
-          :class="{cancelled: reservation.cancelled}"
+          :class="{cancelled: reservation.cancelled, warn: showWarning ? showWarning(reservation) : false}"
           @click="handleReservationClick(reservation)"
         >
           <td
@@ -93,6 +93,7 @@ defineProps<{
   reservations: Reservation[];
   date?: Date;
   highlightDate: "start" | "end" | "date" | "both";
+  showWarning?: (r: Reservation) => boolean
 }>();
 
 function handleReservationClick(reservation: Reservation) {
@@ -128,6 +129,9 @@ td {
 tr.cancelled td {
   text-decoration: line-through;
   opacity: 0.5;
+}
+tr.warn td {
+  background-color: #ff00001c;
 }
 
 tbody tr:hover {
