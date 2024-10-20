@@ -38,6 +38,7 @@ export default defineI18nConfig(() => ({
       hour: "h",
       previous_month: "Previous Month",
       next_month: "Next Month",
+      closed_at: "Closed at",
     },
     de: {
       week_days: {
@@ -75,6 +76,7 @@ export default defineI18nConfig(() => ({
       hour: "Uhr",
       previous_month: "Vorheriger Monat",
       next_month: "Nächster Monat",
+      closed_at: "Zu am",
     },
   },
 }));

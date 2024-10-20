@@ -83,7 +83,11 @@
 
         <sl-dialog ref="dialog" label="Reservieren" class="dialog-overview">
           <!-- Opening hours -->
-          <p v-if="location?.opening_hours" class="opening-hours" data-testid="opening-hours">
+          <p
+            v-if="location?.opening_hours"
+            class="opening-hours"
+            data-testid="opening-hours"
+          >
             <span>{{ t("opening_hours_of") }} {{ location?.name }}:</span><br />
             <span v-html="openingHoursToString(location?.opening_hours)"></span>
           </p>
@@ -116,7 +120,12 @@
               {{ reservationCreationError }}
             </sl-alert>
 
-            <Button :loading="isSubmittingReservation" size="lg" type="submit" data-testid="reserve-submit">
+            <Button
+              :loading="isSubmittingReservation"
+              size="lg"
+              type="submit"
+              data-testid="reserve-submit"
+            >
               {{ t("reserve_now_button") }}
             </Button>
           </form>
@@ -130,8 +139,12 @@
 import Button from "~/components/Button.vue";
 import { isToday } from "~/lib/reservation";
 import { formatCurrency } from "~/lib/currency";
-import { openingHoursToString } from "~/lib/openingHours";
-import { isDateOnDay, getStartOfDay } from "~/lib/date";
+import { isInOpeningHoursDay, openingHoursToString } from "~/lib/openingHours";
+import {
+  getStartOfDay,
+  startOfDate as getStartOfDate,
+  isSameDate,
+} from "~/lib/date";
 
 if (process.client) {
   await import("@shoelace-style/shoelace/dist/components/dialog/dialog.js");
@@ -208,14 +221,22 @@ useHead({
 });
 
 const startOfToday = getStartOfDay();
+const closedDates = (location.value?.opening_hours?.except?.dates || []).map(
+  (d) => getStartOfDate(new Date(d))
+);
 function isDateDisallowed(date) {
-  // Get the days the location is open
-  const openDays = Object.keys(location.value?.opening_hours);
-  // Disable dates which are not on days where the location is open,
-  // or dates which are before today
-  const startOfDate = new Date(date.getTime());
-  startOfDate.setHours(0, 0, 0, 0);
-  return !isDateOnDay(date, openDays) || startOfDate < startOfToday;
+  const startOfDate = getStartOfDate(date);
+  // Is on an open day according to opening hours
+  const isOpenDay = location.value?.opening_hours
+    ? isInOpeningHoursDay(location.value.opening_hours, date)
+    : true;
+  // Is in the past
+  const isInPast = startOfDate < startOfToday;
+  // Is on a closed date (opening hours exception)
+  const isClosedDate = !!closedDates.find((date) =>
+    isSameDate(date, startOfDate)
+  );
+  return !isOpenDay || isInPast || isClosedDate;
 }
 
 function onReserve() {

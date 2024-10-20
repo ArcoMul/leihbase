@@ -13,6 +13,7 @@ const Days = [
 const FORMATS = {
   "DD MMM YYYY": DateTime.DATE_MED,
   "ddd, DD.MM": { weekday: "long", month: "2-digit", day: "2-digit" },
+  "dd, DD.MM": { weekday: "short", month: "2-digit", day: "2-digit" },
   "DD.MM.YYYY": { year: "numeric", month: "2-digit", day: "2-digit" },
 };
 
@@ -26,7 +27,7 @@ export function formatDate(
     .toLocaleString(FORMATS[format]);
 }
 
-export function isDateOnDay(date: Date, days: string[]) {
+export function isDateOnDays(date: Date, days: string[]) {
   return days.includes(Days[date.getDay()]);
 }
 

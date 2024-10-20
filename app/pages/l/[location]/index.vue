@@ -36,7 +36,9 @@
       <!-- Opening hours -->
       <div v-if="location?.opening_hours">
         <strong>{{ t("opening_hours") }}:</strong><br />
-        <span v-html="openingHoursToString(location?.opening_hours)"></span>
+        <span
+          v-html="openingHoursToString(location?.opening_hours, locale)"
+        ></span>
       </div>
     </header>
     <hr />
@@ -51,7 +53,7 @@ import ProductGrid from "~/components/modules/ProductGrid.vue";
 import { openingHoursToString } from "~/lib/openingHours";
 import { MapPin, Internet } from "@iconoir/vue";
 
-const { t } = useI18n({
+const { t, locale } = useI18n({
   useScope: "local",
 });
 
