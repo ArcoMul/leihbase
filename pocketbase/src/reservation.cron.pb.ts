@@ -1,11 +1,15 @@
+/// <reference path="../pb_data/types.d.ts" />
+
 cronAdd("reservation-reminder", "*/1 * * * *", () => {
-  const { addDays, startOfDate, endOfDate } = require(`${__hooks}/lib/date`);
-  const { isInOpeningHoursDay } = require(`${__hooks}/lib/openingHours`);
+  const { addDays, startOfDate, endOfDate } = require(`${__hooks}/lib/date.js`);
+  const { isInOpeningHoursDay } = require(`${__hooks}/lib/openingHours.js`);
 
   const name = "reservation-reminder";
   console.log(`[${name}] start`);
 
-  const locations = $app.dao().findRecordsByFilter("location", "active = true");
+  const locations = $app
+    .dao()
+    .findRecordsByFilter("location", "active = true", "", -1, 0);
   console.log(`[${name}] found ${locations.length} locations`);
 
   locations.forEach((location) => {

@@ -1,3 +1,5 @@
 pb_data/storage
 pb_data/data*
 pb_data/logs*
+pb_hooks
+node_modules

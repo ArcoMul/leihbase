@@ -1,4 +1,4 @@
-function isInOpeningHoursDay(openingHours, date) {
+export function isInOpeningHoursDay(openingHours, date) {
   const Days = [
     "sunday",
     "monday",
@@ -11,7 +11,3 @@ function isInOpeningHoursDay(openingHours, date) {
   const openDays = Object.keys(openingHours.days);
   return openDays.includes(Days[date.getDay()]);
 }
-
-module.exports = {
-  isInOpeningHoursDay,
-};
