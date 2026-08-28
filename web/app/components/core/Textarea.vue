@@ -10,7 +10,7 @@
       :readonly="readonly"
       :data-testid="dataTestid"
       v-model="model"
-      rows="3"
+      :rows="rows"
       :aria-invalid="!!error"
       :aria-describedby="
         [error ? `${id}-error` : null, description ? `${id}-description` : null]
@@ -32,7 +32,8 @@
 import FormLabel from "./FormLabel.vue";
 
 const model = defineModel();
-const props = defineProps<{
+const props = withDefaults(
+  defineProps<{
   id?: string;
   label?: string;
   name?: string;
@@ -42,9 +43,12 @@ const props = defineProps<{
   disabled?: boolean;
   readonly?: boolean;
   error?: string;
+    rows?: number;
   description?: string;
   dataTestid?: string;
-}>();
+  }>(),
+  { rows: 3 }
+);
 if (props.value) {
   model.value = props.value;
 }
