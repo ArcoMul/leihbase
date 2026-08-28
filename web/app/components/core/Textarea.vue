@@ -17,7 +17,7 @@
           .filter((v) => !!v)
           .join(' ')
       "
-      class="lb-input"
+      :class="['lb-input', code ? 'code' : '']"
     ></textarea>
     <p v-if="error" :id="`${id}-error`" class="error">
       <small>{{ error }}</small>
@@ -34,18 +34,19 @@ import FormLabel from "./FormLabel.vue";
 const model = defineModel();
 const props = withDefaults(
   defineProps<{
-  id?: string;
-  label?: string;
-  name?: string;
-  value?: string;
-  placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-  readonly?: boolean;
-  error?: string;
+    id?: string;
+    label?: string;
+    name?: string;
+    value?: string;
+    placeholder?: string;
+    required?: boolean;
+    disabled?: boolean;
+    readonly?: boolean;
+    error?: string;
     rows?: number;
-  description?: string;
-  dataTestid?: string;
+    description?: string;
+    dataTestid?: string;
+    code?: boolean;
   }>(),
   { rows: 3 }
 );
@@ -62,5 +63,10 @@ const id = props.id || useId();
 .lb-input {
   line-height: 1.15;
   padding: var(--spacing-3) var(--spacing-3);
+}
+.code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
 }
 </style>
