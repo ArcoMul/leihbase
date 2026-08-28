@@ -119,6 +119,27 @@
         :value="location.allow_same_day_reservations"
       />
 
+      <Heading is="h2" size="md">{{ t("email_settings") }}</Heading>
+
+      <div class="lb-cols">
+        <Input
+          :label="t('email_sender_name')"
+          name="email_sender_name"
+          :value="location.email_sender_name"
+          :error="errors.fields['email_sender_name'] ? t(errors.fields['email_sender_name']) : undefined"
+          class="max-w"
+        />
+        
+        <Input
+          :label="t('email_sender_address')"
+          name="email_sender_address"
+          type="email"
+          :value="location.email_sender_address"
+          :error="errors.fields['email_sender_address'] ? t(errors.fields['email_sender_address']) : undefined"
+          class="max-w"
+        />
+      </div>
+
       <Alert v-if="success" variant="success">
         {{ t("success") }}
       </Alert>
@@ -222,6 +243,9 @@ async function handleSubmit(e: SubmitEvent) {
       "label": "Same day reservations",
       "description": "Allow a new reservation to start on the same day as the previous reservation ends"
     },
+    "email_settings": "Email Settings",
+    "email_sender_name": "Sender Name",
+    "email_sender_address": "Sender Email Address",
     "success": "Settings successfuly saved.",
     "save": "Save"
   },
@@ -255,6 +279,9 @@ async function handleSubmit(e: SubmitEvent) {
       "label": "Reservierungen am selben Tag",
       "description": "Ermöglicht den Beginn einer neuen Reservierung am selben Tag, an dem die vorherige Reservierung endet."
     },
+    "email_settings": "E-Mail-Einstellungen",
+    "email_sender_name": "Absendername",
+    "email_sender_address": "Absender-E-Mail-Adresse",
     "success": "Einstellungen erfolgreich gespeichert.",
     "save": "Speichern"
   }

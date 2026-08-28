@@ -1,6 +1,9 @@
+/// <reference path="../../pb_data/types.d.ts" />
+/// <reference path="../types.d.ts" />
+
 /**
  * @param {core.Record} locationRecord
- * @returns
+ * @returns {string[]}
  */
 function getNotificationEmailAddresses(locationRecord) {
   if (!locationRecord.getString("notifications")) {
@@ -21,15 +24,23 @@ function getNotificationEmailAddresses(locationRecord) {
 /**
  *
  * @param {core.Record} location
- * @param {'start'|'end'} type
+ * @param {'start' | 'end'} type
  */
 function sendReminders(location, type) {
   /** @type {typeof import('./date')} */
-  const { addDays, startOfDate, endOfDate } = require(`${__hooks}/lib/date`);
+  const { addDays, startOfDate, endOfDate, formatPocketbaseDate } = require(`${__hooks}/lib/date`);
   /** @type {typeof import('./reservation')} */
-  const { saveSentEmail, getReminderEmail } = require(
+  const { saveSentEmail } = require(
     `${__hooks}/lib/reservation`
   );
+  /** @type {typeof import('./email')} */
+  const { sendLocationTemplateEmail, formatDate } = require(
+    `${__hooks}/lib/email`
+  );
+  /** @type {typeof import('./openingHours')} */
+  const { getOpeningHoursDay } = require(`${__hooks}/lib/openingHours`);
+
+  const locale = $os.getenv("CONFIG_LOCALE") || "en";
 
   // Get reservations starting or ending tomorrow
   const startOfToday = startOfDate(new Date());
@@ -46,9 +57,9 @@ function sendReminders(location, type) {
     {
       type,
       location: location.get("id"),
-      startOfToday,
-      startOfTomorrow,
-      endOfTomorrow,
+      startOfToday: formatPocketbaseDate(startOfToday),
+      startOfTomorrow: formatPocketbaseDate(startOfTomorrow),
+      endOfTomorrow: formatPocketbaseDate(endOfTomorrow),
     }
   );
 
@@ -61,28 +72,66 @@ function sendReminders(location, type) {
   );
 
   // Send start/end reminder for each found reservation
-  reservations.forEach((reservation) => {
+  for (const reservation of reservations) {
+    if (!reservation) {
+      continue;
+    }
     console.log(
       `[location/reservation-reminders] Send ${type} reminder for reservation`,
       reservation.get("id")
     );
-    // Generate email
-    const email = getReminderEmail(reservation, type);
 
-    // Send email
-    $app.newMailClient().send(
-      new MailerMessage({
-        from: {
-          address: $app.settings().meta.senderAddress,
-          name: $app.settings().meta.senderName,
-        },
-        ...email,
-      })
+    $app.expandRecord(reservation, ["user", "product"], null);
+    const user = reservation.expandedOne("user");
+    const product = reservation.expandedOne("product");
+
+    const start = new Date(reservation.get("start").string().split(" ")[0]);
+    const end = new Date(reservation.get("end").string().split(" ")[0]);
+    const appUrl = $app.settings().meta.appURL;
+
+    const startOpenHours = getOpeningHoursDay(
+      JSON.parse(location.get("opening_hours")),
+      start
+    );
+    const endOpenHours = getOpeningHoursDay(
+      JSON.parse(location.get("opening_hours")),
+      end
+    );
+
+    /** @type {TemplateName} */
+    const templateType = type === "start" ? "reservation_start_reminder" : "reservation_end_reminder";
+
+    const templateVars = type === "start"
+      ? {
+          appUrl,
+          userName: user.get("name"),
+          locationName: location.get("name"),
+          productName: product.get("name"),
+          start: formatDate(start),
+          startHour: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].from : null,
+          endHour: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].to : null,
+        }
+      : {
+          appUrl,
+          userName: user.get("name"),
+          locationName: location.get("name"),
+          productName: product.get("name"),
+          end: formatDate(end),
+          startHour: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].from : null,
+          endHour: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].to : null,
+        };
+
+    sendLocationTemplateEmail(
+      location,
+      templateType,
+      user.getString("email"),
+      locale,
+      templateVars
     );
 
     // Save that reminder has been send
     saveSentEmail(reservation, `${type}_reminder`);
-  });
+  }
 }
 
 module.exports = {
