@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div :class="{ root: true, ['orientation-' + orientation]: true }">
     <label :for="`select-${id}`" :class="hideLabel ? 'sr-only' : ''">
       {{ label }}
     </label>
-    <select :id="`select-${id}`" v-bind="$attrs" v-model="model">
-      <slot />
-    </select>
-    <NavArrowDown />
+    <div class="select">
+      <select :id="`select-${id}`" v-bind="$attrs" v-model="model">
+        <slot />
+      </select>
+      <NavArrowDown />
+    </div>
   </div>
 </template>
 
@@ -16,31 +18,38 @@ import { NavArrowDown } from "@iconoir/vue";
 defineOptions({
   inheritAttrs: false,
 });
-defineProps<{
-  label: string;
-  hideLabel?: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    label: string;
+    hideLabel?: boolean;
+    orientation?: "vertical" | "horizontal";
+  }>(),
+  {
+    orientation: "vertical",
+  }
+);
 const id = useId();
 const model = defineModel();
 </script>
 
 <style scoped>
-div {
+.root {
   --arrow-height: 1.2rem;
-  position: relative;
   display: inline-flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 0.66rem;
+}
+.orientation-horizontal {
+  flex-direction: row;
+  align-items: center;
 }
 label {
   font-weight: var(--font-weight-bold);
 }
-svg {
-  position: absolute;
-  height: var(--arrow-height);
-  right: 0.33rem;
-  top: calc(50% - (var(--arrow-height) / 2));
-  pointer-events: none;
+.select {
+  position: relative;
+  display: inline-block;
 }
 select {
   appearance: none;
@@ -55,5 +64,12 @@ select {
 select:hover,
 select:focus-visible {
   outline: 2px solid var(--text-color);
+}
+svg {
+  position: absolute;
+  height: var(--arrow-height);
+  right: 0.33rem;
+  top: calc(50% - (var(--arrow-height) / 2));
+  pointer-events: none;
 }
 </style>
