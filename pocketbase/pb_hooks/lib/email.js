@@ -35,12 +35,12 @@ function renderTemplate(template, variables) {
 
   // First, process {{#if variable}}...{{/if}} conditionals
   // Uses non-greedy matching ([\s\S]*?) to handle content across multiple lines
-  result = result.replace(/\{\{#if (\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g, (match, varName, content) => {
+  result = result.replace(/\{#if (\w+)\}([\s\S]*?)\{\/if\}/g, (match, varName, content) => {
     return variables[varName] ? content : "";
   });
 
   // Then replace {{variableName}} placeholders
-  result = result.replace(/\{\{(\w+)\}\}/g, (match, varName) => {
+  result = result.replace(/\{(\w+)\}/g, (match, varName) => {
     return variables[varName] !== undefined ? variables[varName] : match;
   });
 
