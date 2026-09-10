@@ -6,13 +6,13 @@ module.exports = {
 We hereby confirm the reservation of the item
 "<a href="{PRODUCT_URL}">{PRODUCT_NAME}</a>"<br>
 <br>
-Your reservation runs from {START} to {END}.<br>
+Your reservation runs from {RESERVATION_START} to {RESERVATION_END}.<br>
 <br>
-The item can be picked up at {START}. If it is the first time that
+The item can be picked up at {RESERVATION_START}. If it is the first time that
 you are borrowing something, we will ask you to sign the
 {#if LENDING_CONDITIONS_LINK}<a href="{LENDING_CONDITIONS_LINK}">{/if}terms and conditions{#if LENDING_CONDITIONS_LINK}</a>{/if} of borrowing on site.<br>
 <br>
-{#if DEPOSIT}A deposit of {DEPOSIT} is required to borrow {PRODUCT_NAME}. Please bring the exact amount if possible.<br><br>{/if}
+{#if PRODUCT_DEPOSIT}A deposit of {PRODUCT_DEPOSIT} is required to borrow {PRODUCT_NAME}. Please bring the exact amount if possible.<br><br>{/if}
 You can cancel your reservation or change the borrowing period in your <a href="{APP_URL}/reservations">reservation overview</a>.<br>
 <br>
 We're happy that you have decided to borrow instead of buy!<br>
@@ -42,7 +42,7 @@ End: {END}<br>
     subject: "Pick-up of '{PRODUCT_NAME}'",
     html: `Hi {USER_NAME},<br>
 <br>
-you reserved a {PRODUCT_NAME} at {LOCATION_NAME}. The item can be picked up tomorrow ({START}) {#if START_HOUR}between {START_HOUR} and {END_HOUR}{/if}.<br>
+you reserved a {PRODUCT_NAME} at {LOCATION_NAME}. The item can be picked up tomorrow ({RESERVATION_START}) {#if START_HOUR}between {START_HOUR} and {END_HOUR}{/if}.<br>
 If you no longer need it, you can cancel your reservation in your <a href="{APP_URL}/reservations">reservation overview</a>.<br>
 <br>
 Thank you that you choose for borrowing instead of buying!<br>
@@ -56,7 +56,7 @@ Your LeihBar<br>`,
 <br>
 we hope everything worked out well with the item '{PRODUCT_NAME}'!
 <br>
-The borrow-period ends tomorrow ({END}), so we would like to remind you of returning it to {LOCATION_NAME}.<br>
+The borrow-period ends tomorrow ({RESERVATION_END}), so we would like to remind you of returning it to {LOCATION_NAME}.<br>
 <br>
 {#if START_HOUR}{LOCATION_NAME} is tomorrow open from {START_HOUR} to {END_HOUR}.<br><br>{/if}
 If you would like to keep the item for longer, you can extend the reservation in your <a href="{APP_URL}/reservations">reservation overview</a>.<br>
@@ -82,7 +82,7 @@ Your Leihbar`,
 <br>
 <strong>Details</strong><br>
 Item: <a href="{PRODUCT_URL}">{PRODUCT_NAME}</a><br>
-Start: {START}<br>
-End: {END}`,
+Start: {RESERVATION_START}<br>
+End: {RESERVATION_END}`,
   },
 };

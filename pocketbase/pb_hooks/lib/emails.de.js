@@ -5,11 +5,11 @@ module.exports = {
 <br>
 hiermit bestätigen wir die Reservierung des Gegenstandes "<a href="{PRODUCT_URL}">{PRODUCT_NAME}</a>"<br>
 <br>
-Deine Reservierung läuft vom {START} bis zum {END}.<br>
+Deine Reservierung läuft vom {RESERVATION_START} bis zum {RESERVATION_END}.<br>
 <br>
-Der Gegenstand kann am {START} abgeholt werden. Wenn es das erste Mal ist, dass du etwas ausleihst, werden wir dich vor Ort bitten {#if LENDING_CONDITIONS_LINK}<a href="{LENDING_CONDITIONS_LINK}">{/if}die Leihbedingungen{#if LENDING_CONDITIONS_LINK}</a>{/if} zu unterschreiben und uns deinen Ausweis zum Abgleich zu zeigen.<br>
+Der Gegenstand kann am {RESERVATION_START} abgeholt werden. Wenn es das erste Mal ist, dass du etwas ausleihst, werden wir dich vor Ort bitten {#if LENDING_CONDITIONS_LINK}<a href="{LENDING_CONDITIONS_LINK}">{/if}die Leihbedingungen{#if LENDING_CONDITIONS_LINK}</a>{/if} zu unterschreiben und uns deinen Ausweis zum Abgleich zu zeigen.<br>
 <br>
-{#if DEPOSIT}Für die Ausleihe von '{PRODUCT_NAME}' wird ein Pfand von {DEPOSIT} verlangt. Bitte bringe den Betrag, wenn möglich, passend mit.<br><br>{/if}
+{#if PRODUCT_DEPOSIT}Für die Ausleihe von '{PRODUCT_NAME}' wird ein Pfand von {PRODUCT_DEPOSIT} verlangt. Bitte bringe den Betrag, wenn möglich, passend mit.<br><br>{/if}
 Deine Reservierung stornieren oder die Leihfrist ändern kannst du in deiner <a href="{APP_URL}/reservations">Reservierungsübersicht</a>.<br>
 <br>
 Wir freuen uns, dass du dich für Leihen statt Kaufen entscheidest!<br>
@@ -33,7 +33,7 @@ Ende: {END}<br>
     subject: "Abholen des Gegenstands '{PRODUCT_NAME}'",
     html: `Hi {USER_NAME},<br>
 <br>
-du hast bei {LOCATION_NAME} den Gegenstand '{PRODUCT_NAME}' reserviert. Der Gegenstand liegt morgen ({START}) {#if START_HOUR}zwischen {START_HOUR} und {END_HOUR}{/if} bereit. Bitte denke daran, deinen Gegenstand abzuholen.<br>
+du hast bei {LOCATION_NAME} den Gegenstand '{PRODUCT_NAME}' reserviert. Der Gegenstand liegt morgen ({RESERVATION_START}) {#if START_HOUR}zwischen {START_HOUR} und {END_HOUR}{/if} bereit. Bitte denke daran, deinen Gegenstand abzuholen.<br>
 <br>
 Falls du ihn nicht mehr benötigst, kannst du deine Reservierung in deiner <a href="{APP_URL}/reservations">Reservierungsübersicht</a> stornieren.<br>
 <br>
@@ -47,7 +47,7 @@ Dein LeihBar-Team<br>`,
     html: `Hi {USER_NAME},<br>
 <br>
 wir hoffen, mit dem Gegenstand {PRODUCT_NAME} hat alles gut funktioniert!<br>
-Deine Leihfrist endet morgen ({END}), also bring uns den Gegenstand bitte zurück zur {LOCATION_NAME}.<br>
+Deine Leihfrist endet morgen ({RESERVATION_END}), also bring uns den Gegenstand bitte zurück zur {LOCATION_NAME}.<br>
 <br>
 {#if START_HOUR}{LOCATION_NAME} ist geöffnet von {START_HOUR} bis {END_HOUR}.<br><br>{/if}
 Falls du den Gegenstand länger behalten möchtest, kannst du die Reservierung in deiner <a href="{APP_URL}/reservations">Reservierungsübersicht</a> verlängern.<br>
@@ -76,7 +76,7 @@ Deine Leihbar`,
 <br>
 <strong>Details</strong><br>
 Gegenstand: <a href="{PRODUCT_URL}">{PRODUCT_NAME}</a><br>
-Beginn: {START}<br>
-Ende: {END}`,
+Beginn: {RESERVATION_START}<br>
+Ende: {RESERVATION_END}`,
   },
 };
