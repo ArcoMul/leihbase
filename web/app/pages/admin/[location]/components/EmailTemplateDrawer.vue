@@ -72,9 +72,9 @@
           <Badge
             v-for="varName in availableVariables"
             :key="varName"
-            variant="info"
+            variant="neutral"
           >
-            {{ varName }}
+            {{ "{" + varName + "}" }}
           </Badge>
         </div>
       </div>
