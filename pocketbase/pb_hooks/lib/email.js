@@ -173,11 +173,7 @@ function sendLocationTemplateEmail(location, templateName, recipientEmail, local
 
 module.exports = {
   sendLocationTemplateEmail,
-  getRenderedTemplate,
   getSenderInfo,
-  getEmailTemplate,
-  getDefaultTemplate,
-  renderTemplate,
   formatDate,
   formatCurrency,
 };

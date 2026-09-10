@@ -103,22 +103,22 @@ function sendReminders(location, type) {
 
     const templateVars = type === "start"
       ? {
-          appUrl,
-          userName: user.get("name"),
-          locationName: location.get("name"),
-          productName: product.get("name"),
-          start: formatDate(start),
-          startHour: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].from : null,
-          endHour: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].to : null,
+          APP_URL: appUrl,
+          USER_NAME: user.get("name"),
+          LOCATION_NAME: location.get("name"),
+          PRODUCT_NAME: product.get("name"),
+          RESERVATION_START: formatDate(start),
+          START_HOUR: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].from : null,
+          END_HOUR: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].to : null,
         }
       : {
-          appUrl,
-          userName: user.get("name"),
-          locationName: location.get("name"),
-          productName: product.get("name"),
-          end: formatDate(end),
-          startHour: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].from : null,
-          endHour: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].to : null,
+          APP_URL: appUrl,
+          USER_NAME: user.get("name"),
+          LOCATION_NAME: location.get("name"),
+          PRODUCT_NAME: product.get("name"),
+          RESERVATION_END: formatDate(end),
+          START_HOUR: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].from : null,
+          END_HOUR: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].to : null,
         };
 
     sendLocationTemplateEmail(

@@ -267,14 +267,14 @@ onRecordCreateRequest((e) => {
       notificationEmails,
       locale,
       {
-        appUrl,
-        productUrl: `${appUrl}/link/product/${product.get("id")}`,
-        productName,
-        userName,
-        userEmail: user.get("email"),
-        start: formatDate(start),
-        end: formatDate(end),
-        message: record.get("message"),
+        APP_URL: appUrl,
+        PRODUCT_URL: `${appUrl}/link/product/${product.get("id")}`,
+        PRODUCT_NAME: productName,
+        USER_NAME: userName,
+        USER_EMAIL: user.get("email"),
+        RESERVATION_START: formatDate(start),
+        RESERVATION_END: formatDate(end),
+        MESSAGE: record.get("message"),
       }
     );
   }
@@ -287,14 +287,14 @@ onRecordCreateRequest((e) => {
       user.get("email"),
       locale,
       {
-        appUrl,
-        userName,
-        productUrl: `${appUrl}/link/product/${product.get("id")}`,
-        productName,
-        start: formatDate(start),
-        end: formatDate(end),
-        deposit: product.get("deposit") ? formatCurrency(product.get("deposit")) : null,
-        lendingConditionsLink,
+        APP_URL: appUrl,
+        USER_NAME: userName,
+        PRODUCT_URL: `${appUrl}/link/product/${product.get("id")}`,
+        PRODUCT_NAME: productName,
+        RESERVATION_START: formatDate(start),
+        RESERVATION_END: formatDate(end),
+        PRODUCT_DEPOSIT: product.get("deposit") ? formatCurrency(product.get("deposit")) : null,
+        LENDING_CONDITIONS_LINK: lendingConditionsLink,
       }
     );
     // Store that email has been sent
@@ -350,10 +350,10 @@ onRecordUpdateRequest((e) => {
         user.get("email"),
         locale,
         {
-          appUrl,
-          userName: user.get("name"),
-          productUrl: `${appUrl}/link/product/${product.get("id")}`,
-          productName,
+          APP_URL: appUrl,
+          USER_NAME: user.get("name"),
+          PRODUCT_URL: `${appUrl}/link/product/${product.get("id")}`,
+          PRODUCT_NAME: productName,
         }
       );
     }
@@ -367,13 +367,13 @@ onRecordUpdateRequest((e) => {
         notificationEmails,
         locale,
         {
-          appUrl,
-          productUrl: `${appUrl}/link/product/${product.get("id")}`,
-          productName,
-          userName: user.get("name"),
-          userEmail: user.get("email"),
-          start: formatDate(start),
-          end: formatDate(end),
+          APP_URL: appUrl,
+          PRODUCT_URL: `${appUrl}/link/product/${product.get("id")}`,
+          PRODUCT_NAME: productName,
+          USER_NAME: user.get("name"),
+          USER_EMAIL: user.get("email"),
+          RESERVATION_START: formatDate(start),
+          RESERVATION_END: formatDate(end),
         }
       );
     }
