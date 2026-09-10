@@ -6,14 +6,23 @@
   <div
     ref="sidebar"
     data-base-theme
-    :class="{ sidebar: true, open, 'header-offset': headerOffset, inset }"
+    :class="{
+      sidebar: true,
+      open,
+      'header-offset': headerOffset,
+      inset,
+      ['size-' + size]: true,
+    }"
   >
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineProps<{ headerOffset: boolean; inset: boolean }>();
+withDefaults(
+  defineProps<{ headerOffset: boolean; inset: boolean; size?: "sm" | "md" }>(),
+  { size: "sm" }
+);
 
 const open = defineModel("open");
 const sidebar = ref<HTMLDivElement>();
@@ -90,6 +99,12 @@ function handleDocumentKeyDown(e: KeyboardEvent) {
   @media screen and (min-width: breakpoints.$breakpoint-md) {
     width: 66.66%;
     max-width: 600px;
+  }
+}
+.sidebar.size-md {
+  @media screen and (min-width: breakpoints.$breakpoint-md) {
+    width: 66.66%;
+    max-width: 800px;
   }
 }
 .header-offset {
