@@ -1,6 +1,76 @@
 /// <reference path="../../pb_data/types.d.ts" />
 /// <reference path="../types.d.ts" />
 
+const ReservationConfirmationVars = /** @type {const} */ ([
+  "APP_URL",
+  "USER_NAME",
+  "PRODUCT_URL",
+  "PRODUCT_NAME",
+  "PRODUCT_DEPOSIT",
+  "RESERVATION_START",
+  "RESERVATION_END",
+  "LENDING_CONDITIONS_LINK",
+]);
+
+const ReservationConfirmationLocationVars = /** @type {const} */ ([
+  "APP_URL",
+  "USER_NAME",
+  "USER_EMAIL",
+  "PRODUCT_URL",
+  "PRODUCT_NAME",
+  "RESERVATION_START",
+  "RESERVATION_END",
+  "MESSAGE",
+]);
+
+const ReservationStartReminderVars = /** @type {const} */ ([
+  "APP_URL",
+  "USER_NAME",
+  "LOCATION_NAME",
+  "PRODUCT_NAME",
+  "RESERVATION_START",
+  "START_HOUR",
+  "END_HOUR",
+]);
+
+const ReservationEndReminderVars = /** @type {const} */ ([
+  "APP_URL",
+  "USER_NAME",
+  "LOCATION_NAME",
+  "PRODUCT_NAME",
+  "RESERVATION_END",
+  "START_HOUR",
+  "END_HOUR",
+]);
+
+const CancellationConfirmationVars = /** @type {const} */ ([
+  "APP_URL",
+  "USER_NAME",
+  "PRODUCT_URL",
+  "PRODUCT_NAME",
+]);
+
+const ReservationCancellationLocationVars = /** @type {const} */ ([
+  "APP_URL",
+  "PRODUCT_URL",
+  "PRODUCT_NAME",
+  "USER_NAME",
+  "USER_EMAIL",
+  "RESERVATION_START",
+  "RESERVATION_END",
+]);
+
+/**
+ * @typedef {{
+ *  reservation_confirmation: (typeof ReservationConfirmationVars)[number];
+ *  reservation_confirmation_location: (typeof ReservationConfirmationLocationVars)[number];
+ *  reservation_start_reminder: (typeof ReservationStartReminderVars)[number];
+ *  reservation_end_reminder: (typeof ReservationEndReminderVars)[number];
+ *  cancellation_confirmation: (typeof CancellationConfirmationVars)[number];
+ *  reservation_cancellation_location: (typeof ReservationCancellationLocationVars)[number];}
+ * } EmailTemplateVars
+ **/
+
 /**
  * Gets default template for a given name and locale
  * @param {TemplateName} templateName
@@ -15,7 +85,10 @@ function getDefaultTemplate(templateName, locale) {
       return { ...templates[templateName] };
     }
   } catch (e) {
-    console.error(`[email] Failed to load default template ${templateName} for locale ${locale}:`, e);
+    console.error(
+      `[email] Failed to load default template ${templateName} for locale ${locale}:`,
+      e
+    );
   }
   return null;
 }
@@ -23,7 +96,7 @@ function getDefaultTemplate(templateName, locale) {
 /**
  * Renders a template with variables (supports {{varName}} and {{#if varName}}...{{/if}} syntax)
  * @param {string} template
- * @param {Object} variables
+ * @param {Record<string, string | null>} variables
  * @returns {string}
  */
 function renderTemplate(template, variables) {
@@ -35,13 +108,16 @@ function renderTemplate(template, variables) {
 
   // First, process {{#if variable}}...{{/if}} conditionals
   // Uses non-greedy matching ([\s\S]*?) to handle content across multiple lines
-  result = result.replace(/\{#if (\w+)\}([\s\S]*?)\{\/if\}/g, (match, varName, content) => {
-    return variables[varName] ? content : "";
-  });
+  result = result.replace(
+    /\{#if (\w+)\}([\s\S]*?)\{\/if\}/g,
+    (_match, varName, content) => {
+      return variables[varName] ? content : "";
+    }
+  );
 
   // Then replace {{variableName}} placeholders
   result = result.replace(/\{(\w+)\}/g, (match, varName) => {
-    return variables[varName] !== undefined ? variables[varName] : match;
+    return !!variables[varName] ? variables[varName] : match;
   });
 
   return result;
@@ -53,10 +129,16 @@ function renderTemplate(template, variables) {
  * @returns {{address: string, name: string}}
  */
 function getSenderInfo(location) {
-  if (location.get("email_sender_name") || location.get("email_sender_address")) {
+  if (
+    location.get("email_sender_name") ||
+    location.get("email_sender_address")
+  ) {
     return {
-      address: location.get("email_sender_address") || $app.settings().meta.senderAddress,
-      name: location.get("email_sender_name") || $app.settings().meta.senderName,
+      address:
+        location.get("email_sender_address") ||
+        $app.settings().meta.senderAddress,
+      name:
+        location.get("email_sender_name") || $app.settings().meta.senderName,
     };
   }
   return {
@@ -76,7 +158,7 @@ function getEmailTemplate(locationId, templateName, locale) {
   const templates = $app.findRecordsByFilter(
     "email_templates",
     `location = {:locationId} && name = {:templateName} && locale = {:locale} && enabled = true`,
-    null,
+    '',
     1,
     0,
     {
@@ -86,7 +168,7 @@ function getEmailTemplate(locationId, templateName, locale) {
     }
   );
 
-  if (templates.length > 0) {
+  if (templates && templates.length > 0 && templates[0]) {
     return {
       subject: templates[0].get("subject"),
       html: templates[0].get("html"),
@@ -100,13 +182,17 @@ function getEmailTemplate(locationId, templateName, locale) {
  * Gets a template (custom or default) and renders it with variables
  * @param {core.Record} location
  * @param {TemplateName} templateName
- * @param {Object} templateVars - Variables for template rendering
+ * @param {Record<string, string | null>} templateVars - Variables for template rendering
  * @param {string} locale
  * @returns {{subject: string, html: string}}
  */
 function getRenderedTemplate(location, templateName, templateVars, locale) {
   // Try to get custom template from database
-  const customTemplate = getEmailTemplate(location.get("id"), templateName, locale);
+  const customTemplate = getEmailTemplate(
+    location.get("id"),
+    templateName,
+    locale
+  );
 
   // Try to get default template
   const defaultTemplate = getDefaultTemplate(templateName, locale);
@@ -126,16 +212,6 @@ function getRenderedTemplate(location, templateName, templateVars, locale) {
 }
 
 /**
- * Formats a date for use in email templates
- * @param {Date} date
- * @returns {string}
- */
-function formatDate(date) {
-  if (!date) return "";
-  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-}
-
-/**
  * Formats currency for use in email templates
  * @param {number} n
  * @returns {string}
@@ -147,20 +223,32 @@ function formatCurrency(n) {
 
 /**
  * Sends an email to recipient(s) using a template
+ * @template {TemplateName} T
  * @param {core.Record} location - The location
- * @param {TemplateName} templateName - Name of the template type
+ * @param {T} templateName - Name of the template type
  * @param {string|string[]} recipientEmail - Email address(es) of the recipient(s)
  * @param {string} locale - Locale for template lookup
- * @param {Object} templateVars - Variables for template rendering
+ * @param {Record<EmailTemplateVars[T], string | null>} templateVars - Variables for template rendering
  */
-function sendLocationTemplateEmail(location, templateName, recipientEmail, locale, templateVars) {
+function sendLocationTemplateEmail(
+  location,
+  templateName,
+  recipientEmail,
+  locale,
+  templateVars
+) {
   const senderInfo = getSenderInfo(location);
-  
-  const emailTemplate = getRenderedTemplate(location, templateName, templateVars, locale);
+
+  const emailTemplate = getRenderedTemplate(
+    location,
+    templateName,
+    templateVars,
+    locale
+  );
 
   // Support both single email string and array of emails
-  const recipients = Array.isArray(recipientEmail) 
-    ? recipientEmail.map(email => ({ address: email }))
+  const recipients = Array.isArray(recipientEmail)
+    ? recipientEmail.map((email) => ({ address: email }))
     : [{ address: recipientEmail }];
 
   const email = new MailerMessage({
@@ -174,6 +262,13 @@ function sendLocationTemplateEmail(location, templateName, recipientEmail, local
 module.exports = {
   sendLocationTemplateEmail,
   getSenderInfo,
-  formatDate,
   formatCurrency,
+  emailTemplateVars: {
+   reservation_confirmation: ReservationConfirmationVars,
+   reservation_confirmation_location: ReservationConfirmationLocationVars,
+   reservation_start_reminder: ReservationStartReminderVars,
+   reservation_end_reminder: ReservationEndReminderVars,
+   cancellation_confirmation: CancellationConfirmationVars,
+   reservation_cancellation_location: ReservationCancellationLocationVars,
+  }
 };

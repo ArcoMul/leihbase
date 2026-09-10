@@ -28,15 +28,11 @@ function getNotificationEmailAddresses(locationRecord) {
  */
 function sendReminders(location, type) {
   /** @type {typeof import('./date')} */
-  const { addDays, startOfDate, endOfDate, formatPocketbaseDate } = require(`${__hooks}/lib/date`);
+  const { addDays, startOfDate, endOfDate, formatPocketbaseDate, formatDate } = require(`${__hooks}/lib/date`);
   /** @type {typeof import('./reservation')} */
-  const { saveSentEmail } = require(
-    `${__hooks}/lib/reservation`
-  );
+  const { saveSentEmail } = require(`${__hooks}/lib/reservation`);
   /** @type {typeof import('./email')} */
-  const { sendLocationTemplateEmail, formatDate } = require(
-    `${__hooks}/lib/email`
-  );
+  const { sendLocationTemplateEmail } = require(`${__hooks}/lib/email`);
   /** @type {typeof import('./openingHours')} */
   const { getOpeningHoursDay } = require(`${__hooks}/lib/openingHours`);
 
@@ -51,7 +47,7 @@ function sendReminders(location, type) {
     type === "start"
       ? `location = {:location} && cancelled != true && user != "" && created < {:startOfToday} && sent_emails !~ "start_reminder" && start >= {:startOfTomorrow} && start <= {:endOfTomorrow}`
       : `location = {:location} && cancelled != true && user != "" && started = true && ended = false && sent_emails !~ "end_reminder" && end >= {:startOfTomorrow} && end <= {:endOfTomorrow}`,
-    null,
+    '',
     100,
     0,
     {
@@ -81,7 +77,7 @@ function sendReminders(location, type) {
       reservation.get("id")
     );
 
-    $app.expandRecord(reservation, ["user", "product"], null);
+    $app.expandRecord(reservation, ["user", "product"]);
     const user = reservation.expandedOne("user");
     const product = reservation.expandedOne("product");
 
@@ -98,36 +94,39 @@ function sendReminders(location, type) {
       end
     );
 
-    /** @type {TemplateName} */
-    const templateType = type === "start" ? "reservation_start_reminder" : "reservation_end_reminder";
-
-    const templateVars = type === "start"
-      ? {
+    if (type === "start") {
+      sendLocationTemplateEmail(
+        location,
+        "reservation_start_reminder",
+        user.getString("email"),
+        locale,
+        {
           APP_URL: appUrl,
           USER_NAME: user.get("name"),
           LOCATION_NAME: location.get("name"),
           PRODUCT_NAME: product.get("name"),
-          RESERVATION_START: formatDate(start),
+          RESERVATION_START: formatDate(start, locale),
           START_HOUR: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].from : null,
           END_HOUR: startOpenHours && startOpenHours.length > 0 ? startOpenHours[0].to : null,
         }
-      : {
+      );
+    } else {
+      sendLocationTemplateEmail(
+        location,
+        "reservation_end_reminder",
+        user.getString("email"),
+        locale,
+        {
           APP_URL: appUrl,
           USER_NAME: user.get("name"),
           LOCATION_NAME: location.get("name"),
           PRODUCT_NAME: product.get("name"),
-          RESERVATION_END: formatDate(end),
+          RESERVATION_END: formatDate(end, locale),
           START_HOUR: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].from : null,
           END_HOUR: endOpenHours && endOpenHours.length > 0 ? endOpenHours[0].to : null,
-        };
-
-    sendLocationTemplateEmail(
-      location,
-      templateType,
-      user.getString("email"),
-      locale,
-      templateVars
-    );
+        }
+      );
+    }
 
     // Save that reminder has been send
     saveSentEmail(reservation, `${type}_reminder`);

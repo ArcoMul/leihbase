@@ -25,8 +25,8 @@ Eine neue Reservierung von {USER_NAME} (<a href="mailto:{USER_EMAIL}">{USER_EMAI
 <br>
 <strong>Details</strong><br>
 Gegenstand: <a href="{PRODUCT_URL}">{PRODUCT_NAME}</a><br>
-Beginn: {START}<br>
-Ende: {END}<br>
+Beginn: {RESERVATION_START}<br>
+Ende: {RESERVATION_END}<br>
 {#if MESSAGE}<br>{USER_NAME} schreibt:<br><blockquote>{MESSAGE}<br></blockquote>{/if}`,
   },
   reservation_start_reminder: {

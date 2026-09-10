@@ -212,10 +212,12 @@ onRecordCreateRequest((e) => {
 
   const locale = $os.getenv("CONFIG_LOCALE") || "en";
 
+  /** @type {typeof import('./lib/date')} */
+  const { formatDate } = require(`${__hooks}/lib/date`);
   /** @type {typeof import('./lib/reservation')} */
   const { saveSentEmail } = require(`${__hooks}/lib/reservation`);
   /** @type {typeof import('./lib/email')} */
-  const { sendLocationTemplateEmail, formatDate, formatCurrency } = require(`${__hooks}/lib/email`);
+  const { sendLocationTemplateEmail, formatCurrency } = require(`${__hooks}/lib/email`);
   /** @type {typeof import('./lib/location')} */
   const { getNotificationEmailAddresses } = require(`${__hooks}/lib/location`);
 
@@ -272,8 +274,8 @@ onRecordCreateRequest((e) => {
         PRODUCT_NAME: productName,
         USER_NAME: userName,
         USER_EMAIL: user.get("email"),
-        RESERVATION_START: formatDate(start),
-        RESERVATION_END: formatDate(end),
+        RESERVATION_START: formatDate(start, locale),
+        RESERVATION_END: formatDate(end, locale),
         MESSAGE: record.get("message"),
       }
     );
@@ -283,7 +285,7 @@ onRecordCreateRequest((e) => {
   if (user && requestUser && requestUser.get("id") === user.get("id")) {
     sendLocationTemplateEmail(
       location,
-      /** @type {TemplateName} */ ("reservation_confirmation"),
+      "reservation_confirmation",
       user.get("email"),
       locale,
       {
@@ -291,8 +293,8 @@ onRecordCreateRequest((e) => {
         USER_NAME: userName,
         PRODUCT_URL: `${appUrl}/link/product/${product.get("id")}`,
         PRODUCT_NAME: productName,
-        RESERVATION_START: formatDate(start),
-        RESERVATION_END: formatDate(end),
+        RESERVATION_START: formatDate(start, locale),
+        RESERVATION_END: formatDate(end, locale),
         PRODUCT_DEPOSIT: product.get("deposit") ? formatCurrency(product.get("deposit")) : null,
         LENDING_CONDITIONS_LINK: lendingConditionsLink,
       }
@@ -305,10 +307,12 @@ onRecordCreateRequest((e) => {
 onRecordUpdateRequest((e) => {
   e.next();
 
+  /** @type {typeof import('./lib/date')} */
+  const { formatDate } = require(`${__hooks}/lib/date`);
   /** @type {typeof import('./lib/reservation')} */
   const { removeSentEmail } = require(`${__hooks}/lib/reservation`);
   /** @type {typeof import('./lib/email')} */
-  const { sendLocationTemplateEmail, formatDate } = require(`${__hooks}/lib/email`);
+  const { sendLocationTemplateEmail } = require(`${__hooks}/lib/email`);
   /** @type {typeof import('./lib/location')} */
   const { getNotificationEmailAddresses } = require(`${__hooks}/lib/location`);
 
@@ -372,8 +376,8 @@ onRecordUpdateRequest((e) => {
           PRODUCT_NAME: productName,
           USER_NAME: user.get("name"),
           USER_EMAIL: user.get("email"),
-          RESERVATION_START: formatDate(start),
-          RESERVATION_END: formatDate(end),
+          RESERVATION_START: formatDate(start, locale),
+          RESERVATION_END: formatDate(end, locale),
         }
       );
     }

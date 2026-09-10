@@ -70,7 +70,7 @@
         <Heading is="h3" size="sm">{{ t("available_variables") }}</Heading>
         <div class="variable-list">
           <Badge
-            v-for="varName in availableVariables"
+            v-for="varName in templateVariables"
             :key="varName"
             variant="neutral"
           >
@@ -101,6 +101,7 @@ import Select from "@/components/core/Select.vue";
 import Switch from "@/components/core/Switch.vue";
 import Textarea from "@/components/core/Textarea.vue";
 import { Trash, Xmark } from "@iconoir/vue";
+import { resolveModuleWithOptions } from "nuxt/kit";
 import { useI18n } from "vue-i18n";
 
 const { t, locale } = useI18n({ useScope: "local" });
@@ -121,65 +122,12 @@ const fetchingDefault = ref(false);
 const name = ref("");
 const subject = ref("");
 const html = ref("");
+const templateVariables = ref([]);
 const enabled = ref(true);
 
 const { pb } = usePocketbase();
 
 const editing = computed(() => !!props.template);
-
-// Map template types to their available variables
-const templateVariables: Record<string, string[]> = {
-  reservation_confirmation: [
-    "APP_URL",
-    "LENDING_CONDITIONS_LINK",
-    "USER_NAME",
-    "PRODUCT_URL",
-    "PRODUCT_NAME",
-    "RESERVATION_START",
-    "RESERVATION_END",
-    "PRODUCT_DEPOSIT",
-  ],
-  reservation_confirmation_location: [
-    "PRODUCT_URL",
-    "PRODUCT_NAME",
-    "USER_NAME",
-    "USER_EMAIL",
-    "RESERVATION_START",
-    "RESERVATION_END",
-    "MESSAGE",
-  ],
-  reservation_start_reminder: [
-    "APP_URL",
-    "USER_NAME",
-    "LOCATION_NAME",
-    "PRODUCT_NAME",
-    "RESERVATION_START",
-    "START_HOUR",
-    "END_HOUR",
-  ],
-  reservation_end_reminder: [
-    "APP_URL",
-    "USER_NAME",
-    "LOCATION_NAME",
-    "PRODUCT_NAME",
-    "RESERVATION_END",
-    "START_HOUR",
-    "END_HOUR",
-  ],
-  cancellation_confirmation: ["USER_NAME", "PRODUCT_URL", "PRODUCT_NAME"],
-  reservation_cancellation_location: [
-    "PRODUCT_URL",
-    "PRODUCT_NAME",
-    "USER_NAME",
-    "USER_EMAIL",
-    "RESERVATION_START",
-    "RESERVATION_END",
-  ],
-};
-
-const availableVariables = computed(() => {
-  return templateVariables[name.value] || [];
-});
 
 watch(open, (isOpening) => {
   if (!isOpening) return;
@@ -203,11 +151,13 @@ async function fetchDefaultTemplate() {
   fetchingDefault.value = true;
   try {
     const result = await pb.send(
-      `/api/email-templates/defaults/${locale.value}/${name.value}`
+      `/api/email-templates/defaults/${locale.value}/${name.value}`,
+      {}
     );
-    if (result && result.subject) {
-      subject.value = result.subject;
-      html.value = result.html;
+    templateVariables.value = result.vars || [];
+    if (result && result.template && result.template.subject) {
+      subject.value = result.template.subject;
+      html.value = result.template.html;
     }
   } catch (error) {
     console.error("Failed to fetch default template:", error);

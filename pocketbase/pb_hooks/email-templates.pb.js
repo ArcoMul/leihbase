@@ -6,6 +6,9 @@
  * @param {core.RequestEvent} e
  */
 routerAdd("GET", "/api/email-templates/defaults/{locale}/{templateName}", (e) => {
+  /** @type {typeof import('./lib/email')} */
+  const { emailTemplateVars } = require(`${__hooks}/lib/email`);
+
   if (!e.request) return
 
   const templateName = /** @type {TemplateName} */ (e.request.pathValue("templateName"));
@@ -20,5 +23,5 @@ routerAdd("GET", "/api/email-templates/defaults/{locale}/{templateName}", (e) =>
     return e.json(404, { error: "Template not found" });
   }
   
-  return e.json(200, template);
+  return e.json(200, { template, vars: emailTemplateVars[templateName] });
 });

@@ -28,8 +28,8 @@ A new reservation by {USER_NAME} (<a href="mailto:{USER_EMAIL}">{USER_EMAIL}</a>
 <br>
 <strong>Details</strong><br>
 Item: <a href="{PRODUCT_URL}">{PRODUCT_NAME}</a><br>
-Start: {START}<br>
-End: {END}<br>
+Start: {RESERVATION_START}<br>
+End: {RESERVATION_END}<br>
 {#if MESSAGE}
 <br>
 {USER_NAME} writes:<br>
