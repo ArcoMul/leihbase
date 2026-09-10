@@ -1,5 +1,5 @@
 <template>
-  <Drawer :headerOffset="false" inset v-model:open="open">
+  <Drawer :headerOffset="false" inset v-model:open="open" size="md">
     <!-- Header -->
     <header>
       <Heading is="h2" size="lg">{{ editing ? t("edit") : t("new") }}</Heading>
