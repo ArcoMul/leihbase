@@ -102,8 +102,11 @@ function handleDocumentKeyDown(e: KeyboardEvent) {
   }
 }
 .sidebar.size-md {
+  @media screen and (min-width: breakpoints.$breakpoint-sm) {
+    width: 95%;
+  }
   @media screen and (min-width: breakpoints.$breakpoint-md) {
-    width: 66.66%;
+    width: 95%;
     max-width: 800px;
   }
 }
