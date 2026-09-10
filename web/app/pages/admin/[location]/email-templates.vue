@@ -35,7 +35,7 @@
             <Badge v-if="template.enabled" variant="success">
               {{ t("enabled") }}
             </Badge>
-            <Badge v-else variant="warning">{{ t("disabled") }}</Badge>
+            <Badge v-else variant="error">{{ t("disabled") }}</Badge>
           </div>
           <div class="template-content">
             <p>
